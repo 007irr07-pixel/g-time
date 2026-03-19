@@ -84,7 +84,7 @@ function createRoughnessMap(size = 512): THREE.CanvasTexture {
   ctx.fillRect(0, 0, size, size);
   
   // Micro-variation (anisotropic streaks)
-  for (let i = 0; i < 600; i++) {
+  for (let i = 0; i < 2000; i++) {
     const x = Math.random() * size;
     const y = Math.random() * size;
     const val = 40 + Math.random() * 30; // 40 to 70
@@ -108,8 +108,8 @@ function usePremiumMaterials() {
   return useMemo(() => {
     if (!globalNormalMap && typeof document !== "undefined") {
       try {
-        globalNormalMap = createScratchNormalMap(128);
-        globalRoughnessMap = createRoughnessMap(256);
+        globalNormalMap = createScratchNormalMap(256);
+        globalRoughnessMap = createRoughnessMap(512);
       } catch {
         // SSR fallback
       }
@@ -424,20 +424,6 @@ function Spark() {
   );
 }
 
-function SimpleEnvironment({ color = "#FF5722" }: { color?: string }) {
-  return (
-    <Environment background={false} resolution={128}>
-      <mesh scale={100}>
-        <sphereGeometry args={[1, 16, 16]} />
-        <meshBasicMaterial color="#3a3d42" side={THREE.BackSide} />
-      </mesh>
-      <directionalLight position={[5, 5, 5]} intensity={4} color="#ffffff" />
-      <directionalLight position={[-5, -5, -5]} intensity={4} color={color} />
-      <ambientLight intensity={2} color="#ffffff" />
-    </Environment>
-  );
-}
-
 export function HeroLive3D() {
   const [loaded, setLoaded] = useState(false);
 
@@ -460,7 +446,7 @@ export function HeroLive3D() {
       <pointLight position={[0, -10, 5]} intensity={0.5} color="#334455" />
       
       {/* Environment map provides the 'iron/steel' reflections */}
-      <SimpleEnvironment color="#FF5722" />
+      <Environment preset="city" />
 
       <HeroRealisticPipes />
 
@@ -613,7 +599,7 @@ export function B2BLive3D({ type }: { type: 'logistics' | 'certificate' | 'finan
       <LazyCanvas camera={{ position: [0, 0, 10], fov: 40 }} gl={{ alpha: true, antialias: true, dpr: [1, 1.5] }}>
         <ambientLight intensity={1.5} />
         <directionalLight position={[5, 10, 5]} intensity={4} color="#ffffff" />
-        <SimpleEnvironment color={envColor} />
+        <Environment preset="city" />
         <directionalLight position={[-5, -5, -5]} intensity={2.5} color={color === "orange" ? "#FF5722" : "#00E676"} />
         <directionalLight position={[0, 0, -10]} intensity={3} color="#ffffff" />
         <pointLight position={[0, 0, 6]} intensity={3} color="#ffffff" distance={20} />
@@ -843,7 +829,7 @@ export function CardLive3D({ type, color }: { type: string, color: "orange" | "g
         <ambientLight intensity={1.5} />
         <directionalLight position={[5, 10, 5]} intensity={4.0} color="#ffffff" />
         <directionalLight position={[-5, -5, -5]} intensity={2.5} color={envColor} />
-        <SimpleEnvironment color={envColor} />
+        <Environment preset="city" />
         <pointLight position={[0, 0, 6]} intensity={3} color="#ffffff" distance={20} />
 
         <group position={[0.6, 0, 0]}>
