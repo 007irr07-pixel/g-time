@@ -1,27 +1,11 @@
 "use client";
 
-import { useRef, useMemo, useCallback, useState, useEffect } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Float, Preload } from "@react-three/drei";
 import * as THREE from "three";
 import { useInView } from "framer-motion";
 
-// --- MOBILE DETECTION HOOK ---
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
-  
-  useEffect(() => {
-    setHasMounted(true);
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-  
-  if (!hasMounted) return true; // Default to 'true' (no 3D) during hydration
-  return isMobile;
-}
 
 // --- LAZY CANVAS WRAPPER TO PREVENT WEBGL CONTEXT LIMIT CRASH ---
 function LazyCanvas({ children, camera, gl }: any) {
@@ -165,7 +149,7 @@ function usePremiumMaterials() {
         clearcoat: 1.0,
         clearcoatRoughness: 0.05,
         ...baseMaterialProps,
-        normalScale: normalMap ? new THREE.Vector2(0.05, 0.05) : undefined,
+        normalScale: globalNormalMap ? new THREE.Vector2(0.05, 0.05) : undefined,
       }),
       // Flawless green powder coat
       greenMetal: new THREE.MeshPhysicalMaterial({
@@ -175,7 +159,7 @@ function usePremiumMaterials() {
         clearcoat: 1.0,
         clearcoatRoughness: 0.05,
         ...baseMaterialProps,
-        normalScale: normalMap ? new THREE.Vector2(0.05, 0.05) : undefined,
+        normalScale: globalNormalMap ? new THREE.Vector2(0.05, 0.05) : undefined,
       }),
       // Chrome / Polished Aluminum
       silver: new THREE.MeshPhysicalMaterial({
@@ -186,7 +170,7 @@ function usePremiumMaterials() {
         clearcoatRoughness: 0.2,
         reflectivity: 0.8,
         ...baseMaterialProps,
-        normalScale: normalMap ? new THREE.Vector2(0.05, 0.05) : undefined,
+        normalScale: globalNormalMap ? new THREE.Vector2(0.05, 0.05) : undefined,
       }),
       // Flawless Gold
       gold: new THREE.MeshPhysicalMaterial({
@@ -197,7 +181,7 @@ function usePremiumMaterials() {
         clearcoatRoughness: 0.05,
         reflectivity: 1,
         ...baseMaterialProps,
-        normalScale: normalMap ? new THREE.Vector2(0.05, 0.05) : undefined,
+        normalScale: globalNormalMap ? new THREE.Vector2(0.05, 0.05) : undefined,
       }),
       // Inner pipe wall (clean, smooth dark metal)
       innerWall: new THREE.MeshPhysicalMaterial({
@@ -215,7 +199,7 @@ function usePremiumMaterials() {
         clearcoat: 0.8,
         clearcoatRoughness: 0.2,
         ...baseMaterialProps,
-        normalScale: normalMap ? new THREE.Vector2(0.2, 0.2) : undefined,
+        normalScale: globalNormalMap ? new THREE.Vector2(0.2, 0.2) : undefined,
       }),
       // Void Black for deep holes
       void: new THREE.MeshBasicMaterial({ color: "#050505" }),
@@ -440,7 +424,7 @@ function Spark() {
   );
 }
 
-function SimpleEnvironment({ color = "#FF5722" }) {
+function SimpleEnvironment({ color = "#FF5722" }: { color?: string }) {
   return (
     <Environment background={false} resolution={128}>
       <mesh scale={100}>
