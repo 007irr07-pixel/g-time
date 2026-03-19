@@ -714,7 +714,7 @@ function ProfileSheets({ color = "orange" }) {
   );
 }
 
-function ProfileAngle({ color = "green" }) {
+function ProfileAngle() {
   const materials = usePremiumMaterials();
   
   // 1. L-Angle (Уголок)
@@ -835,7 +835,7 @@ export function CardLive3D({ type, color }: { type: string, color: "orange" | "g
           {type === "pipe" && <ProfilePipes color={color} />}
           {type === "beam" && <ProfileBeam color={color} />}
           {type === "sheet" && <ProfileSheets color={color} />}
-          {type === "angle" && <ProfileAngle color={color} />}
+          {type === "angle" && <ProfileAngle />}
           {type === "rebar" && <ProfileRebar color={color} />}
         </group>
       </LazyCanvas>
