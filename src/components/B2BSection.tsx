@@ -53,7 +53,7 @@ function PillarCard({ pillar, index }: { pillar: typeof pillars[0], index: numbe
       <TiltCard
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
-        className={`relative group bg-graphite/10 backdrop-blur-xl rounded-3xl p-10 border border-white/5 hover:border-${pillar.color === 'orange' ? 'accent-orange/30' : 'accent-green/30'} flex flex-col justify-between overflow-hidden cursor-pointer h-full min-h-[400px]`}
+        className={`relative group bg-graphite/25 backdrop-blur-xl rounded-3xl p-10 border border-white/5 hover:border-${pillar.color === 'orange' ? 'accent-orange/30' : 'accent-green/30'} flex flex-col justify-between overflow-hidden cursor-pointer h-full min-h-[400px]`}
       >
         {/* Giant Background 3D WebGL scene */}
         <B2BLive3D type={pillar.type} />
