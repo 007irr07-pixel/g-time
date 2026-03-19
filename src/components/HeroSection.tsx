@@ -112,29 +112,25 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
             variants={titleVariants}
             initial="hidden"
             animate="visible"
-            className="text-[1.8rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7.5rem] font-heading font-900 leading-[0.9] tracking-tighter mb-8 px-2"
+            className="text-[2rem] sm:text-[3rem] md:text-[4rem] lg:text-[4.5rem] font-heading font-900 leading-[1.1] tracking-tight mb-8 px-2"
           >
-            {renderStaggeredText("Металлопрокат ")}
-            <br className="hidden sm:block" />
+            Металлопрокат оптом и в розницу — <br className="hidden sm:block" />
             <span className="gradient-text-orange inline-block">
-              {renderStaggeredText("по всему ")}
+              отгрузка в день заказа
             </span>
             <br className="hidden sm:block" />
-            {renderStaggeredText("Казахстану")}
+            по всему Казахстану.
           </motion.h1>
 
           {/* Subtitle with fade up */}
           <motion.p
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
-            className="text-xl sm:text-2xl text-silver max-w-2xl mb-12 leading-[1.6] font-light"
+            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+            className="text-xl sm:text-2xl text-silver max-w-3xl mb-12 leading-[1.6] font-light"
           >
-            Трубный, сортовой, листовой и фасонный прокат с собственных складов.
-            Доставка длинномерами, сертификация{" "}
-            <span className="text-white font-medium border-b border-accent-green/30 pb-0.5">СТ-KZ</span> и{" "}
-            <span className="text-white font-medium border-b border-accent-green/30 pb-0.5">ГОСТ</span>,
-            отсрочка платежа.
+            Более 10 000 позиций всегда в наличии на собственных складах. Даем отсрочку платежа, предоставляем сертификаты{" "}
+            <span className="text-white font-medium border-b border-accent-green/30 pb-0.5">СТ-KZ</span> и доставляем собственными длинномерами.
           </motion.p>
 
           {/* Premium CTAs */}
@@ -150,7 +146,7 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
             >
               {/* Button inner glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-              <span className="relative z-10">Смотреть каталог</span>
+              <span className="relative z-10">Рассчитать смету</span>
               <ArrowRight
                 size={20}
                 className="relative z-10 group-hover:translate-x-1.5 transition-transform"
@@ -162,7 +158,7 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
               className="group relative inline-flex items-center justify-center gap-4 bg-surface/50 backdrop-blur-md border border-white/10 hover:border-accent-orange/40 hover:bg-surface text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               <Download size={20} className="text-silver group-hover:text-accent-orange transition-colors" />
-              <span>Скачать прайс-лист</span>
+              <span>Скачать оптовый прайс</span>
             </button>
           </motion.div>
 

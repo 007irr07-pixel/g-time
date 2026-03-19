@@ -172,12 +172,12 @@ export default function CatalogSection() {
           <span className="inline-block py-1 px-3 rounded-full border border-accent-orange/30 bg-accent-orange/5 text-xs font-bold text-accent-orange uppercase tracking-[0.2em] mb-4">
             Каталог продукции
           </span>
-          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-heading font-900 mt-2 mb-6 tracking-tight">
-            Премиальный <br className="hidden sm:block" />
-            <span className="gradient-text-orange">металлопрокат</span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 mt-2 mb-6 tracking-tight text-white">
+            Металлопрокат строго по ГОСТ. <br className="hidden sm:block" />
+            <span className="gradient-text-orange">Без ожидания и перебоев.</span>
           </h2>
           <p className="text-zinc-100 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
-            Высокоточные изделия из стали. Более 10 000 позиций на складе с мгновенной отгрузкой. Сертифицировано по ГОСТ.
+            50 000 тонн металла уже на складе. От труб до арматуры — скомплектуем заказ любой сложности за 1 час.
           </p>
         </motion.div>
 
