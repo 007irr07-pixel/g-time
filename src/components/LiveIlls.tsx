@@ -767,19 +767,19 @@ function ProfileAngle() {
 
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <group rotation={[Math.PI / 5, Math.PI / 4, 0]} scale={1.25} position={[0.5, -0.2, 0]}>
+      <group rotation={[0.3, -0.6, 0.15]} scale={1.2} position={[1.0, -0.1, 0]}>
         {/* 1. Orange L-angle */}
-        <mesh material={materials.orangeMetal} position={[-1.4, 1.0, -1.2]}>
+        <mesh material={materials.orangeMetal} position={[-1.6, 1.2, 0]}>
           <extrudeGeometry args={[lShape, ext]} />
         </mesh>
         
         {/* 2. Dark / Black L-angle */}
-        <mesh material={materials.darkMetal} position={[0, 0, 0]}>
+        <mesh material={materials.darkMetal} position={[0, 0, 0.5]}>
           <extrudeGeometry args={[lShape, ext]} />
         </mesh>
         
         {/* 3. Silver / Chrome L-angle */}
-        <mesh material={materials.scuffedMetal} position={[1.4, -1.0, 1.2]}>
+        <mesh material={materials.scuffedMetal} position={[1.6, -1.2, 1.0]}>
           <extrudeGeometry args={[lShape, ext]} />
         </mesh>
       </group>
