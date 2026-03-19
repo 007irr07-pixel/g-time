@@ -120,13 +120,13 @@ export default function UploadSection() {
           {/* Decorative technical drawing circles and lines */}
           <circle cx="20%" cy="30%" r="300" fill="none" stroke="white" strokeWidth="1" strokeDasharray="5,5" />
           <circle cx="20%" cy="30%" r="200" fill="none" stroke="white" strokeWidth="0.5" />
-          <path d="M 0 30% L 100% 30%" fill="none" stroke="white" strokeWidth="0.5" />
-          <path d="M 20% 0 L 20% 100%" fill="none" stroke="white" strokeWidth="0.5" />
+          <line x1="0" y1="30%" x2="100%" y2="30%" stroke="white" strokeWidth="0.5" />
+          <line x1="20%" y1="0" x2="20%" y2="100%" stroke="white" strokeWidth="0.5" />
 
           <circle cx="85%" cy="70%" r="400" fill="none" stroke="white" strokeWidth="1" strokeDasharray="10,10" />
           <circle cx="85%" cy="70%" r="380" fill="none" stroke="white" strokeWidth="0.5" />
-          <path d="M 85% 50% L 85% 90%" fill="none" stroke="white" strokeWidth="1" />
-          <path d="M 70% 70% L 100% 70%" fill="none" stroke="white" strokeWidth="1" />
+          <line x1="85%" y1="50%" x2="85%" y2="90%" stroke="white" strokeWidth="1" />
+          <line x1="70%" y1="70%" x2="100%" y2="70%" stroke="white" strokeWidth="1" />
         </svg>
       </div>
 

@@ -10,7 +10,9 @@ import { useInView } from "framer-motion";
 // --- LAZY CANVAS WRAPPER TO PREVENT WEBGL CONTEXT LIMIT CRASH ---
 function LazyCanvas({ children, camera, gl }: any) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { margin: "400px 0px" });
+  // Extremely strict intersection margin to solve WebGL 'Context Lost' limits
+  // Automatically unmounts canvas instantly when invisible.
+  const isInView = useInView(ref, { margin: "0px" });
 
   return (
     <div ref={ref} className="absolute inset-0 w-full h-full pointer-events-none">
