@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, ArrowUpRight } from "lucide-react";
 
@@ -62,9 +63,11 @@ export default function Footer() {
           {/* Brand column */}
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <img 
+              <Image 
                 src="https://i.ibb.co.com/wZfnTPtD/Gemini-Generated-Image-hzn4ddhzn4ddhzn4-removebg-preview.png" 
                 alt="G-Time Logo" 
+                width={160}
+                height={56}
                 className="h-14 w-auto object-contain"
               />
             </div>

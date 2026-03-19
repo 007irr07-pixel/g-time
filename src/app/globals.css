@@ -18,8 +18,8 @@
   --color-border: #3A3D42;
   --color-border-accent: #FF572233;
 
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-heading: var(--font-manrope), system-ui, -apple-system, sans-serif;
 }
 
 /* Base styles */

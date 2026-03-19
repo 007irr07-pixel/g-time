@@ -81,7 +81,7 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
       {/* Dynamic Parallax Hero Illustration (WebGL) */}
       <motion.div 
         style={{ y: yBg1 }}
-        className="absolute inset-0 pointer-events-none hidden md:block origin-right pt-20"
+        className="absolute top-0 right-0 bottom-0 w-[150vw] sm:inset-0 sm:w-full pointer-events-none origin-center pt-32 sm:pt-20 opacity-25 sm:opacity-100 translate-x-[25%] sm:translate-x-0"
       >
         <HeroLive3D />
       </motion.div>

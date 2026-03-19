@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
-import CatalogSection from "@/components/CatalogSection";
-import CalculatorSection from "@/components/CalculatorSection";
-import UploadSection from "@/components/UploadSection";
-import B2BSection from "@/components/B2BSection";
 import Footer from "@/components/Footer";
 import PriceModal from "@/components/PriceModal";
+
+const CatalogSection = dynamic(() => import("@/components/CatalogSection"));
+const CalculatorSection = dynamic(() => import("@/components/CalculatorSection"));
+const UploadSection = dynamic(() => import("@/components/UploadSection"));
+const B2BSection = dynamic(() => import("@/components/B2BSection"));
 
 export default function Home() {
   const [priceModalOpen, setPriceModalOpen] = useState(false);

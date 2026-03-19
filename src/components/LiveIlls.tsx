@@ -100,7 +100,7 @@ function createRoughnessMap(size = 512): THREE.CanvasTexture {
   ctx.fillRect(0, 0, size, size);
   
   // Micro-variation (anisotropic streaks)
-  for (let i = 0; i < 2000; i++) {
+  for (let i = 0; i < 600; i++) {
     const x = Math.random() * size;
     const y = Math.random() * size;
     const val = 40 + Math.random() * 30; // 40 to 70
@@ -117,22 +117,24 @@ function createRoughnessMap(size = 512): THREE.CanvasTexture {
 }
 
 // --- ENHANCED PREMIUM MATERIALS (NEW STEEL) ---
+let globalNormalMap: THREE.CanvasTexture | null = null;
+let globalRoughnessMap: THREE.CanvasTexture | null = null;
+
 function usePremiumMaterials() {
   return useMemo(() => {
-    let normalMap: THREE.CanvasTexture | null = null;
-    let roughnessMap: THREE.CanvasTexture | null = null;
-    
-    try {
-      normalMap = createScratchNormalMap();
-      roughnessMap = createRoughnessMap();
-    } catch {
-      // SSR fallback - no canvas available
+    if (!globalNormalMap && typeof document !== "undefined") {
+      try {
+        globalNormalMap = createScratchNormalMap(128);
+        globalRoughnessMap = createRoughnessMap(256);
+      } catch {
+        // SSR fallback
+      }
     }
     
     const baseMaterialProps = {
-      normalMap,
-      normalScale: normalMap ? new THREE.Vector2(0.1, 0.1) : undefined,
-      roughnessMap: roughnessMap || undefined,
+      normalMap: globalNormalMap,
+      normalScale: globalNormalMap ? new THREE.Vector2(0.1, 0.1) : undefined,
+      roughnessMap: globalRoughnessMap || undefined,
     };
 
     return {
@@ -438,8 +440,21 @@ function Spark() {
   );
 }
 
+function SimpleEnvironment({ color = "#FF5722" }) {
+  return (
+    <Environment background={false} resolution={128}>
+      <mesh scale={100}>
+        <sphereGeometry args={[1, 16, 16]} />
+        <meshBasicMaterial color="#3a3d42" side={THREE.BackSide} />
+      </mesh>
+      <directionalLight position={[5, 5, 5]} intensity={4} color="#ffffff" />
+      <directionalLight position={[-5, -5, -5]} intensity={4} color={color} />
+      <ambientLight intensity={2} color="#ffffff" />
+    </Environment>
+  );
+}
+
 export function HeroLive3D() {
-  const isMobile = useIsMobile();
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -447,11 +462,10 @@ export function HeroLive3D() {
     return () => clearTimeout(t);
   }, []);
 
-  if (isMobile) return null;
   if (!loaded) return <LoadingSkeleton />;
 
   return (
-    <LazyCanvas camera={{ position: [0, 0, 22], fov: 45 }} gl={{ alpha: true, antialias: true, powerPreference: "default" }}>
+    <LazyCanvas camera={{ position: [0, 0, 22], fov: 45 }} gl={{ alpha: true, antialias: true, powerPreference: "default", dpr: [1, 1.5] }}>
       <ambientLight intensity={0.5} />
       {/* Dramatic Studio Lighting for metal reflections */}
       <directionalLight position={[10, 10, 5]} intensity={3} color="#ffffff" />
@@ -462,7 +476,7 @@ export function HeroLive3D() {
       <pointLight position={[0, -10, 5]} intensity={0.5} color="#334455" />
       
       {/* Environment map provides the 'iron/steel' reflections */}
-      <Environment preset="city" />
+      <SimpleEnvironment color="#FF5722" />
 
       <HeroRealisticPipes />
 
@@ -603,20 +617,19 @@ function Finance3D() {
 }
 
 export function B2BLive3D({ type }: { type: 'logistics' | 'certificate' | 'finance' }) {
-  const isMobile = useIsMobile();
-  if (isMobile) return null;
-
   const color = type === 'certificate' ? 'green' : 'orange';
+  const envColor = color === "orange" ? "#FF5722" : "#00E676";
+  
   return (
     <div className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-80 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden rounded-2xl">
       <div
         className="absolute right-0 top-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full blur-[60px] mix-blend-screen transition-all duration-500 opacity-30 group-hover:opacity-60"
         style={{ background: color === "orange" ? "radial-gradient(circle, rgba(255,87,34,0.3) 0%, transparent 70%)" : "radial-gradient(circle, rgba(0,230,118,0.3) 0%, transparent 70%)" }}
       />
-      <LazyCanvas camera={{ position: [0, 0, 10], fov: 40 }} gl={{ alpha: true, antialias: true }}>
+      <LazyCanvas camera={{ position: [0, 0, 10], fov: 40 }} gl={{ alpha: true, antialias: true, dpr: [1, 1.5] }}>
         <ambientLight intensity={1.5} />
         <directionalLight position={[5, 10, 5]} intensity={4} color="#ffffff" />
-        <Environment preset="city" />
+        <SimpleEnvironment color={envColor} />
         <directionalLight position={[-5, -5, -5]} intensity={2.5} color={color === "orange" ? "#FF5722" : "#00E676"} />
         <directionalLight position={[0, 0, -10]} intensity={3} color="#ffffff" />
         <pointLight position={[0, 0, 6]} intensity={3} color="#ffffff" distance={20} />
@@ -838,16 +851,15 @@ function ProfileRebar({ color = "orange" }) {
 }
 
 export function CardLive3D({ type, color }: { type: string, color: "orange" | "green" }) {
-  const isMobile = useIsMobile();
-  if (isMobile) return null;
+  const envColor = color === "orange" ? "#FF5722" : "#00E676";
 
   return (
     <div className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-90 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden rounded-3xl">
-      <LazyCanvas camera={{ position: [0, 0, 10], fov: 40 }} gl={{ alpha: true, antialias: true }}>
+      <LazyCanvas camera={{ position: [0, 0, 10], fov: 40 }} gl={{ alpha: true, antialias: true, dpr: [1, 1.5] }}>
         <ambientLight intensity={1.5} />
         <directionalLight position={[5, 10, 5]} intensity={4.0} color="#ffffff" />
-        <directionalLight position={[-5, -5, -5]} intensity={2.5} color={color === "orange" ? "#FF5722" : "#00E676"} />
-        <Environment preset="city" />
+        <directionalLight position={[-5, -5, -5]} intensity={2.5} color={envColor} />
+        <SimpleEnvironment color={envColor} />
         <pointLight position={[0, 0, 6]} intensity={3} color="#ffffff" distance={20} />
 
         <group position={[0.6, 0, 0]}>

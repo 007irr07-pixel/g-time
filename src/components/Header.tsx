@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Phone,
@@ -55,9 +55,12 @@ export default function Header({ onOpenPriceModal }: HeaderProps) {
         >
           {/* Logo */}
           <a href="#" className="flex items-center gap-3 group">
-              <img 
+              <Image 
               src="https://i.ibb.co.com/wZfnTPtD/Gemini-Generated-Image-hzn4ddhzn4ddhzn4-removebg-preview.png" 
               alt="G-Time Logo" 
+              width={160}
+              height={48}
+              priority
               className="h-12 w-auto object-contain group-hover:scale-105 transition-transform"
             />
           </a>
