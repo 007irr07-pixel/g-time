@@ -112,7 +112,7 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
             variants={titleVariants}
             initial="hidden"
             animate="visible"
-            className="text-[3.5rem] sm:text-[5rem] md:text-[6rem] lg:text-[7.5rem] font-heading font-900 leading-[0.9] tracking-tighter mb-8"
+            className="text-[2.5rem] sm:text-[5rem] md:text-[6rem] lg:text-[7.5rem] font-heading font-900 leading-[0.9] tracking-tighter mb-8"
           >
             {renderStaggeredText("Металлопрокат ")}
             <br className="hidden sm:block" />

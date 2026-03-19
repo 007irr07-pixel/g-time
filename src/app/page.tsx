@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <>
       <Header onOpenPriceModal={() => setPriceModalOpen(true)} />
-      <main>
+      <main className="overflow-x-hidden">
         <HeroSection onOpenPriceModal={() => setPriceModalOpen(true)} />
         <CatalogSection />
         <CalculatorSection />

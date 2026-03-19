@@ -8,7 +8,7 @@ import { useInView } from "framer-motion";
 
 // --- MOBILE DETECTION HOOK ---
 function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
@@ -44,7 +44,7 @@ function LoadingSkeleton() {
 }
 
 // --- PROCEDURAL CLEAN BRUSHED NORMAL MAP ---
-function createScratchNormalMap(size = 512): THREE.CanvasTexture {
+function createScratchNormalMap(size = 256): THREE.CanvasTexture {
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
@@ -447,17 +447,16 @@ export function HeroLive3D() {
 
   return (
     <LazyCanvas camera={{ position: [0, 0, 22], fov: 45 }} gl={{ alpha: true, antialias: true, powerPreference: "default" }}>
-      <ambientLight intensity={0.3} />
+      <ambientLight intensity={1.0} />
       {/* Dramatic Studio Lighting for metal reflections */}
-      <directionalLight position={[10, 10, 5]} intensity={3} color="#ffffff" castShadow />
+      <directionalLight position={[10, 10, 5]} intensity={3} color="#ffffff" />
       <directionalLight position={[-10, -10, -5]} intensity={1.5} color="#FF5722" />
       {/* Rim light from behind for edge highlights */}
       <directionalLight position={[-5, 0, -15]} intensity={2} color="#ffffff" />
       {/* Fill light to prevent pure-black shadows */}
       <pointLight position={[0, -10, 5]} intensity={0.5} color="#334455" />
-
-      {/* Environment map is CRITICAL for realistic scuffed metal reflections */}
-      <Environment preset="warehouse" />
+      {/* Hemisphere light replaces heavy HDR environment */}
+      <hemisphereLight args={["#b0c4de", "#1a1a2e", 1.5]} />
 
       <HeroRealisticPipes />
 
@@ -614,7 +613,6 @@ export function B2BLive3D({ type }: { type: 'logistics' | 'certificate' | 'finan
         <directionalLight position={[-5, -5, -5]} intensity={2.5} color={color === "orange" ? "#FF5722" : "#00E676"} />
         <directionalLight position={[0, 0, -10]} intensity={3} color="#ffffff" />
         <pointLight position={[0, 0, 6]} intensity={3} color="#ffffff" distance={20} />
-        <Environment preset="warehouse" />
 
         <group position={[0.6, 0, 0]}>
           {type === 'logistics' && <Logistics3D />}
@@ -844,7 +842,6 @@ export function CardLive3D({ type, color }: { type: string, color: "orange" | "g
         <directionalLight position={[-5, -5, -5]} intensity={2.5} color={color === "orange" ? "#FF5722" : "#00E676"} />
         <directionalLight position={[0, 0, -8]} intensity={3.0} color="#ffffff" />
         <pointLight position={[0, 0, 6]} intensity={3} color="#ffffff" distance={20} />
-        <Environment preset="warehouse" />
 
         <group position={[0.6, 0, 0]}>
           {type === "pipe" && <ProfilePipes color={color} />}
