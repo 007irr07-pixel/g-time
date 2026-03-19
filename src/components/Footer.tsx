@@ -64,7 +64,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="mb-6">
               <Image 
-                src="https://i.ibb.co.com/wZfnTPtD/Gemini-Generated-Image-hzn4ddhzn4ddhzn4-removebg-preview.png" 
+                src="https://i.ibb.co.com/1f2KWPS2/Logo-gtime1.png" 
                 alt="G-Time Logo" 
                 width={160}
                 height={56}

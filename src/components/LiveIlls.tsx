@@ -716,74 +716,71 @@ function ProfileSheets({ color = "orange" }) {
 
 function ProfileAngle({ color = "green" }) {
   const materials = usePremiumMaterials();
-
-  // 1. Уголок (L-shape)
-  const angleShape = useMemo(() => {
+  
+  // 1. L-Angle (Уголок)
+  const lShape = useMemo(() => {
     const s = new THREE.Shape();
-    const w = 1.2, h = 1.2, t = 0.15;
+    const w = 1.8, h = 1.8, t = 0.2;
+    const cx = -w / 4, cy = -h / 4;
+    s.moveTo(cx, cy + h);
+    s.lineTo(cx + t, cy + h);
+    s.lineTo(cx + t, cy + t);
+    s.lineTo(cx + w, cy + t);
+    s.lineTo(cx + w, cy);
+    s.lineTo(cx, cy);
+    s.lineTo(cx, cy + h);
+    return s;
+  }, []);
+
+  // 2. C-Channel (Швеллер)
+  const cShape = useMemo(() => {
+    const s = new THREE.Shape();
+    const w = 1.4, h = 2.2, t = 0.2;
     s.moveTo(-w/2, h/2);
-    s.lineTo(t - w/2, h/2);
-    s.lineTo(t - w/2, t - h/2);
-    s.lineTo(w/2, t - h/2);
+    s.lineTo(w/2, h/2);
+    s.lineTo(w/2, h/2 - t);
+    s.lineTo(-w/2 + t, h/2 - t);
+    s.lineTo(-w/2 + t, -h/2 + t);
+    s.lineTo(w/2, -h/2 + t);
     s.lineTo(w/2, -h/2);
     s.lineTo(-w/2, -h/2);
     s.lineTo(-w/2, h/2);
     return s;
   }, []);
 
-  // 2. Z-Profile
+  // 3. Z-Profile (Z-Образный)
   const zShape = useMemo(() => {
     const s = new THREE.Shape();
-    const h = 1.4, w = 0.8, t = 0.12;
-    s.moveTo(-w/2, h/2);
-    s.lineTo(0, h/2);
-    s.lineTo(0, h/2 - t);
-    s.lineTo(-w/2 + t, h/2 - t);
-    s.lineTo(-w/2 + t, -h/2 + t);
-    s.lineTo(0, -h/2 + t);
-    s.lineTo(0, -h/2);
-    s.lineTo(w/2, -h/2);
-    s.lineTo(w/2, -h/2 + t);
-    s.lineTo(t/2, -h/2 + t);
-    s.lineTo(t/2, h/2 - t);
-    s.lineTo(w/2, h/2 - t);
-    s.lineTo(w/2, h/2);
-    s.moveTo(-w/2, h/2);
-    return s;
-  }, []);
-
-  // 3. T-Profile
-  const tShape = useMemo(() => {
-    const s = new THREE.Shape();
-    const w = 1.2, h = 1.4, t = 0.15;
-    s.moveTo(-w/2, h/2);
-    s.lineTo(w/2, h/2);
-    s.lineTo(w/2, h/2 - t);
+    const wTop = 1.4, wBot = 1.4, h = 2.2, t = 0.2;
+    s.moveTo(-wTop/2, h/2);
+    s.lineTo(wTop/2 + t/2, h/2);
+    s.lineTo(wTop/2 + t/2, h/2 - t);
     s.lineTo(t/2, h/2 - t);
     s.lineTo(t/2, -h/2);
-    s.lineTo(-t/2, -h/2);
-    s.lineTo(-t/2, h/2 - t);
-    s.lineTo(-w/2, h/2 - t);
-    s.lineTo(-w/2, h/2);
+    s.lineTo(-wBot/2 - t/2, -h/2);
+    s.lineTo(-wBot/2 - t/2, -h/2 + t);
+    s.lineTo(-t/2, -h/2 + t);
+    s.lineTo(-t/2, h/2);
+    s.lineTo(-wTop/2, h/2);
     return s;
   }, []);
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <group rotation={[Math.PI / 6, Math.PI / 4, 0]} scale={1.3} position={[0.8, -0.2, 0]}>
-        {/* 1. Angle — scuffedMetal */}
-        <mesh material={materials.scuffedMetal} position={[0, 0, -2]}>
-          <extrudeGeometry args={[angleShape, { depth: 3.5, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.02, bevelThickness: 0.02 }]} />
+    <Float speed={2} rotationIntensity={0.6} floatIntensity={0.6}>
+      <group rotation={[Math.PI / 5, Math.PI / 4, 0]} scale={1.4} position={[0.5, -0.2, 0]}>
+        {/* 1. L-Angle - Orange */}
+        <mesh material={materials.orangeMetal} position={[-1.2, 0.5, -1]}>
+          <extrudeGeometry args={[lShape, { depth: 3.5, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.03, bevelThickness: 0.03 }]} />
         </mesh>
         
-        {/* 2. Z-Profile — orange */}
-        <mesh material={materials.orangeMetal} position={[-1.4, 0, -1.5]}>
-          <extrudeGeometry args={[zShape, { depth: 3, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.02, bevelThickness: 0.02 }]} />
+        {/* 2. C-Channel - Dark */}
+        <mesh material={materials.darkMetal} position={[0, -0.5, 0.5]} rotation={[0, 0, Math.PI/2]}>
+          <extrudeGeometry args={[cShape, { depth: 3.0, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.03, bevelThickness: 0.03 }]} />
         </mesh>
         
-        {/* 3. T-Profile — darkMetal */}
-        <mesh material={materials.darkMetal} position={[1.2, 0.6, -1]} rotation={[0, 0, Math.PI/2]}>
-          <extrudeGeometry args={[tShape, { depth: 2.5, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.02, bevelThickness: 0.02 }]} />
+        {/* 3. Z-Profile - Silver */}
+        <mesh material={materials.silver} position={[1.5, 0.8, -2]} rotation={[0, 0, Math.PI]}>
+          <extrudeGeometry args={[zShape, { depth: 3.2, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.03, bevelThickness: 0.03 }]} />
         </mesh>
       </group>
     </Float>
