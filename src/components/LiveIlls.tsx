@@ -512,49 +512,73 @@ function Logistics3D() {
   );
 }
 
-// 2. Certificate (Quality Award Trophy)
+// 2. Certificate (Paper Document with Round Stamp/Seal)
 function Certificate3D() {
   const materials = usePremiumMaterials();
 
+  // White paper material
+  const paperMat = useMemo(() => new THREE.MeshStandardMaterial({ 
+    color: '#f5f5f0', roughness: 0.9, metalness: 0.0 
+  }), []);
+
+  // Blue stamp ink material
+  const stampMat = useMemo(() => new THREE.MeshStandardMaterial({ 
+    color: '#1a3a8a', roughness: 0.6, metalness: 0.1, transparent: true, opacity: 0.9 
+  }), []);
+
+  // Red wax seal material
+  const sealMat = useMemo(() => new THREE.MeshStandardMaterial({ 
+    color: '#b71c1c', roughness: 0.4, metalness: 0.3 
+  }), []);
+
+  // Dark text lines material
+  const textMat = useMemo(() => new THREE.MeshStandardMaterial({ 
+    color: '#333333', roughness: 0.8, metalness: 0.0 
+  }), []);
+
   return (
-    <Float speed={2.5} rotationIntensity={1} floatIntensity={1.5}>
-      <group rotation={[Math.PI / 10, Math.PI / 5, 0]} scale={1.1}>
-        {/* Base platform */}
-        <mesh material={materials.darkMetal} position={[0, -2, 0]}>
-          <boxGeometry args={[1.8, 0.3, 1.2]} />
-        </mesh>
-        <mesh material={materials.scuffedMetal} position={[0, -1.7, 0]}>
-          <boxGeometry args={[1.4, 0.2, 0.9]} />
-        </mesh>
-        
-        {/* Pillar / stem */}
-        <mesh material={materials.scuffedMetal} position={[0, -0.8, 0]}>
-          <cylinderGeometry args={[0.15, 0.25, 1.6, 16]} />
-        </mesh>
-        
-        {/* Cup body */}
-        <mesh material={materials.orangeMetal} position={[0, 0.4, 0]}>
-          <cylinderGeometry args={[0.9, 0.4, 1.4, 32]} />
-        </mesh>
-        
-        {/* Cup rim ring */}
-        <mesh material={materials.scuffedMetal} position={[0, 1.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[0.9, 0.08, 12, 32]} />
+    <Float speed={2} rotationIntensity={0.8} floatIntensity={1}>
+      <group rotation={[Math.PI / 7, -Math.PI / 5, 0.05]} scale={1.2}>
+        {/* Main paper sheet */}
+        <mesh material={paperMat} position={[0, 0, 0]}>
+          <boxGeometry args={[3.2, 4.2, 0.04]} />
         </mesh>
 
-        {/* Star on top */}
-        <mesh material={materials.orangeMetal} position={[0, 1.7, 0]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.35, 0.35, 0.1, 5]} />
+        {/* Second paper behind, slightly rotated */}
+        <mesh material={paperMat} position={[0.15, -0.1, -0.06]} rotation={[0, 0, 0.04]}>
+          <boxGeometry args={[3.2, 4.2, 0.04]} />
+        </mesh>
+
+        {/* Text lines on paper */}
+        {[1.4, 1.0, 0.6, 0.2, -0.2].map((y, i) => (
+          <mesh key={i} material={textMat} position={[0, y, 0.025]}>
+            <boxGeometry args={[i === 0 ? 1.8 : 2.4, 0.08, 0.005]} />
+          </mesh>
+        ))}
+
+        {/* Round stamp outline (torus = ring) */}
+        <mesh material={stampMat} position={[0.6, -1.0, 0.03]} rotation={[0, 0, 0]}>
+          <torusGeometry args={[0.55, 0.06, 12, 32]} />
+        </mesh>
+
+        {/* Stamp inner circle */}
+        <mesh material={stampMat} position={[0.6, -1.0, 0.03]}>
+          <torusGeometry args={[0.35, 0.03, 12, 32]} />
+        </mesh>
+
+        {/* Stamp center star */}
+        <mesh material={stampMat} position={[0.6, -1.0, 0.035]} rotation={[0, 0, 0]}>
+          <cylinderGeometry args={[0.15, 0.15, 0.01, 6]} />
+        </mesh>
+
+        {/* Red wax seal (bottom-left) */}
+        <mesh material={sealMat} position={[-0.8, -1.5, 0.05]}>
+          <cylinderGeometry args={[0.35, 0.38, 0.12, 32]} />
         </mesh>
         
-        {/* Left handle */}
-        <mesh material={materials.scuffedMetal} position={[-1.1, 0.4, 0]} rotation={[0, 0, Math.PI / 6]}>
-          <torusGeometry args={[0.35, 0.06, 8, 16, Math.PI]} />
-        </mesh>
-        
-        {/* Right handle */}
-        <mesh material={materials.scuffedMetal} position={[1.1, 0.4, 0]} rotation={[0, Math.PI, Math.PI / 6]}>
-          <torusGeometry args={[0.35, 0.06, 8, 16, Math.PI]} />
+        {/* Seal embossed center */}
+        <mesh material={materials.orangeMetal} position={[-0.8, -1.5, 0.12]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.18, 0.18, 0.03, 5]} />
         </mesh>
       </group>
     </Float>
@@ -725,70 +749,38 @@ function ProfileSheets({ color = "orange" }) {
 function ProfileAngle() {
   const materials = usePremiumMaterials();
   
-  // 1. L-Angle (Уголок)
+  // Single L-Angle shape reused 3 times
   const lShape = useMemo(() => {
     const s = new THREE.Shape();
-    const w = 1.8, h = 1.8, t = 0.2;
-    const cx = -w / 4, cy = -h / 4;
-    s.moveTo(cx, cy + h);
-    s.lineTo(cx + t, cy + h);
-    s.lineTo(cx + t, cy + t);
-    s.lineTo(cx + w, cy + t);
-    s.lineTo(cx + w, cy);
-    s.lineTo(cx, cy);
-    s.lineTo(cx, cy + h);
+    const leg = 1.2, t = 0.18;
+    s.moveTo(0, 0);
+    s.lineTo(leg, 0);
+    s.lineTo(leg, t);
+    s.lineTo(t, t);
+    s.lineTo(t, leg);
+    s.lineTo(0, leg);
+    s.lineTo(0, 0);
     return s;
   }, []);
 
-  // 2. C-Channel (Швеллер)
-  const cShape = useMemo(() => {
-    const s = new THREE.Shape();
-    const w = 1.4, h = 2.2, t = 0.2;
-    s.moveTo(-w/2, h/2);
-    s.lineTo(w/2, h/2);
-    s.lineTo(w/2, h/2 - t);
-    s.lineTo(-w/2 + t, h/2 - t);
-    s.lineTo(-w/2 + t, -h/2 + t);
-    s.lineTo(w/2, -h/2 + t);
-    s.lineTo(w/2, -h/2);
-    s.lineTo(-w/2, -h/2);
-    s.lineTo(-w/2, h/2);
-    return s;
-  }, []);
-
-  // 3. Z-Profile (Z-Образный)
-  const zShape = useMemo(() => {
-    const s = new THREE.Shape();
-    const wTop = 1.4, wBot = 1.4, h = 2.2, t = 0.2;
-    s.moveTo(-wTop/2, h/2);
-    s.lineTo(wTop/2 + t/2, h/2);
-    s.lineTo(wTop/2 + t/2, h/2 - t);
-    s.lineTo(t/2, h/2 - t);
-    s.lineTo(t/2, -h/2);
-    s.lineTo(-wBot/2 - t/2, -h/2);
-    s.lineTo(-wBot/2 - t/2, -h/2 + t);
-    s.lineTo(-t/2, -h/2 + t);
-    s.lineTo(-t/2, h/2);
-    s.lineTo(-wTop/2, h/2);
-    return s;
-  }, []);
+  const extrudeSettings = { depth: 5.5, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.025, bevelThickness: 0.025 };
 
   return (
-    <Float speed={2} rotationIntensity={0.6} floatIntensity={0.6}>
-      <group rotation={[Math.PI / 5, Math.PI / 4, 0]} scale={1.4} position={[0.5, -0.2, 0]}>
-        {/* 1. L-Angle - Orange */}
-        <mesh material={materials.orangeMetal} position={[-1.2, 0.5, -1]}>
-          <extrudeGeometry args={[lShape, { depth: 3.5, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.03, bevelThickness: 0.03 }]} />
+    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+      <group rotation={[Math.PI / 5, Math.PI / 4, 0]} scale={1.3} position={[0.4, -0.3, 0]}>
+        {/* 1. L-Angle — Orange */}
+        <mesh material={materials.orangeMetal} position={[-1.0, 0.8, -0.8]}>
+          <extrudeGeometry args={[lShape, extrudeSettings]} />
         </mesh>
         
-        {/* 2. C-Channel - Dark */}
-        <mesh material={materials.darkMetal} position={[0, -0.5, 0.5]} rotation={[0, 0, Math.PI/2]}>
-          <extrudeGeometry args={[cShape, { depth: 3.0, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.03, bevelThickness: 0.03 }]} />
+        {/* 2. L-Angle — Dark */}
+        <mesh material={materials.darkMetal} position={[0, 0, 0.4]}>
+          <extrudeGeometry args={[lShape, extrudeSettings]} />
         </mesh>
         
-        {/* 3. Z-Profile - Silver */}
-        <mesh material={materials.silver} position={[1.5, 0.8, -2]} rotation={[0, 0, Math.PI]}>
-          <extrudeGeometry args={[zShape, { depth: 3.2, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.03, bevelThickness: 0.03 }]} />
+        {/* 3. L-Angle — Silver */}
+        <mesh material={materials.silver} position={[1.0, -0.8, -0.2]}>
+          <extrudeGeometry args={[lShape, extrudeSettings]} />
         </mesh>
       </group>
     </Float>
