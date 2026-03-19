@@ -1,10 +1,22 @@
 "use client";
 
-import { useRef, useMemo, useCallback } from "react";
+import { useRef, useMemo, useCallback, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Float, Preload } from "@react-three/drei";
 import * as THREE from "three";
 import { useInView } from "framer-motion";
+
+// --- MOBILE DETECTION HOOK ---
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
 
 // --- LAZY CANVAS WRAPPER TO PREVENT WEBGL CONTEXT LIMIT CRASH ---
 function LazyCanvas({ children, camera, gl }: any) {
@@ -14,10 +26,19 @@ function LazyCanvas({ children, camera, gl }: any) {
   return (
     <div ref={ref} className="absolute inset-0 w-full h-full pointer-events-none">
       {isInView && (
-        <Canvas camera={camera} gl={gl}>
+        <Canvas camera={camera} gl={gl} dpr={[1, 1.5]}>
           {children}
         </Canvas>
       )}
+    </div>
+  );
+}
+
+// --- LOADING SKELETON FOR 3D ---
+function LoadingSkeleton() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <div className="w-16 h-16 border-2 border-accent-orange/30 border-t-accent-orange rounded-full animate-spin" />
     </div>
   );
 }
@@ -413,13 +434,23 @@ function Spark() {
 }
 
 export function HeroLive3D() {
+  const isMobile = useIsMobile();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoaded(true), 100);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (isMobile) return null;
+  if (!loaded) return <LoadingSkeleton />;
+
   return (
     <LazyCanvas camera={{ position: [0, 0, 22], fov: 45 }} gl={{ alpha: true, antialias: true, powerPreference: "default" }}>
       <ambientLight intensity={0.3} />
       {/* Dramatic Studio Lighting for metal reflections */}
       <directionalLight position={[10, 10, 5]} intensity={3} color="#ffffff" castShadow />
       <directionalLight position={[-10, -10, -5]} intensity={1.5} color="#FF5722" />
-      <directionalLight position={[0, 5, -10]} intensity={1.5} color="#00E676" />
       {/* Rim light from behind for edge highlights */}
       <directionalLight position={[-5, 0, -15]} intensity={2} color="#ffffff" />
       {/* Fill light to prevent pure-black shadows */}
@@ -567,9 +598,12 @@ function Finance3D() {
 }
 
 export function B2BLive3D({ type }: { type: 'logistics' | 'certificate' | 'finance' }) {
+  const isMobile = useIsMobile();
+  if (isMobile) return null;
+
   const color = type === 'certificate' ? 'green' : 'orange';
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+    <div className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-80 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden rounded-2xl">
       <div
         className="absolute right-0 top-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full blur-[60px] mix-blend-screen transition-all duration-500 opacity-30 group-hover:opacity-60"
         style={{ background: color === "orange" ? "radial-gradient(circle, rgba(255,87,34,0.3) 0%, transparent 70%)" : "radial-gradient(circle, rgba(0,230,118,0.3) 0%, transparent 70%)" }}
@@ -799,8 +833,11 @@ function ProfileRebar({ color = "orange" }) {
 }
 
 export function CardLive3D({ type, color }: { type: string, color: "orange" | "green" }) {
+  const isMobile = useIsMobile();
+  if (isMobile) return null;
+
   return (
-    <div className="absolute -inset-10 z-0 pointer-events-none mix-blend-screen opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+    <div className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-90 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden rounded-3xl">
       <LazyCanvas camera={{ position: [0, 0, 10], fov: 40 }} gl={{ alpha: true, antialias: true }}>
         <ambientLight intensity={1.5} />
         <directionalLight position={[5, 10, 5]} intensity={4.0} color="#ffffff" />

@@ -95,7 +95,7 @@ function CatalogCard({ item, index }: { item: CatalogItem; index: number }) {
   return (
     <motion.div variants={itemVariants} className={index >= 3 ? "lg:col-span-3" : "lg:col-span-2"}>
       <TiltCard
-        className={`group relative h-full w-full min-h-[420px] bg-gradient-to-br from-silver/10 to-graphite/40 backdrop-blur-xl rounded-3xl p-8 sm:p-10 cursor-pointer transition-all duration-500 border border-silver/20 ${item.borderColor}`}
+        className={`group relative h-full w-full min-h-[420px] bg-gradient-to-br from-silver/10 to-graphite/40 backdrop-blur-xl rounded-3xl p-8 sm:p-10 cursor-pointer overflow-hidden transition-all duration-500 border border-silver/20 ${item.borderColor}`}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
       >
