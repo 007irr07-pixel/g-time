@@ -8,13 +8,18 @@ import { useInView } from "framer-motion";
 
 // --- MOBILE DETECTION HOOK ---
 function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
+  
   useEffect(() => {
+    setHasMounted(true);
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
+  
+  if (!hasMounted) return true; // Default to 'true' (no 3D) during hydration
   return isMobile;
 }
 
@@ -447,7 +452,7 @@ export function HeroLive3D() {
 
   return (
     <LazyCanvas camera={{ position: [0, 0, 22], fov: 45 }} gl={{ alpha: true, antialias: true, powerPreference: "default" }}>
-      <ambientLight intensity={1.0} />
+      <ambientLight intensity={0.5} />
       {/* Dramatic Studio Lighting for metal reflections */}
       <directionalLight position={[10, 10, 5]} intensity={3} color="#ffffff" />
       <directionalLight position={[-10, -10, -5]} intensity={1.5} color="#FF5722" />
@@ -455,8 +460,9 @@ export function HeroLive3D() {
       <directionalLight position={[-5, 0, -15]} intensity={2} color="#ffffff" />
       {/* Fill light to prevent pure-black shadows */}
       <pointLight position={[0, -10, 5]} intensity={0.5} color="#334455" />
-      {/* Hemisphere light replaces heavy HDR environment */}
-      <hemisphereLight args={["#b0c4de", "#1a1a2e", 1.5]} />
+      
+      {/* Environment map provides the 'iron/steel' reflections */}
+      <Environment preset="city" />
 
       <HeroRealisticPipes />
 
@@ -610,6 +616,7 @@ export function B2BLive3D({ type }: { type: 'logistics' | 'certificate' | 'finan
       <LazyCanvas camera={{ position: [0, 0, 10], fov: 40 }} gl={{ alpha: true, antialias: true }}>
         <ambientLight intensity={1.5} />
         <directionalLight position={[5, 10, 5]} intensity={4} color="#ffffff" />
+        <Environment preset="city" />
         <directionalLight position={[-5, -5, -5]} intensity={2.5} color={color === "orange" ? "#FF5722" : "#00E676"} />
         <directionalLight position={[0, 0, -10]} intensity={3} color="#ffffff" />
         <pointLight position={[0, 0, 6]} intensity={3} color="#ffffff" distance={20} />
@@ -840,7 +847,7 @@ export function CardLive3D({ type, color }: { type: string, color: "orange" | "g
         <ambientLight intensity={1.5} />
         <directionalLight position={[5, 10, 5]} intensity={4.0} color="#ffffff" />
         <directionalLight position={[-5, -5, -5]} intensity={2.5} color={color === "orange" ? "#FF5722" : "#00E676"} />
-        <directionalLight position={[0, 0, -8]} intensity={3.0} color="#ffffff" />
+        <Environment preset="city" />
         <pointLight position={[0, 0, 6]} intensity={3} color="#ffffff" distance={20} />
 
         <group position={[0.6, 0, 0]}>
