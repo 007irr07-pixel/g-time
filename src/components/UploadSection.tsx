@@ -1,0 +1,302 @@
+"use client";
+
+import { useState, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Upload,
+  FileSpreadsheet,
+  FileText,
+  Image as ImageIcon,
+  X,
+  Send,
+  CheckCircle,
+} from "lucide-react";
+
+interface UploadedFile {
+  file: File;
+  preview: string;
+}
+
+export default function UploadSection() {
+  const [files, setFiles] = useState<UploadedFile[]>([]);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const newFiles = acceptedFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    setFiles((prev) => [...prev, ...newFiles]);
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "application/pdf": [".pdf"],
+      "application/vnd.ms-excel": [".xls"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+        ".xlsx",
+      ],
+      "image/*": [".png", ".jpg", ".jpeg", ".webp"],
+    },
+    maxSize: 20 * 1024 * 1024,
+  });
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const getFileIcon = (type: string) => {
+    if (type.includes("spreadsheet") || type.includes("excel"))
+      return <FileSpreadsheet size={20} className="text-accent-green" />;
+    if (type.includes("pdf"))
+      return <FileText size={20} className="text-accent-orange" />;
+    return <ImageIcon size={20} className="text-accent-green" />;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, "");
+    if (!raw) { setPhone(""); return; }
+    
+    let digits = raw;
+    if (digits.startsWith("7") || digits.startsWith("8")) digits = digits.slice(1);
+    digits = digits.slice(0, 10);
+    
+    let res = "+7";
+    if (digits.length > 0) res += " " + digits.substring(0, 3);
+    if (digits.length > 3) res += " " + digits.substring(3, 6);
+    if (digits.length > 6) res += " " + digits.substring(6, 8);
+    if (digits.length > 8) res += " " + digits.substring(8, 10);
+    setPhone(res);
+  };
+
+  const handleSubmit = async () => {
+    if (!name || !phone) return;
+    try {
+      await fetch("/api/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          phone,
+          files: files.map((f) => f.file.name),
+        }),
+      });
+    } catch (e) {
+      console.error("Submit error:", e);
+    }
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setFiles([]);
+      setName("");
+      setPhone("");
+    }, 3000);
+  };
+
+  return (
+    <section className="relative py-24 sm:py-32 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-graphite via-surface/20 to-graphite" />
+      <div className="absolute inset-0 steel-mesh opacity-15" />
+
+      {/* Blueprint background shapes */}
+      <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
+        <svg
+          className="w-full h-full"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <pattern id="blueprint-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
+          </pattern>
+          <pattern id="blueprint-grid-large" width="200" height="200" patternUnits="userSpaceOnUse">
+            <rect width="200" height="200" fill="url(#blueprint-grid)" />
+            <path d="M 200 0 L 0 0 0 200" fill="none" stroke="white" strokeWidth="1" />
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#blueprint-grid-large)" />
+          
+          {/* Decorative technical drawing circles and lines */}
+          <circle cx="20%" cy="30%" r="300" fill="none" stroke="white" strokeWidth="1" strokeDasharray="5,5" />
+          <circle cx="20%" cy="30%" r="200" fill="none" stroke="white" strokeWidth="0.5" />
+          <path d="M 0 30% L 100% 30%" fill="none" stroke="white" strokeWidth="0.5" />
+          <path d="M 20% 0 L 20% 100%" fill="none" stroke="white" strokeWidth="0.5" />
+
+          <circle cx="85%" cy="70%" r="400" fill="none" stroke="white" strokeWidth="1" strokeDasharray="10,10" />
+          <circle cx="85%" cy="70%" r="380" fill="none" stroke="white" strokeWidth="0.5" />
+          <path d="M 85% 50% L 85% 90%" fill="none" stroke="white" strokeWidth="1" />
+          <path d="M 70% 70% L 100% 70%" fill="none" stroke="white" strokeWidth="1" />
+        </svg>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <span className="text-xs font-medium text-accent-orange uppercase tracking-[0.2em]">
+            Быстрый запрос
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-800 mt-4 mb-6">
+            Загрузите{" "}
+            <span className="gradient-text-orange">смету</span>
+          </h2>
+          <p className="text-silver text-lg max-w-2xl mx-auto">
+            Перетащите файл со сметой — Excel, PDF или фото. Мы рассчитаем
+            стоимость и свяжемся с вами в течение 30 минут.
+          </p>
+        </motion.div>
+
+        {/* Upload card */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="max-w-2xl mx-auto"
+        >
+          <div className="glass-card rounded-3xl p-6 sm:p-10 border border-border">
+            {/* Success state */}
+            <AnimatePresence mode="wait">
+              {submitted ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="text-center py-12"
+                >
+                  <CheckCircle
+                    size={64}
+                    className="text-accent-green mx-auto mb-4"
+                  />
+                  <h3 className="text-2xl font-heading font-700 text-white mb-2">
+                    Заявка отправлена!
+                  </h3>
+                  <p className="text-silver">
+                    Наш менеджер свяжется с вами в ближайшее время
+                  </p>
+                </motion.div>
+              ) : (
+                <motion.div key="form" initial={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                  {/* Drop zone */}
+                  <div
+                    {...getRootProps()}
+                    className={`relative border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-300 ${
+                      isDragActive
+                        ? "border-accent-orange bg-accent-orange/5 scale-[1.02]"
+                        : "border-border hover:border-accent-orange/40 hover:bg-surface/50"
+                    }`}
+                  >
+                    <input {...getInputProps()} />
+                    <motion.div
+                      animate={isDragActive ? { scale: 1.1, y: -5 } : { scale: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Upload
+                        size={40}
+                        className={`mx-auto mb-4 ${
+                          isDragActive ? "text-accent-orange" : "text-steel"
+                        }`}
+                      />
+                      <p className="text-white font-medium mb-1">
+                        {isDragActive
+                          ? "Отпустите файл здесь"
+                          : "Перетащите файл или нажмите для выбора"}
+                      </p>
+                      <p className="text-sm text-steel">
+                        Excel, PDF или фото • до 20 МБ
+                      </p>
+                    </motion.div>
+                  </div>
+
+                  {/* Uploaded files */}
+                  <AnimatePresence>
+                    {files.length > 0 && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="mt-4 space-y-2 overflow-hidden"
+                      >
+                        {files.map((f, i) => (
+                          <motion.div
+                            key={f.file.name + i}
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            className="flex items-center justify-between bg-graphite rounded-xl px-4 py-3 border border-border"
+                          >
+                            <div className="flex items-center gap-3">
+                              {getFileIcon(f.file.type)}
+                              <div>
+                                <p className="text-sm text-white font-medium truncate max-w-[250px]">
+                                  {f.file.name}
+                                </p>
+                                <p className="text-xs text-steel">
+                                  {(f.file.size / 1024).toFixed(0)} КБ
+                                </p>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => removeFile(i)}
+                              className="text-steel hover:text-accent-orange transition-colors p-1"
+                            >
+                              <X size={16} />
+                            </button>
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Contact fields */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                    <div>
+                      <label className="text-sm text-silver mb-2 block">
+                        Ваше имя
+                      </label>
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Иван Петров"
+                        className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-orange/50 focus:outline-none focus:ring-1 focus:ring-accent-orange/30 transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-silver mb-2 block">
+                        Телефон
+                      </label>
+                      <input
+                        type="tel"
+                        value={phone}
+                        onChange={handlePhoneChange}
+                        placeholder="+7 XXX XXX XX XX"
+                        className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-orange/50 focus:outline-none focus:ring-1 focus:ring-accent-orange/30 transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Submit */}
+                  <button
+                    onClick={handleSubmit}
+                    disabled={!name || !phone}
+                    className="w-full mt-6 flex items-center justify-center gap-2 bg-accent-orange hover:bg-accent-orange-dark disabled:bg-steel disabled:cursor-not-allowed text-white font-semibold px-6 py-4 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    <Send size={18} />
+                    Отправить смету на расчет
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
