@@ -749,10 +749,10 @@ function ProfileSheets({ color = "orange" }) {
 function ProfileAngle() {
   const materials = usePremiumMaterials();
   
-  // Single L-Angle shape reused 3 times
+  // L-Angle shape — identical for all three
   const lShape = useMemo(() => {
     const s = new THREE.Shape();
-    const leg = 1.2, t = 0.18;
+    const leg = 1.0, t = 0.15;
     s.moveTo(0, 0);
     s.lineTo(leg, 0);
     s.lineTo(leg, t);
@@ -763,24 +763,24 @@ function ProfileAngle() {
     return s;
   }, []);
 
-  const extrudeSettings = { depth: 5.5, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.025, bevelThickness: 0.025 };
+  const ext = { depth: 6, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.02, bevelThickness: 0.02 };
 
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-      <group rotation={[Math.PI / 5, Math.PI / 4, 0]} scale={1.3} position={[0.4, -0.3, 0]}>
-        {/* 1. L-Angle — Orange */}
-        <mesh material={materials.orangeMetal} position={[-1.0, 0.8, -0.8]}>
-          <extrudeGeometry args={[lShape, extrudeSettings]} />
+      <group rotation={[Math.PI / 5, Math.PI / 4, 0]} scale={1.25} position={[0.5, -0.2, 0]}>
+        {/* 1. Orange L-angle */}
+        <mesh material={materials.orangeMetal} position={[-1.4, 1.0, -1.2]}>
+          <extrudeGeometry args={[lShape, ext]} />
         </mesh>
         
-        {/* 2. L-Angle — Dark */}
-        <mesh material={materials.darkMetal} position={[0, 0, 0.4]}>
-          <extrudeGeometry args={[lShape, extrudeSettings]} />
+        {/* 2. Dark / Black L-angle */}
+        <mesh material={materials.darkMetal} position={[0, 0, 0]}>
+          <extrudeGeometry args={[lShape, ext]} />
         </mesh>
         
-        {/* 3. L-Angle — Silver */}
-        <mesh material={materials.silver} position={[1.0, -0.8, -0.2]}>
-          <extrudeGeometry args={[lShape, extrudeSettings]} />
+        {/* 3. Silver / Chrome L-angle */}
+        <mesh material={materials.scuffedMetal} position={[1.4, -1.0, 1.2]}>
+          <extrudeGeometry args={[lShape, ext]} />
         </mesh>
       </group>
     </Float>
