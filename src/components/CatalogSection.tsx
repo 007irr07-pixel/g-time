@@ -132,19 +132,24 @@ function CatalogCard({ item, index }: { item: CatalogItem; index: number }) {
           </div>
         </div>
 
-        {/* Hover arrow corner */}
+        {/* Open button */}
         <div 
           style={{ transform: "translateZ(40px)" }}
-          className="absolute top-8 right-8 w-12 h-12 rounded-full border border-white/10 bg-surface/80 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:border-white/20 overflow-hidden"
+          className="absolute bottom-6 right-6 left-6 z-20 pointer-events-none"
         >
-          <motion.span 
-            className={`text-xl font-bold ${item.accentColor === "orange" ? "text-accent-orange" : "text-accent-green"}`}
-            initial={{ x: -20, opacity: 0 }}
-            animate={isHovered ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          <motion.div
+            className={`flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-base text-white border transition-all duration-500 ${
+              item.accentColor === "orange"
+                ? "bg-accent-orange/80 border-accent-orange/50 shadow-[0_0_20px_rgba(255,87,34,0.2)]"
+                : "bg-accent-green/80 border-accent-green/50 shadow-[0_0_20px_rgba(0,230,118,0.2)]"
+            } backdrop-blur-md`}
+            initial={{ y: 10, opacity: 0 }}
+            animate={isHovered ? { y: 0, opacity: 1 } : { y: 10, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-            →
-          </motion.span>
+            Открыть
+            <span className="text-lg">→</span>
+          </motion.div>
         </div>
       </TiltCard>
     </motion.div>
