@@ -57,7 +57,7 @@ export default function Header({ onOpenPriceModal }: HeaderProps) {
           {/* Logo */}
           <a href="#" className="flex items-center gap-3 group">
               <Image 
-              src="https://i.ibb.co.com/1f2KWPS2/Logo-gtime1.png" 
+              src="https://i.ibb.co.com/5xWvRC9R/logo.png" 
               alt="G-Time Logo" 
               width={160}
               height={48}
