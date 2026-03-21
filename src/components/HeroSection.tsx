@@ -40,7 +40,7 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
   const { scrollY } = useScroll();
   const yHero = useTransform(scrollY, [0, 1000], [0, 300]);
   const opacityHero = useTransform(scrollY, [0, 600], [1, 0]);
-  
+
   // Smoothed parallax for floating background elements
   const smoothY = useSpring(scrollY, { stiffness: 50, damping: 20 });
   const yBg1 = useTransform(smoothY, [0, 1000], [0, -200]);
@@ -52,7 +52,7 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
     return text.split(/(\s+)/).map((word, wordIdx) => {
       // Don't split spaces
       if (word.match(/\s+/)) return <span key={wordIdx}>{word}</span>;
-      
+
       return (
         <span key={wordIdx} className="inline-block whitespace-nowrap">
           {word.split("").map((letter, letterIdx) => (
@@ -77,9 +77,9 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
     >
       {/* Deep dark background */}
       <div className="absolute inset-0 bg-graphite" />
-      
+
       {/* Dynamic Parallax Hero Illustration (WebGL) */}
-      <motion.div 
+      <motion.div
         style={{ y: yBg1 }}
         className="absolute top-0 right-0 bottom-0 w-[150vw] sm:inset-0 sm:w-full pointer-events-none origin-center pt-32 sm:pt-20 opacity-25 sm:opacity-100 translate-x-[25%] sm:translate-x-0"
       >
@@ -100,7 +100,7 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
       </motion.div>
 
       {/* Main Content Area */}
-      <motion.div 
+      <motion.div
         style={{ y: yHero, opacity: opacityHero }}
         className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20"
       >
@@ -152,7 +152,7 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
                 className="relative z-10 group-hover:translate-x-1.5 transition-transform"
               />
             </a>
-            
+
             <button
               onClick={onOpenPriceModal}
               className="group relative inline-flex items-center justify-center gap-4 bg-surface/50 backdrop-blur-md border border-white/10 hover:border-accent-orange/40 hover:bg-surface text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
@@ -174,7 +174,7 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
               { value: "50К", label: "тонн металла" },
               { value: "5000+", label: "отгрузок/год" },
             ].map((stat, i) => (
-              <motion.div 
+              <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -204,13 +204,13 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
             Листайте вниз
           </span>
           <div className="w-10 h-16 rounded-full border-2 border-white/20 flex justify-center p-2 group-hover:border-accent-orange/80 bg-graphite/50 backdrop-blur-sm transition-all shadow-[0_0_15px_rgba(255,87,34,0)] group-hover:shadow-[0_0_20px_rgba(255,87,34,0.3)]">
-            <motion.div 
+            <motion.div
               className="w-2 h-4 bg-accent-orange rounded-full"
               animate={{ y: [0, 24, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             />
           </div>
-          <motion.div 
+          <motion.div
             animate={{ y: [0, 5, 0], opacity: [0.3, 1, 0.3] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
           >
@@ -220,7 +220,8 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
       </motion.div>
 
       {/* Global shimmer style definition */}
-      <style dangerouslySetInnerHTML={{__html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes shimmer {
           100% { transform: translateX(100%); }
         }

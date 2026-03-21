@@ -11,6 +11,7 @@ const CatalogSection = dynamic(() => import("@/components/CatalogSection"));
 const CalculatorSection = dynamic(() => import("@/components/CalculatorSection"));
 const UploadSection = dynamic(() => import("@/components/UploadSection"));
 const B2BSection = dynamic(() => import("@/components/B2BSection"));
+const CertificatesSection = dynamic(() => import("@/components/CertificatesSection"));
 
 export default function Home() {
   const [priceModalOpen, setPriceModalOpen] = useState(false);
@@ -24,6 +25,7 @@ export default function Home() {
         <CalculatorSection />
         <UploadSection />
         <B2BSection />
+        <CertificatesSection />
       </main>
       <Footer />
       <PriceModal

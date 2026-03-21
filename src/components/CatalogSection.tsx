@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import TiltCard from "./TiltCard";
 import dynamic from "next/dynamic";
@@ -99,36 +99,38 @@ function CatalogCard({ item, index }: { item: CatalogItem; index: number }) {
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
       >
-        {/* Massive Background Custom SVG Illustration */}
-        <Illustration isHovered={isHovered} color={item.accentColor} />
+        <div className={`relative z-0 h-full flex flex-col transition-all duration-700 ease-out ${isHovered ? 'blur-md opacity-40 scale-[0.97]' : 'blur-0 opacity-100 scale-100'}`}>
+          {/* Massive Background Custom SVG Illustration */}
+          <Illustration isHovered={isHovered} color={item.accentColor} />
 
-        {/* Floating 3D Foreground Content */}
-        <div style={{ transform: "translateZ(60px)" }} className="relative z-10 h-full flex flex-col pointer-events-none drop-shadow-2xl">
-          <div className="mt-auto pt-32">
-            {/* Title */}
-            <h3 className="text-3xl sm:text-4xl font-heading font-900 text-white mb-2 tracking-tight">
-              {item.title}
-            </h3>
-            <p className="text-base text-zinc-100 mb-8">{item.subtitle}</p>
+          {/* Floating 3D Foreground Content */}
+          <div style={{ transform: "translateZ(60px)" }} className="relative z-10 h-full flex flex-col pointer-events-none drop-shadow-2xl">
+            <div className="mt-auto pt-32">
+              {/* Title */}
+              <h3 className="text-3xl sm:text-4xl font-heading font-900 text-white mb-2 tracking-tight drop-shadow-lg">
+                {item.title}
+              </h3>
+              <p className="text-base text-zinc-100 mb-8 drop-shadow-md">{item.subtitle}</p>
 
-            {/* Items list */}
-            <ul className="space-y-3 relative z-10">
-              {item.items.map((prod) => (
-                <li
-                  key={prod}
-                  className="flex items-center gap-4 text-sm font-medium text-white group-hover:text-zinc-100 transition-colors"
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      item.accentColor === "orange"
-                        ? "bg-accent-orange shadow-[0_0_12px_#FF5722]"
-                        : "bg-accent-green shadow-[0_0_12px_#00E676]"
-                    } transition-all duration-300 group-hover:scale-[2]`}
-                  />
-                  {prod}
-                </li>
-              ))}
-            </ul>
+              {/* Items list */}
+              <ul className="space-y-3 relative z-10">
+                {item.items.map((prod) => (
+                  <li
+                    key={prod}
+                    className="flex flex-wrap items-center gap-4 text-sm font-medium text-white group-hover:text-zinc-100 transition-colors drop-shadow"
+                  >
+                    <span
+                      className={`w-1.5 h-1.5 shrink-0 rounded-full ${
+                        item.accentColor === "orange"
+                          ? "bg-accent-orange shadow-[0_0_12px_#FF5722]"
+                          : "bg-accent-green shadow-[0_0_12px_#00E676]"
+                      } transition-all duration-300 group-hover:scale-[2]`}
+                    />
+                    {prod}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -138,12 +140,12 @@ function CatalogCard({ item, index }: { item: CatalogItem; index: number }) {
           className="absolute bottom-6 right-6 left-6 z-20 pointer-events-none"
         >
           <motion.div
-            className={`flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-base text-white border transition-all duration-500 ${
+            className={`flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-base text-white border transition-all duration-500 shadow-2xl ${
               item.accentColor === "orange"
-                ? "bg-accent-orange/80 border-accent-orange/50 shadow-[0_0_20px_rgba(255,87,34,0.2)]"
-                : "bg-accent-green/80 border-accent-green/50 shadow-[0_0_20px_rgba(0,230,118,0.2)]"
+                ? "bg-accent-orange hover:bg-orange-500 border-accent-orange/80 shadow-[0_0_30px_rgba(255,87,34,0.6)]"
+                : "bg-accent-green hover:bg-green-500 border-accent-green/80 shadow-[0_0_30px_rgba(0,230,118,0.6)]"
             } backdrop-blur-md`}
-            initial={{ y: 10, opacity: 0 }}
+            initial={{ y: 20, opacity: 0, scale: 0.9 }}
             animate={isHovered ? { y: 0, opacity: 1 } : { y: 10, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >

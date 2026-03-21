@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import TiltCard from "./TiltCard";
 import dynamic from "next/dynamic";
 
@@ -34,9 +34,9 @@ function AnimatedCounter({ target, suffix = "", duration = 2.5 }: { target: numb
 /* Removed legacy B2B SVGs in favor of B2BLive3D WebGL scenes */
 
 const pillars = [
-  { type: "logistics" as const, title: "Логистический хаб", value: 50, suffix: "+", unit: "тягачей в автопарке", desc: "Доставка длинномерами по всему Казахстану. GPS-трекинг отгрузок в реальном времени.", color: "orange" },
-  { type: "certificate" as const, title: "Гос. сертификация", value: 100, suffix: "%", unit: "соответствие ГОСТ", desc: "Абсолютно весь металл сопровождается сертификатами завода, паспортами качества и СТ-KZ.", color: "green" },
-  { type: "finance" as const, title: "Тендерное финансирование", value: 60, suffix: "", unit: "дней отсрочки", desc: "Одобряем товарные кредиты для крупных генподрядчиков и участников государственных закупок.", color: "orange" },
+  { type: "logistics" as const, title: "Собственный автопарк", value: 50, suffix: "+", unit: "тягачей на линии", desc: "Оперативная мультимодальная доставка длинномерами по всему РК. Комплектуем сложные сборные грузы день в день.", color: "orange" },
+  { type: "certificate" as const, title: "Безупречная документация", value: 100, suffix: "%", unit: "чистота сделок", desc: "Полная юридическая прозрачность: паспорта качества завода-изготовителя, сертификаты ГОСТ и СТ-KZ для каждой тонны металла.", color: "green" },
+  { type: "finance" as const, title: "Гибкое финансирование", value: 60, suffix: "", unit: "дней отсрочки", desc: "Эксклюзивные условия кредитования и товарные отсрочки для генподрядчиков, а также поддержка в государственном секторе.", color: "orange" },
 ];
 
 function PillarCard({ pillar, index }: { pillar: typeof pillars[0], index: number }) {
@@ -84,11 +84,6 @@ function PillarCard({ pillar, index }: { pillar: typeof pillars[0], index: numbe
 
 export default function B2BSection() {
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
-  
-  // Background Marquee effect linked to scroll
-  const x1 = useTransform(scrollYProgress, [0, 1], [0, -500]);
-  const x2 = useTransform(scrollYProgress, [0, 1], [-500, 0]);
 
   return (
     <section id="b2b" ref={containerRef} className="relative py-32 sm:py-48 overflow-hidden bg-graphite">
@@ -96,25 +91,31 @@ export default function B2BSection() {
       <div className="absolute inset-0 steel-mesh opacity-20" />
       <div className="absolute inset-0 noise-bg mix-blend-overlay" />
 
-      {/* Cinematic Marquee Text Background */}
-      <div className="absolute top-[20%] w-full whitespace-nowrap opacity-[0.03] select-none pointer-events-none flex flex-col gap-10 overflow-hidden">
-        <motion.div style={{ x: x1 }} className="text-[12rem] font-heading font-900 uppercase">
-          МЕТАЛЛОПРОКАТ ПРЕМИУМ КЛАССА • G-TIME • МЕТАЛЛОПРОКАТ ПРЕМИУМ КЛАССА • G-TIME
-        </motion.div>
-        <motion.div 
-          className="text-[12rem] font-heading font-900 uppercase text-transparent" 
-          style={{ WebkitTextStroke: "2px white", x: x2 }}
+      {/* Cinematic Marquee Text Background (Pure CSS for zero scroll lag) */}
+      <style>{`
+        @keyframes marquee-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes marquee-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        .animate-marquee-left { animation: marquee-left 40s linear infinite; }
+        .animate-marquee-right { animation: marquee-right 40s linear infinite; }
+      `}</style>
+      <div className="absolute top-[20%] w-[200vw] opacity-[0.03] select-none pointer-events-none flex flex-col gap-10 overflow-hidden">
+        <div className="animate-marquee-left flex whitespace-nowrap text-[12rem] font-heading font-900 uppercase">
+          МЕТАЛЛОПРОКАТ ПРЕМИУМ КЛАССА • G-TIME • МЕТАЛЛОПРОКАТ ПРЕМИУМ КЛАССА • G-TIME • МЕТАЛЛОПРОКАТ ПРЕМИУМ КЛАССА • G-TIME • МЕТАЛЛОПРОКАТ ПРЕМИУМ КЛАССА • G-TIME
+        </div>
+        <div 
+          className="animate-marquee-right flex whitespace-nowrap text-[12rem] font-heading font-900 uppercase text-transparent" 
+          style={{ WebkitTextStroke: "2px white" }}
         >
-          ТОНН МЕТАЛЛА • СЕРТИФИКАТЫ КАЧЕСТВА • ТОНН МЕТАЛЛА • СЕРТИФИКАТЫ КАЧЕСТВА
-        </motion.div>
+          ТОНН МЕТАЛЛА • СЕРТИФИКАТЫ КАЧЕСТВА • ТОНН МЕТАЛЛА • СЕРТИФИКАТЫ КАЧЕСТВА • ТОНН МЕТАЛЛА • СЕРТИФИКАТЫ КАЧЕСТВА • ТОНН МЕТАЛЛА • СЕРТИФИКАТЫ КАЧЕСТВА
+        </div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-24">
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 mt-2 mb-6 tracking-tight text-white">
-            Надежный тыл для ваших <br/><span className="gradient-text-orange">строительных объектов.</span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 mt-2 mb-6 tracking-tight text-white leading-tight">
+            Бесперебойное снабжение <br className="hidden lg:block"/><span className="gradient-text-orange">ваших строительных объектов.</span>
           </h2>
-          <p className="text-zinc-100 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">Берем на себя всю логистику и документооборот, чтобы вы не срывали сроки сдачи объектов.</p>
+          <p className="text-zinc-100 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">Мы берем на себя всю логистику, маркировку и документальное сопровождение, гарантируя поставку металла без риска срыва сроков.</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

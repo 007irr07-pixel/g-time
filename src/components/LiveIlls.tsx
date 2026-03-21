@@ -10,20 +10,20 @@ import { useInView } from "framer-motion";
 // --- LAZY CANVAS WRAPPER TO PREVENT WEBGL CONTEXT LIMIT CRASH ---
 function LazyCanvas({ children, camera, gl }: any) {
   const ref = useRef<HTMLDivElement>(null);
-  
+
   // 1. isMounted keeps the Canvas alive 1500px off-screen (prevents visual reloading on scroll)
   const isMounted = useInView(ref, { margin: "1500px" });
-  
+
   // 2. isVisible stops the 3D rendering loop EXACTLY when it leaves the screen (saves battery)
   const isVisible = useInView(ref, { margin: "0px" });
 
   return (
     <div ref={ref} className="absolute inset-0 w-full h-full pointer-events-none">
       {isMounted && (
-        <Canvas 
-          camera={camera} 
-          gl={gl} 
-          dpr={[1, 1.5]} 
+        <Canvas
+          camera={camera}
+          gl={gl}
+          dpr={[1, 1.5]}
           frameloop={isVisible ? "always" : "never"}
         >
           {children}
@@ -48,25 +48,25 @@ function createScratchNormalMap(size = 256): THREE.CanvasTexture {
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext("2d")!;
-  
+
   // Base neutral normal (128,128,255)
   ctx.fillStyle = "rgb(128,128,255)";
   ctx.fillRect(0, 0, size, size);
-  
+
   // Micro-brushing for new rolled steel
   for (let i = 0; i < 1500; i++) {
     const x = Math.random() * size;
     const y = Math.random() * size;
-    const angle = (Math.random() - 0.5) * 0.1; 
+    const angle = (Math.random() - 0.5) * 0.1;
     const len = 50 + Math.random() * 150;
-    
+
     // Very subtle normal perturbation
-    if(Math.random() > 0.5) {
+    if (Math.random() > 0.5) {
       ctx.strokeStyle = `rgb(127,129,255)`;
     } else {
       ctx.strokeStyle = `rgb(129,127,255)`;
     }
-    
+
     ctx.lineWidth = 0.5 + Math.random() * 1.0;
     ctx.globalAlpha = 0.1 + Math.random() * 0.15;
     ctx.beginPath();
@@ -74,7 +74,7 @@ function createScratchNormalMap(size = 256): THREE.CanvasTexture {
     ctx.lineTo(x + Math.cos(angle) * len, y + Math.sin(angle) * len);
     ctx.stroke();
   }
-  
+
   ctx.globalAlpha = 1;
   const texture = new THREE.CanvasTexture(canvas);
   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -88,11 +88,11 @@ function createRoughnessMap(size = 512): THREE.CanvasTexture {
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext("2d")!;
-  
+
   // Base smooth roughness (lower value = smoother) - perfect for new steel
   ctx.fillStyle = "rgb(50,50,50)";
   ctx.fillRect(0, 0, size, size);
-  
+
   // Micro-variation (anisotropic streaks)
   for (let i = 0; i < 2000; i++) {
     const x = Math.random() * size;
@@ -102,7 +102,7 @@ function createRoughnessMap(size = 512): THREE.CanvasTexture {
     ctx.globalAlpha = 0.05;
     ctx.fillRect(x, y, 10 + Math.random() * 40, 1 + Math.random() * 2);
   }
-  
+
   ctx.globalAlpha = 1;
   const texture = new THREE.CanvasTexture(canvas);
   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -124,7 +124,7 @@ function usePremiumMaterials() {
         // SSR fallback
       }
     }
-    
+
     const baseMaterialProps = {
       normalMap: globalNormalMap,
       normalScale: globalNormalMap ? new THREE.Vector2(0.1, 0.1) : undefined,
@@ -248,17 +248,17 @@ function RealisticPipe({
       <mesh material={material}>
         <cylinderGeometry args={[outerRadius, outerRadius, length, segments, 1, true]} />
       </mesh>
-      
+
       {/* Interior wall perfectly shaded to match */}
       <mesh material={innerMat}>
         <cylinderGeometry args={[innerRadius, innerRadius, length, segments, 1, true]} />
       </mesh>
-      
+
       {/* Top ring (thickness perfectly matches base material) */}
       <mesh material={material} position={[0, length / 2, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[innerRadius, outerRadius, segments]} />
       </mesh>
-      
+
       {/* Bottom ring */}
       <mesh material={material} position={[0, -length / 2, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <ringGeometry args={[innerRadius, outerRadius, segments]} />
@@ -284,7 +284,7 @@ function RealisticSquarePipe({
   rotation?: [number, number, number];
 }) {
   const innerSize = size - wallThickness * 2;
-  
+
   return (
     <group position={position} rotation={rotation}>
       {/* Outer shell - 4 walls */}
@@ -304,13 +304,13 @@ function RealisticSquarePipe({
       <mesh material={material} position={[size / 2 - wallThickness / 2, 0, 0]}>
         <boxGeometry args={[wallThickness, innerSize, length]} />
       </mesh>
-      
+
       {/* Inner darkness */}
       <mesh>
         <boxGeometry args={[innerSize * 0.99, innerSize * 0.99, length + 0.1]} />
         <meshBasicMaterial color="#050505" />
       </mesh>
-      
+
       {/* Edge chamfers (tiny bevels at corners) */}
       {[
         [size / 2, size / 2, Math.PI / 4],
@@ -454,7 +454,7 @@ export function HeroLive3D() {
       <directionalLight position={[-5, 0, -15]} intensity={2} color="#ffffff" />
       {/* Fill light to prevent pure-black shadows */}
       <pointLight position={[0, -10, 5]} intensity={0.5} color="#334455" />
-      
+
       {/* Environment map provides the 'iron/steel' reflections */}
       <Environment preset="city" />
 
@@ -483,7 +483,7 @@ function Logistics3D() {
         <mesh material={materials.orangeMetal} position={[-2.8, -0.5, 0]}>
           <boxGeometry args={[0.8, 0.8, 1.4]} />
         </mesh>
-        
+
         {/* Trailer Flatbed */}
         <mesh material={materials.darkMetal} position={[0.5, -0.6, 0]}>
           <boxGeometry args={[4, 0.2, 1.4]} />
@@ -502,7 +502,7 @@ function Logistics3D() {
         ))}
 
         {/* Cargo: Pile of Pipes on Trailer */}
-        <group position={[0.5, -0.1, 0]} rotation={[0, 0, Math.PI/2]}>
+        <group position={[0.5, -0.1, 0]} rotation={[0, 0, Math.PI / 2]}>
           <RealisticPipe outerRadius={0.4} innerRadius={0.3} length={3.8} material={materials.silver} position={[0.4, 0, 0.4]} />
           <RealisticPipe outerRadius={0.4} innerRadius={0.3} length={3.8} material={materials.darkMetal} position={[0.4, 0, -0.4]} />
           <RealisticPipe outerRadius={0.4} innerRadius={0.3} length={3.8} material={materials.scuffedMetal} position={[-0.2, 0, 0]} />
@@ -517,23 +517,23 @@ function Certificate3D() {
   const materials = usePremiumMaterials();
 
   // White paper material
-  const paperMat = useMemo(() => new THREE.MeshStandardMaterial({ 
-    color: '#f5f5f0', roughness: 0.9, metalness: 0.0 
+  const paperMat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: '#f5f5f0', roughness: 0.9, metalness: 0.0
   }), []);
 
   // Blue stamp ink material
-  const stampMat = useMemo(() => new THREE.MeshStandardMaterial({ 
-    color: '#1a3a8a', roughness: 0.6, metalness: 0.1, transparent: true, opacity: 0.9 
+  const stampMat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: '#1a3a8a', roughness: 0.6, metalness: 0.1, transparent: true, opacity: 0.9
   }), []);
 
   // Red wax seal material
-  const sealMat = useMemo(() => new THREE.MeshStandardMaterial({ 
-    color: '#b71c1c', roughness: 0.4, metalness: 0.3 
+  const sealMat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: '#b71c1c', roughness: 0.4, metalness: 0.3
   }), []);
 
   // Dark text lines material
-  const textMat = useMemo(() => new THREE.MeshStandardMaterial({ 
-    color: '#333333', roughness: 0.8, metalness: 0.0 
+  const textMat = useMemo(() => new THREE.MeshStandardMaterial({
+    color: '#333333', roughness: 0.8, metalness: 0.0
   }), []);
 
   return (
@@ -575,7 +575,7 @@ function Certificate3D() {
         <mesh material={sealMat} position={[-0.8, -1.5, 0.05]}>
           <cylinderGeometry args={[0.35, 0.38, 0.12, 32]} />
         </mesh>
-        
+
         {/* Seal embossed center */}
         <mesh material={materials.orangeMetal} position={[-0.8, -1.5, 0.12]} rotation={[Math.PI / 2, 0, 0]}>
           <cylinderGeometry args={[0.18, 0.18, 0.03, 5]} />
@@ -588,7 +588,7 @@ function Certificate3D() {
 // 3. Finance (Stack of Documents / Papers)
 function Finance3D() {
   const materials = usePremiumMaterials();
-  
+
   const Paper = ({ material, position, rotation = [0, 0, 0] as any, size = [2.4, 0.04, 3.2] as any }: any) => (
     <mesh material={material} position={position} rotation={rotation}>
       <boxGeometry args={size} />
@@ -602,17 +602,17 @@ function Finance3D() {
         <Paper material={materials.scuffedMetal} position={[0.1, -0.8, 0]} rotation={[0, 0.05, 0]} />
         <Paper material={materials.darkMetal} position={[-0.05, -0.7, 0.05]} rotation={[0, -0.03, 0.01]} />
         <Paper material={materials.scuffedMetal} position={[0.08, -0.6, -0.03]} rotation={[0, 0.02, -0.01]} />
-        
+
         {/* Middle sheets (orange accent) */}
         <Paper material={materials.orangeMetal} position={[-0.1, -0.5, 0.02]} rotation={[0, -0.04, 0.02]} />
         <Paper material={materials.scuffedMetal} position={[0.05, -0.4, -0.01]} rotation={[0, 0.06, 0]} />
         <Paper material={materials.darkMetal} position={[-0.02, -0.3, 0.04]} rotation={[0, -0.02, -0.01]} />
-        
+
         {/* Top sheets */}
         <Paper material={materials.scuffedMetal} position={[0.06, -0.2, -0.02]} rotation={[0, 0.03, 0.01]} />
         <Paper material={materials.orangeMetal} position={[-0.04, -0.1, 0.01]} rotation={[0, -0.05, 0]} />
         <Paper material={materials.scuffedMetal} position={[0, 0, 0]} rotation={[0, 0.01, 0]} />
-        
+
         {/* Slightly open top document, tilted */}
         <Paper material={materials.darkMetal} position={[0.3, 0.15, 0.1]} rotation={[0, 0.1, 0.08]} />
       </group>
@@ -623,7 +623,7 @@ function Finance3D() {
 export function B2BLive3D({ type }: { type: 'logistics' | 'certificate' | 'finance' }) {
   const color = type === 'certificate' ? 'green' : 'orange';
   const envColor = color === "orange" ? "#FF5722" : "#00E676";
-  
+
   return (
     <div className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-80 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden rounded-2xl">
       <div
@@ -672,19 +672,19 @@ function ProfileBeam({ color = "green" }) {
   const iBeamShape = useMemo(() => {
     const s = new THREE.Shape();
     const w = 1.2, h = 1.6, t = 0.15;
-    s.moveTo(-w/2, h/2);
-    s.lineTo(w/2, h/2);
-    s.lineTo(w/2, h/2 - t);
-    s.lineTo(t/2, h/2 - t);
-    s.lineTo(t/2, -h/2 + t);
-    s.lineTo(w/2, -h/2 + t);
-    s.lineTo(w/2, -h/2);
-    s.lineTo(-w/2, -h/2);
-    s.lineTo(-w/2, -h/2 + t);
-    s.lineTo(-t/2, -h/2 + t);
-    s.lineTo(-t/2, h/2 - t);
-    s.lineTo(-w/2, h/2 - t);
-    s.lineTo(-w/2, h/2);
+    s.moveTo(-w / 2, h / 2);
+    s.lineTo(w / 2, h / 2);
+    s.lineTo(w / 2, h / 2 - t);
+    s.lineTo(t / 2, h / 2 - t);
+    s.lineTo(t / 2, -h / 2 + t);
+    s.lineTo(w / 2, -h / 2 + t);
+    s.lineTo(w / 2, -h / 2);
+    s.lineTo(-w / 2, -h / 2);
+    s.lineTo(-w / 2, -h / 2 + t);
+    s.lineTo(-t / 2, -h / 2 + t);
+    s.lineTo(-t / 2, h / 2 - t);
+    s.lineTo(-w / 2, h / 2 - t);
+    s.lineTo(-w / 2, h / 2);
     return s;
   }, []);
 
@@ -692,18 +692,18 @@ function ProfileBeam({ color = "green" }) {
   const channelShape = useMemo(() => {
     const s = new THREE.Shape();
     const w = 1.0, h = 1.4, t = 0.15;
-    s.moveTo(-w/2, h/2);
-    s.lineTo(w/2, h/2);
-    s.lineTo(w/2, h/2 - t);
-    s.lineTo(-w/2 + t, h/2 - t);
-    s.lineTo(-w/2 + t, -h/2 + t);
-    s.lineTo(w/2, -h/2 + t);
-    s.lineTo(w/2, -h/2);
-    s.lineTo(-w/2, -h/2);
-    s.lineTo(-w/2, h/2);
+    s.moveTo(-w / 2, h / 2);
+    s.lineTo(w / 2, h / 2);
+    s.lineTo(w / 2, h / 2 - t);
+    s.lineTo(-w / 2 + t, h / 2 - t);
+    s.lineTo(-w / 2 + t, -h / 2 + t);
+    s.lineTo(w / 2, -h / 2 + t);
+    s.lineTo(w / 2, -h / 2);
+    s.lineTo(-w / 2, -h / 2);
+    s.lineTo(-w / 2, h / 2);
     return s;
   }, []);
-  
+
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
       <group rotation={[Math.PI / 6, -Math.PI / 4, Math.PI / 6]} scale={1.35} position={[0, 0.5, 0]}>
@@ -711,12 +711,12 @@ function ProfileBeam({ color = "green" }) {
         <mesh material={materials.scuffedMetal} position={[0, -0.8, -2]}>
           <extrudeGeometry args={[iBeamShape, { depth: 4, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.02, bevelThickness: 0.02 }]} />
         </mesh>
-        
+
         {/* 2. Channel — orange */}
-        <mesh material={materials.orangeMetal} position={[1.6, 0.4, -1.5]} rotation={[0, 0, Math.PI/2]}>
+        <mesh material={materials.orangeMetal} position={[1.6, 0.4, -1.5]} rotation={[0, 0, Math.PI / 2]}>
           <extrudeGeometry args={[channelShape, { depth: 3.5, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.02, bevelThickness: 0.02 }]} />
         </mesh>
-        
+
         {/* 3. Flat Strip — darkMetal */}
         <mesh material={materials.darkMetal} position={[-1.2, 0.8, -2]}>
           <boxGeometry args={[0.6, 0.15, 4]} />
@@ -748,7 +748,7 @@ function ProfileSheets({ color = "orange" }) {
 
 function ProfileAngle() {
   const materials = usePremiumMaterials();
-  
+
   // L-Angle shape — identical for all three
   const lShape = useMemo(() => {
     const s = new THREE.Shape();
@@ -772,12 +772,12 @@ function ProfileAngle() {
         <mesh material={materials.orangeMetal} position={[-1.6, 1.2, 0]}>
           <extrudeGeometry args={[lShape, ext]} />
         </mesh>
-        
+
         {/* 2. Dark / Black L-angle */}
         <mesh material={materials.darkMetal} position={[0, 0, 0.5]}>
           <extrudeGeometry args={[lShape, ext]} />
         </mesh>
-        
+
         {/* 3. Silver / Chrome L-angle */}
         <mesh material={materials.scuffedMetal} position={[1.6, -1.2, 1.0]}>
           <extrudeGeometry args={[lShape, ext]} />
@@ -790,7 +790,7 @@ function ProfileAngle() {
 function ProfileRebar({ color = "orange" }) {
   const materials = usePremiumMaterials();
   const mat = color === "orange" ? materials.orangeMetal : materials.darkMetal;
-  
+
   const SingleRebar = ({ length, material, position }: any) => {
     const ribCount = Math.floor(length / 0.15);
     return (
@@ -799,7 +799,7 @@ function ProfileRebar({ color = "orange" }) {
           <cylinderGeometry args={[0.2, 0.2, length, 16]} />
         </mesh>
         {Array.from({ length: ribCount }).map((_, i) => (
-          <mesh key={i} material={material} position={[0, -length/2 + i * 0.15 + 0.075, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <mesh key={i} material={material} position={[0, -length / 2 + i * 0.15 + 0.075, 0]} rotation={[Math.PI / 2, 0, 0]}>
             <torusGeometry args={[0.2, 0.04, 8, 16]} />
           </mesh>
         ))}
