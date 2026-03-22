@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Phone, AlertTriangle, Search, Info } from "lucide-react";
@@ -71,7 +71,7 @@ function ProductTable({ sub, searchQuery }: { sub: SubCategory; searchQuery: str
               {sub.columns.map((col) => (
                 <th
                   key={col}
-                  className="px-6 py-4 text-xs font-bold text-accent-orange uppercase tracking-wider whitespace-nowrap"
+                  className="px-4 py-3 sm:px-6 sm:py-4 text-xs font-bold text-accent-orange uppercase tracking-wider whitespace-nowrap"
                 >
                   {col}
                 </th>
@@ -84,20 +84,20 @@ function ProductTable({ sub, searchQuery }: { sub: SubCategory; searchQuery: str
                 key={`${row.size}-${i}`}
                 className="border-b border-border/30 hover:bg-white/[0.03] transition-colors group"
               >
-                <td className="px-6 py-4 text-white font-bold whitespace-nowrap group-hover:text-accent-orange transition-colors">
+                <td className="px-4 py-3 sm:px-6 sm:py-4 text-white font-bold whitespace-nowrap group-hover:text-accent-orange transition-colors">
                   {row.size}
                 </td>
-                <td className="px-6 py-4 text-silver/90 whitespace-nowrap">
+                <td className="px-4 py-3 sm:px-6 sm:py-4 text-silver/90 whitespace-nowrap">
                   {row.steel || row.thickness || "—"}
                 </td>
-                <td className="px-6 py-4 text-silver/90 whitespace-nowrap">{row.weight}</td>
-                <td className="px-6 py-4 text-white font-bold whitespace-nowrap bg-white/[0.02]">
+                <td className="px-4 py-3 sm:px-6 sm:py-4 text-silver/90 whitespace-nowrap">{row.weight}</td>
+                <td className="px-4 py-3 sm:px-6 sm:py-4 text-white font-bold whitespace-nowrap bg-white/[0.02]">
                   {row.pricePerUnit}
                 </td>
                 {!isMesh && (
-                  <td className="px-6 py-4 text-silver/90 whitespace-nowrap">{row.pricePerTon}</td>
+                  <td className="px-4 py-3 sm:px-6 sm:py-4 text-silver/90 whitespace-nowrap">{row.pricePerTon}</td>
                 )}
-                <td className="px-6 py-4 text-silver/90 whitespace-nowrap">{row.length}</td>
+                <td className="px-4 py-3 sm:px-6 sm:py-4 text-silver/90 whitespace-nowrap">{row.length}</td>
               </tr>
             ))}
           </tbody>
@@ -110,6 +110,17 @@ function ProductTable({ sub, searchQuery }: { sub: SubCategory; searchQuery: str
 export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsModalProps) {
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
   
   const category = categoryId ? catalogData[categoryId] : null;
 
@@ -130,7 +141,7 @@ export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsM
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6"
           onClick={handleClose}
         >
           {/* Backdrop */}
@@ -148,7 +159,7 @@ export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsM
             exit={{ opacity: 0, scale: 0.95, y: 30 }}
             transition={{ type: "spring", damping: 25, stiffness: 400 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-6xl bg-gunmetal border border-border rounded-3xl shadow-[0_30px_100px_rgba(0,0,0,0.5)] max-h-[92vh] flex flex-col overflow-hidden"
+            className="relative w-full max-w-6xl bg-gunmetal border-t sm:border border-border rounded-t-3xl sm:rounded-3xl shadow-[0_30px_100px_rgba(0,0,0,0.5)] h-[90vh] sm:h-auto sm:max-h-[92vh] flex flex-col overflow-hidden"
           >
             {/* Top Bar (Site Logo & Close) */}
             <div className="flex items-center justify-between gap-4 p-5 sm:px-8 border-b border-border shrink-0 bg-graphite/40">
