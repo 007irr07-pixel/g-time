@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import TiltCard from "./TiltCard";
 import dynamic from "next/dynamic";
+import ProductsModal from "./ProductsModal";
 
 const CardLive3D = dynamic(() => import("./LiveIlls").then(mod => mod.CardLive3D), { ssr: false });
 
@@ -88,7 +89,7 @@ const itemVariants: import("framer-motion").Variants = {
   },
 };
 
-function CatalogCard({ item, index }: { item: CatalogItem; index: number }) {
+function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number; onOpen: () => void }) {
   const [isHovered, setIsHovered] = useState(false);
   const Illustration = item.illustration;
 
@@ -98,6 +99,7 @@ function CatalogCard({ item, index }: { item: CatalogItem; index: number }) {
         className={`group relative h-full w-full min-h-[420px] bg-gradient-to-br from-silver/10 to-graphite/25 backdrop-blur-xl rounded-3xl p-8 sm:p-10 cursor-pointer overflow-hidden transition-all duration-500 border border-silver/20 ${item.borderColor}`}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
+        onClick={onOpen}
       >
         <div className={`relative z-0 h-full flex flex-col transition-all duration-700 ease-out ${isHovered ? 'blur-md opacity-40 scale-[0.97]' : 'blur-0 opacity-100 scale-100'}`}>
           {/* Massive Background Custom SVG Illustration */}
@@ -159,8 +161,11 @@ function CatalogCard({ item, index }: { item: CatalogItem; index: number }) {
 }
 
 export default function CatalogSection() {
+  const [openCategoryId, setOpenCategoryId] = useState<string | null>(null);
+
   return (
-    <section id="catalog" className="relative py-24 sm:py-40 perspective-[2000px]">
+    <>
+      <section id="catalog" className="relative py-24 sm:py-40 perspective-[2000px]">
       {/* Deep dark background matching Hero */}
       <div className="absolute inset-0 bg-graphite" />
       
@@ -197,10 +202,12 @@ export default function CatalogSection() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 sm:gap-8"
         >
           {catalogItems.map((item, i) => (
-            <CatalogCard key={item.id} item={item} index={i} />
+            <CatalogCard key={item.id} item={item} index={i} onOpen={() => setOpenCategoryId(item.id)} />
           ))}
         </motion.div>
       </div>
     </section>
+      <ProductsModal isOpen={openCategoryId !== null} onClose={() => setOpenCategoryId(null)} categoryId={openCategoryId} />
+    </>
   );
 }

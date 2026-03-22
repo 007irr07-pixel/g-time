@@ -8,6 +8,7 @@ interface TiltCardProps {
   className?: string;
   onHoverStart?: () => void;
   onHoverEnd?: () => void;
+  onClick?: () => void;
 }
 
 export default function TiltCard({
@@ -15,6 +16,7 @@ export default function TiltCard({
   className = "",
   onHoverStart,
   onHoverEnd,
+  onClick,
 }: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -72,6 +74,7 @@ export default function TiltCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={onClick}
       style={{
         rotateX,
         rotateY,
