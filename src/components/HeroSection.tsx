@@ -7,9 +7,7 @@ import dynamic from "next/dynamic";
 
 const HeroLive3D = dynamic(() => import("./LiveIlls").then(mod => mod.HeroLive3D), { ssr: false });
 
-interface HeroSectionProps {
-  onOpenPriceModal: () => void;
-}
+import { useModal } from "./ModalContext";
 
 // Letter animation variants for staggered reveal
 const titleVariants: any = {
@@ -33,7 +31,8 @@ const letterVariants: any = {
   },
 };
 
-export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
+export default function HeroSection() {
+  const { openPriceModal: onOpenPriceModal } = useModal();
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Parallax scroll effects
@@ -129,7 +128,7 @@ export default function HeroSection({ onOpenPriceModal }: HeroSectionProps) {
             transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
             className="text-xl sm:text-2xl text-silver max-w-3xl mb-12 leading-[1.6] font-light"
           >
-            Более 10 000 позиций всегда в наличии на собственных складах. Даем отсрочку платежа, предоставляем сертификаты{" "}
+            Более 10 000 позиций всегда в наличии на собственных складах. Работаем по стандартам РК, присутствуем в АГСК, предоставляем сертификаты{" "}
             <span className="text-white font-medium border-b border-accent-green/30 pb-0.5">СТ-KZ</span> и доставляем собственными длинномерами.
           </motion.p>
 

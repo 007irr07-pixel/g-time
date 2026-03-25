@@ -36,7 +36,7 @@ function AnimatedCounter({ target, suffix = "", duration = 2.5 }: { target: numb
 const pillars = [
   { type: "logistics" as const, title: "Собственный автопарк", value: 50, suffix: "+", unit: "тягачей на линии", desc: "Оперативная мультимодальная доставка длинномерами по всему РК. Комплектуем сложные сборные грузы день в день.", color: "orange" },
   { type: "certificate" as const, title: "Безупречная документация", value: 100, suffix: "%", unit: "чистота сделок", desc: "Полная юридическая прозрачность: паспорта качества завода-изготовителя, сертификаты ГОСТ и СТ-KZ для каждой тонны металла.", color: "green" },
-  { type: "finance" as const, title: "Гибкое финансирование", value: 60, suffix: "", unit: "дней отсрочки", desc: "Эксклюзивные условия кредитования и товарные отсрочки для генподрядчиков, а также поддержка в государственном секторе.", color: "orange" },
+  { type: "finance" as const, title: "Стандарты РК", value: 100, suffix: "%", unit: "ГОСТ и АГСК", desc: "Наш металлопрокат присутствует в каталогах АГСК, что гарантирует качество и беспроблемное прохождение госэкспертизы.", color: "orange" },
 ];
 
 function PillarCard({ pillar, index }: { pillar: typeof pillars[0], index: number }) {

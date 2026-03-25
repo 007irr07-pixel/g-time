@@ -3,13 +3,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Download, CheckCircle, Loader2 } from "lucide-react";
+import { useModal } from "./ModalContext";
 
-interface PriceModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function PriceModal({ isOpen, onClose }: PriceModalProps) {
+export default function PriceModal() {
+  const { priceModalOpen: isOpen, closePriceModal: onClose } = useModal();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -20,11 +17,14 @@ export default function PriceModal({ isOpen, onClose }: PriceModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [isOpen]);
 

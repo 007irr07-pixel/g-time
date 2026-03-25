@@ -21,11 +21,10 @@ const navLinks = [
   { label: "Контакты", href: "#contacts" },
 ];
 
-interface HeaderProps {
-  onOpenPriceModal: () => void;
-}
+import { useModal } from "./ModalContext";
 
-export default function Header({ onOpenPriceModal }: HeaderProps) {
+export default function Header() {
+  const { openPriceModal: onOpenPriceModal } = useModal();
   const [scrolled, setScrolled] = useState(false);
   const [city, setCity] = useState("Алматы");
   const [cityOpen, setCityOpen] = useState(false);
