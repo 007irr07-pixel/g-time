@@ -57,6 +57,9 @@ function PillarCard({ pillar, index }: { pillar: typeof pillars[0], index: numbe
       >
         {/* Giant Background 3D WebGL scene */}
         <B2BLive3D type={pillar.type} />
+        {/* Readability dark vignettes for top/bottom text */}
+        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-graphite/90 via-graphite/20 to-transparent pointer-events-none mix-blend-multiply" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-graphite/95 via-graphite/40 to-transparent pointer-events-none mix-blend-multiply" />
   
         {/* Background glow radial */}
         <div className={`absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${pillar.color === 'orange' ? 'bg-accent-orange/10' : 'bg-accent-green/10'}`} />
@@ -64,17 +67,17 @@ function PillarCard({ pillar, index }: { pillar: typeof pillars[0], index: numbe
         {/* Foreground Content with 3D Float */}
         <div style={{ transform: "translateZ(60px)" }} className="relative z-10 flex flex-col h-full pointer-events-none drop-shadow-2xl">
           <div className="mb-auto">
-            <div className="text-5xl sm:text-7xl font-heading font-900 text-white leading-none tracking-tighter mb-2">
+            <div className="text-5xl sm:text-7xl font-heading font-900 text-white leading-none tracking-tighter mb-2 drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.15)" }}>
               <AnimatedCounter target={pillar.value} suffix={pillar.suffix} />
             </div>
-            <div className={`text-sm font-bold uppercase tracking-widest ${pillar.color === 'orange' ? 'text-accent-orange' : 'text-accent-green'} drop-shadow-md`}>
+            <div className={`text-sm font-bold uppercase tracking-widest ${pillar.color === 'orange' ? 'text-accent-orange' : 'text-accent-green'} drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]`}>
               {pillar.unit}
             </div>
           </div>
           
           <div className="mt-8">
-            <h3 className="text-2xl font-heading font-800 text-white mb-4 tracking-tight drop-shadow-lg">{pillar.title}</h3>
-            <p className="text-base text-zinc-100 leading-relaxed font-light drop-shadow-md">{pillar.desc}</p>
+            <h3 className="text-2xl font-heading font-800 text-white mb-4 tracking-tight drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]">{pillar.title}</h3>
+            <p className="text-base text-zinc-100 leading-relaxed font-medium drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">{pillar.desc}</p>
           </div>
         </div>
       </TiltCard>

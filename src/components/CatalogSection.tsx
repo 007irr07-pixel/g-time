@@ -104,15 +104,17 @@ function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number
         <div className={`relative z-0 h-full flex flex-col transition-all duration-700 ease-out ${isHovered ? 'blur-md opacity-40 scale-[0.97]' : 'blur-0 opacity-100 scale-100'}`}>
           {/* Massive Background Custom SVG Illustration */}
           <Illustration isHovered={isHovered} color={item.accentColor} />
+          {/* Dark gradient overlay to ensure text is ALWAYS readable regardless of 3D animation behind it */}
+          <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-graphite/95 via-graphite/50 to-transparent pointer-events-none mix-blend-multiply" />
 
           {/* Floating 3D Foreground Content */}
           <div style={{ transform: "translateZ(60px)" }} className="relative z-10 h-full flex flex-col pointer-events-none drop-shadow-2xl">
             <div className="mt-auto pt-32">
               {/* Title */}
-              <h3 className="text-3xl sm:text-4xl font-heading font-900 text-white mb-2 tracking-tight drop-shadow-lg">
+              <h3 className="text-3xl sm:text-4xl font-heading font-900 text-white mb-2 tracking-tight drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]">
                 {item.title}
               </h3>
-              <p className="text-base text-zinc-100 mb-8 drop-shadow-md">{item.subtitle}</p>
+              <p className="text-base text-zinc-100 mb-8 font-medium drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">{item.subtitle}</p>
 
               {/* Items list */}
               <ul className="space-y-3 relative z-10">
