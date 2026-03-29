@@ -36,8 +36,7 @@ function AnimatedCounter({ target, suffix = "", duration = 2.5 }: { target: numb
 const pillars = [
   { type: "logistics" as const, title: "Автопарк", value: 50, suffix: "+", unit: "единиц транспорта", desc: "Свой автопарк — ваша страховка от простоев. Доставляем точно в час. Наши водители всегда на связи, а логистика отлажена до минуты.", color: "orange" },
   { type: "certificate" as const, title: "Документы", value: 100, suffix: "%", unit: "прозрачность", desc: "Документы, к которым нет вопросов. Сертификаты и ЭСФ передаем вместе с металлом. Никаких проблем с технадзором и налоговой.", color: "green" },
-  { type: "finance" as const, title: "Финансы", value: 2, suffix: " дня", unit: "на одобрение лимита", desc: "Стройте сейчас — платите потом. Гибкая отсрочка платежа для партнеров. Помогаем масштабировать объекты без кассовых разрывов. Лимит на отсрочку за 2 дня.", color: "orange" },
-  { type: "certificate" as const, title: "Сертификаты", value: 100, suffix: "%", unit: "стандарты ГОСТ", desc: "Наши сертификаты и рекомендательные письма. Мы гордимся прозрачностью нашей работы. Каждая партия металла имеет паспорт качества, а наш профессионализм подтвержден официальными письмами от крупнейших партнеров.", color: "green" },
+  { type: "certificate" as const, title: "Стандарты АГСК", value: 100, suffix: "%", unit: "соответствие ГОСТ", desc: "Паспорта качества и официальные сертификаты. Наш металлопрокат присутствует в каталогах АГСК, что гарантирует качество и беспроблемное прохождение госэкспертизы.", color: "orange" },
 ];
 
 function PillarCard({ pillar, index }: { pillar: typeof pillars[0], index: number }) {
@@ -122,7 +121,7 @@ export default function B2BSection() {
           <p className="text-zinc-100 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">Берем на себя логистику, маркировку и документы. Гарантируем поставку точно в срок, чтобы ваша стройка не останавливалась ни на час.</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {pillars.map((pillar, i) => (
             <PillarCard key={pillar.title} pillar={pillar} index={i} />
           ))}

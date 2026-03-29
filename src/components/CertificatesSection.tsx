@@ -24,6 +24,14 @@ export default function CertificatesSection() {
   const x2 = useTransform(scrollYProgress, [0, 1], [-500, 0]);
 
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollByAmount = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = window.innerWidth > 768 ? 600 : 300;
+      scrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   const lightboxIndex = lightboxImage ? recommendationImages.indexOf(lightboxImage) : -1;
   const hasMultiple = recommendationImages.length > 1;
@@ -102,12 +110,27 @@ export default function CertificatesSection() {
               <p className="text-zinc-400 text-center max-w-sm">Здесь скоро появятся официальные благодарственные письма от наших крупных партнеров.</p>
             </div>
           ) : (
-            <div className="w-full overflow-hidden relative">
+            <div className="w-full overflow-hidden relative group/slider">
               {/* Fade masks for elegant scrolling */}
               <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-r from-graphite to-transparent z-10 pointer-events-none" />
               <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-l from-graphite to-transparent z-10 pointer-events-none" />
               
-              <div className="flex overflow-x-auto gap-6 sm:gap-10 w-full snap-x snap-mandatory pt-4 pb-12 px-8 sm:px-20 hidescrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {/* Control Buttons */}
+              <button 
+                onClick={() => scrollByAmount('left')}
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 bg-graphite/80 hover:bg-white text-zinc-400 hover:text-graphite w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center border border-white/10 transition-all opacity-0 lg:group-hover/slider:opacity-100 shadow-2xl backdrop-blur-md translate-x-4 lg:group-hover/slider:translate-x-0"
+              >
+                <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8" />
+              </button>
+
+              <button 
+                onClick={() => scrollByAmount('right')}
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 bg-graphite/80 hover:bg-white text-zinc-400 hover:text-graphite w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center border border-white/10 transition-all opacity-0 lg:group-hover/slider:opacity-100 shadow-2xl backdrop-blur-md -translate-x-4 lg:group-hover/slider:translate-x-0"
+              >
+                <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8" />
+              </button>
+
+              <div ref={scrollRef} className="flex overflow-x-auto gap-6 sm:gap-10 w-full snap-x snap-mandatory pt-4 pb-12 px-8 sm:px-20 hidescrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {recommendationImages.map((src, i) => (
                   <motion.div
                     key={src}

@@ -67,8 +67,9 @@ export default function RulesSection() {
   const containerRef = useRef(null);
 
   return (
-    <section id="rules" ref={containerRef} className="relative py-24 sm:py-32 overflow-hidden bg-surface">
-      {/* Texture background */}
+    <section id="rules" ref={containerRef} className="relative py-24 sm:py-32 overflow-hidden bg-graphite border-y border-white/5">
+      {/* Texture background (Metallurgical Schematic Grid) */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
       <div className="absolute inset-0 noise-bg mix-blend-overlay opacity-50" />
       <div className="absolute inset-0 steel-mesh opacity-10" />
 

@@ -19,11 +19,11 @@ export default function Home() {
       <Header />
       <main className="overflow-x-hidden">
         <HeroSection />
-        <PartnersMarquee />
         <Suspense fallback={<div className="min-h-screen bg-graphite flex items-center justify-center"><div className="w-16 h-16 border-4 border-accent-orange border-t-transparent rounded-full animate-spin"></div></div>}>
-          <RulesSection />
           <CatalogSection />
+          <RulesSection />
           <CalculatorSection />
+          <PartnersMarquee />
           <UploadSection />
           <B2BSection />
           <CertificatesSection />
