@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, phone, files } = body;
+    const { name, phone, files, type } = body;
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -18,17 +18,33 @@ export async function POST(req: NextRequest) {
       ? `\n\nПрикрепленные файлы:\n${files.map((f: string) => `• ${f}`).join("\n")}`
       : "";
 
-    await transporter.sendMail({
-      from: "002ydy02@gmail.com",
-      to: "002ydy02@gmail.com",
-      subject: `Новая заявка на расчет сметы от ${name}`,
-      text: `Имя: ${name}\nТелефон: ${phone}${fileList}`,
-      html: `
+    const subject = type === 'price'
+      ? `Запрос прайс-листа от ${name}`
+      : `Новая заявка на расчет сметы от ${name}`;
+
+    const text = type === 'price'
+      ? `Имя: ${name}\nТелефон: ${phone}\n(Запрошен прайс-лист)`
+      : `Имя: ${name}\nТелефон: ${phone}${fileList}`;
+
+    const html = type === 'price'
+      ? `
+        <h2>Запрос на получение прайс-листа</h2>
+        <p><strong>Имя:</strong> ${name}</p>
+        <p><strong>Телефон:</strong> ${phone}</p>
+      `
+      : `
         <h2>Новая заявка на расчет сметы</h2>
         <p><strong>Имя:</strong> ${name}</p>
         <p><strong>Телефон:</strong> ${phone}</p>
         ${files?.length ? `<p><strong>Файлы:</strong></p><ul>${files.map((f: string) => `<li>${f}</li>`).join("")}</ul>` : ""}
-      `,
+      `;
+
+    await transporter.sendMail({
+      from: "002ydy02@gmail.com",
+      to: "info@g-time.kz",
+      subject,
+      text,
+      html,
     });
 
     return NextResponse.json({ success: true });

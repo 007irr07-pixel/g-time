@@ -73,8 +73,7 @@ export default function BlueprintBackground() {
       {/* Мягкая подсветка чертежа по центру */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-radial-gradient from-transparent via-graphite/90 to-graphite pointer-events-none mix-blend-multiply" />
       
-      {/* Плавное растворение сверху и снизу, чтобы фон бесшовно уходил в другие блоки */}
-      <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-graphite to-transparent pointer-events-none" />
+      {/* Плавное растворение снизу */}
       <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-graphite to-transparent pointer-events-none" />
     </div>
   );

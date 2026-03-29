@@ -26,13 +26,26 @@ export default function PriceModal() {
     };
   }, [isOpen]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !phone) return;
 
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, type: 'price' }),
+      });
+
+      // Download the catalog
+      const link = document.createElement('a');
+      link.href = '/g-time-price.pdf';
+      link.download = 'Прайс-лист G-TIME.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
@@ -40,7 +53,11 @@ export default function PriceModal() {
         setPhone("");
         onClose();
       }, 2000);
-    }, 1500);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -74,8 +74,7 @@ export default function HeroSection() {
       ref={containerRef}
       className="relative min-h-screen flex items-center overflow-hidden perspective-[1000px]"
     >
-      {/* Deep dark background */}
-      <div className="absolute inset-0 bg-graphite" />
+      {/* Deep dark background is now handled globally */}
 
       {/* Dynamic Parallax Hero Illustration (WebGL) */}
       <motion.div
@@ -85,8 +84,7 @@ export default function HeroSection() {
         <HeroLive3D />
       </motion.div>
 
-      {/* Grid texture overlay */}
-      <div className="absolute inset-0 steel-mesh opacity-20" />
+      {/* Grid texture overlay is handled globally */}
 
 
 
@@ -126,9 +124,9 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
-            className="text-xl sm:text-2xl text-silver max-w-3xl mb-12 leading-[1.6] font-light drop-shadow-[0_2px_20px_rgba(0,0,0,0.9)]"
+            className="text-xl sm:text-2xl text-white max-w-3xl mb-12 leading-[1.6] font-medium drop-shadow-[0_4px_20px_rgba(0,0,0,1)] bg-graphite/40 backdrop-blur-sm p-4 rounded-xl border border-white/10"
           >
-            <strong className="text-white font-medium">50 000 тонн металла</strong> на складах. Фиксируем цену в день счета, даем отсрочку платежа и гарантируем честный вес по ГОСТу.
+            <strong className="text-white font-semibold">50 000 тонн металла</strong> на складах. Фиксируем цену в день счета, даем отсрочку платежа и гарантируем честный вес по ГОСТу.
           </motion.p>
 
           {/* Premium CTAs */}
