@@ -7,10 +7,12 @@ export async function POST(req: NextRequest) {
     const { name, phone, files, type } = body;
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: process.env.SMTP_HOST || "mail.g-time.kz", // Хост исходящей почты (SMTP)
+      port: Number(process.env.SMTP_PORT) || 465,
+      secure: true, // true для 465, false для других портов
       auth: {
-        user: "002ydy02@gmail.com",
-        pass: process.env.GMAIL_APP_PASSWORD || "",
+        user: process.env.SMTP_USER || "info@g-time.kz",
+        pass: process.env.SMTP_PASSWORD || "",
       },
     });
 
@@ -40,7 +42,7 @@ export async function POST(req: NextRequest) {
       `;
 
     await transporter.sendMail({
-      from: "002ydy02@gmail.com",
+      from: process.env.SMTP_USER || "info@g-time.kz",
       to: "info@g-time.kz",
       subject,
       text,
