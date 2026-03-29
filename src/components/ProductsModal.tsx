@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Phone, AlertTriangle, Search, Info } from "lucide-react";
+import { X, Phone, AlertTriangle, Search, Info, Download } from "lucide-react";
 import { catalogData, type SubCategory, type ProductRow } from "@/data/catalogData";
 
 interface ProductsModalProps {
@@ -252,14 +252,22 @@ export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsM
             </div>
 
             {/* Bottom Bar */}
-            <div className="shrink-0 px-8 py-5 border-t border-border bg-graphite/40 flex flex-wrap items-center justify-between gap-6">
+            <div className="shrink-0 px-8 py-5 border-t border-border bg-graphite/40 flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3 text-xs text-silver">
                 <div className="p-1.5 bg-silver/10 rounded-lg">
                   <Info size={14} className="text-silver" />
                 </div>
                 <span>Цены указаны в тенге (₸) с учетом НДС и могут меняться.</span>
               </div>
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-3 flex-wrap">
+                <a
+                  href="/g-time-price.pdf"
+                  download="G-Time-Прайс-лист.pdf"
+                  className="flex items-center gap-2 bg-accent-orange/10 hover:bg-accent-orange/20 text-accent-orange text-xs font-bold px-4 py-2 rounded-xl transition-all border border-accent-orange/30 hover:scale-105 active:scale-95"
+                >
+                  <Download size={14} />
+                  Скачать прайс-лист PDF
+                </a>
                 <a
                   href="tel:+77070500964"
                   className="flex items-center gap-2 text-sm font-bold text-white hover:text-accent-orange transition-colors"

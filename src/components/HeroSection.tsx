@@ -112,7 +112,7 @@ export default function HeroSection() {
             variants={titleVariants}
             initial="hidden"
             animate="visible"
-            className="text-[2rem] sm:text-[3rem] md:text-[4rem] lg:text-[4.5rem] font-heading font-900 leading-[1.1] tracking-tight mb-8 px-2"
+            className="text-[2rem] sm:text-[3rem] md:text-[4rem] lg:text-[4.5rem] font-heading font-900 leading-[1.1] tracking-tight mb-8 px-2 drop-shadow-[0_4px_30px_rgba(0,0,0,0.8)]"
           >
             {renderStaggeredText("Арматура и металлопрокат с отгрузкой за 24 часа.")}
             <br className="hidden sm:block" />
@@ -126,7 +126,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
-            className="text-xl sm:text-2xl text-silver max-w-3xl mb-12 leading-[1.6] font-light"
+            className="text-xl sm:text-2xl text-silver max-w-3xl mb-12 leading-[1.6] font-light drop-shadow-[0_2px_20px_rgba(0,0,0,0.9)]"
           >
             <strong className="text-white font-medium">50 000 тонн металла</strong> на складах. Фиксируем цену в день счета, даем отсрочку платежа и гарантируем честный вес по ГОСТу.
           </motion.p>
