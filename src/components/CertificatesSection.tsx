@@ -48,6 +48,11 @@ export default function CertificatesSection() {
 
   // Handle ESC and Arrow keys for Lightbox
   useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { 
+      if (!lightboxImage) return;
+      if (e.key === 'Escape') setLightboxImage(null); 
+      else if (e.key === 'ArrowRight') navigateLightbox('next');
+      else if (e.key === 'ArrowLeft') navigateLightbox('prev');
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
@@ -72,7 +77,6 @@ export default function CertificatesSection() {
         </motion.div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-16 sm:mb-24">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 mt-2 mb-6 tracking-tight text-white">
