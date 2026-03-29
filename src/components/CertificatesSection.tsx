@@ -85,15 +85,17 @@ export default function CertificatesSection() {
         </motion.div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-16 sm:mb-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 sm:mb-24">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 mt-2 mb-6 tracking-tight text-white">
             Рекомендательные письма от <span className="gradient-text-orange">наших партнеров.</span>
           </h2>
           <p className="text-zinc-100 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">Мы гордимся прозрачностью нашей работы. Наш профессионализм подтвержден официальными письмами от крупнейших партнеров Казахстана.</p>
         </motion.div>
+      </div>
 
-        {/* Gallery Interactive Block */}
+      <div className="relative w-full overflow-hidden">
+        {/* Gallery Interactive Block (Full Bleed) */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -110,12 +112,12 @@ export default function CertificatesSection() {
               <p className="text-zinc-400 text-center max-w-sm">Здесь скоро появятся официальные благодарственные письма от наших крупных партнеров.</p>
             </div>
           ) : (
-            <div className="w-full overflow-hidden relative group/slider">
-              {/* Fade masks for elegant scrolling */}
-              <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-r from-graphite to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-l from-graphite to-transparent z-10 pointer-events-none" />
+            <div className="w-full relative group/slider">
+              {/* Stronger fade masks for aesthetic blurry edges */}
+              <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-48 bg-gradient-to-r from-graphite via-graphite/80 to-transparent z-10 pointer-events-none backdrop-blur-[2px]" />
+              <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-48 bg-gradient-to-l from-graphite via-graphite/80 to-transparent z-10 pointer-events-none backdrop-blur-[2px]" />
               
-              {/* Control Buttons */}
+              {/* Control Buttons (Placed outside the blur masks for visbility) */}
               <button 
                 onClick={() => scrollByAmount('left')}
                 className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-50 bg-graphite/80 hover:bg-white text-zinc-400 hover:text-graphite w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center border border-white/10 transition-all opacity-0 lg:group-hover/slider:opacity-100 shadow-2xl backdrop-blur-md translate-x-4 lg:group-hover/slider:translate-x-0"
@@ -130,7 +132,7 @@ export default function CertificatesSection() {
                 <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8" />
               </button>
 
-              <div ref={scrollRef} className="flex overflow-x-auto gap-6 sm:gap-10 w-full snap-x snap-mandatory pt-4 pb-12 px-8 sm:px-20 hidescrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <div ref={scrollRef} className="flex overflow-x-auto gap-6 sm:gap-10 w-full snap-x snap-mandatory pt-4 pb-12 px-[10vw] hidescrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {recommendationImages.map((src, i) => (
                   <motion.div
                     key={src}

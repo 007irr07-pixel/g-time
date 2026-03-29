@@ -57,7 +57,7 @@ function PillarCard({ pillar, index }: { pillar: typeof pillars[0], index: numbe
         className={`relative group bg-graphite/25 backdrop-blur-xl rounded-3xl p-10 border border-white/5 hover:border-${pillar.color === 'orange' ? 'accent-orange/30' : 'accent-green/30'} flex flex-col justify-between overflow-hidden cursor-pointer h-full min-h-[400px]`}
       >
         {/* Giant Background 3D WebGL scene */}
-        <B2BLive3D type={pillar.type === 'agsk' ? 'certificate' : pillar.type as any} />
+        <B2BLive3D type={pillar.type === 'agsk' ? 'folder' : pillar.type as any} />
 
         {/* Readability dark vignettes for top/bottom text */}
         <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-graphite/90 via-graphite/20 to-transparent pointer-events-none mix-blend-multiply" />

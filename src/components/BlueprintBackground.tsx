@@ -10,7 +10,7 @@ export default function BlueprintBackground() {
         height="100%" 
         preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="opacity-[0.25]"
+        className="opacity-[0.1]"
       >
         <defs>
           <linearGradient id="beam-grad" x1="0" y1="0" x2="1" y2="0">
@@ -53,21 +53,21 @@ export default function BlueprintBackground() {
 
         {/* ИНЖЕНЕРНЫЕ ОТМЕТКИ (КРАСИВЫЕ ЧЕРТЕЖНЫЕ СНОСКИ) */}
         <g stroke="#FF5722" strokeWidth="2" fill="none">
-          {/* Сноска 1 */}
-          <circle cx="50%" cy="20%" r="20" />
-          <line x1="45%" y1="20%" x2="55%" y2="20%" />
-          <line x1="50%" y1="15%" x2="50%" y2="25%" />
+          {/* Сноска 1 (Перемещена вправо) */}
+          <circle cx="85%" cy="20%" r="20" />
+          <line x1="80%" y1="20%" x2="90%" y2="20%" />
+          <line x1="85%" y1="15%" x2="85%" y2="25%" />
         </g>
         
-        <text x="53%" y="19%" fill="#FF5722" fontSize="24" fontFamily="monospace" fontWeight="bold" letterSpacing="2">A-1 КОЛОННА</text>
+        <text x="73%" y="19%" fill="#FF5722" fontSize="24" fontFamily="monospace" fontWeight="bold" letterSpacing="2">A-1 КОЛОННА</text>
         
         <g stroke="#00E676" strokeWidth="2" fill="none">
-          {/* Указатель высоты */}
-          <line x1="10%" y1="80%" x2="15%" y2="80%" />
-          <polygon points="12.5%,78% 13.5%,80% 11.5%,80%" fill="#00E676" />
+          {/* Указатель высоты (Перемещен вправо) */}
+          <line x1="80%" y1="80%" x2="85%" y2="80%" />
+          <polygon points="82.5%,78% 83.5%,80% 81.5%,80%" fill="#00E676" />
         </g>
         
-        <text x="11%" y="79%" fill="#00E676" fontSize="20" fontFamily="monospace" fontWeight="bold">УРОВЕНЬ +14.5m</text>
+        <text x="64%" y="79%" fill="#00E676" fontSize="20" fontFamily="monospace" fontWeight="bold">УРОВЕНЬ +14.5m</text>
       </svg>
 
       {/* Мягкая подсветка чертежа по центру */}

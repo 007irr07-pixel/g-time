@@ -21,7 +21,9 @@ export default function Home() {
       <main className="overflow-x-hidden">
         <HeroSection />
         <Suspense fallback={<div className="min-h-screen bg-graphite flex items-center justify-center"><div className="w-16 h-16 border-4 border-accent-orange border-t-transparent rounded-full animate-spin"></div></div>}>
-          <div className="relative bg-graphite border-y border-white/5 overflow-hidden">
+          <div className="relative bg-graphite overflow-hidden">
+            {/* Smooth transition from Hero's black/dark background to graphite */}
+            <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-black/50 to-transparent z-20 pointer-events-none" />
             <BlueprintBackground />
             
             <CatalogSection />

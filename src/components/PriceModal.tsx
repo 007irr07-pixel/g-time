@@ -8,7 +8,7 @@ import { useModal } from "./ModalContext";
 export default function PriceModal() {
   const { priceModalOpen: isOpen, closePriceModal: onClose } = useModal();
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -28,7 +28,7 @@ export default function PriceModal() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email) return;
+    if (!name || !phone) return;
 
     setLoading(true);
     setTimeout(() => {
@@ -37,7 +37,7 @@ export default function PriceModal() {
       setTimeout(() => {
         setSuccess(false);
         setName("");
-        setEmail("");
+        setPhone("");
         onClose();
       }, 2000);
     }, 1500);
@@ -89,7 +89,7 @@ export default function PriceModal() {
                     Готово!
                   </h3>
                   <p className="text-silver text-sm">
-                    Прайс-лист отправлен на вашу почту
+                    Каталог будет отправлен на ваш WhatsApp
                   </p>
                 </motion.div>
               ) : (
@@ -100,7 +100,7 @@ export default function PriceModal() {
                       Скачать прайс-лист
                     </h3>
                     <p className="text-sm text-silver">
-                      Оставьте контакты — мы отправим актуальный прайс
+                      Оставьте ваши контакты — мы отправим каталог в WhatsApp
                     </p>
                   </div>
 
@@ -121,20 +121,20 @@ export default function PriceModal() {
                     </div>
                     <div>
                       <label className="text-sm text-silver mb-1.5 block">
-                        Email <span className="text-accent-orange">*</span>
+                        Номер WhatsApp <span className="text-accent-orange">*</span>
                       </label>
                       <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="email@company.kz"
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="+7 (700) 000-00-00"
                         required
                         className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-orange/50 focus:outline-none focus:ring-1 focus:ring-accent-orange/30 transition-all"
                       />
                     </div>
                     <button
                       type="submit"
-                      disabled={loading || !name || !email}
+                      disabled={loading || !name || !phone}
                       className="w-full flex items-center justify-center gap-2 bg-accent-orange hover:bg-accent-orange-dark disabled:bg-steel disabled:cursor-not-allowed text-white font-semibold px-6 py-4 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
                     >
                       {loading ? (

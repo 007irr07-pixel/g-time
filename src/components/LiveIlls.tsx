@@ -620,8 +620,49 @@ function Finance3D() {
   );
 }
 
-export function B2BLive3D({ type }: { type: 'logistics' | 'certificate' | 'finance' }) {
-  const color = type === 'certificate' ? 'green' : 'orange';
+// --- ANIMATED 3D FOLDER FOR AGSK ---
+function Folder3D() {
+  const materials = usePremiumMaterials();
+  const groupRef = useRef<THREE.Group>(null!);
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.3;
+      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.15;
+    }
+  });
+
+  return (
+    <group ref={groupRef} rotation={[Math.PI / 8, -Math.PI / 6, 0]} scale={1.6}>
+      {/* Folder back wall */}
+      <mesh material={materials.orangeMetal} position={[0, 0.2, -0.1]}>
+        <boxGeometry args={[2.2, 1.6, 0.05]} />
+      </mesh>
+      {/* Folder tab */}
+      <mesh material={materials.orangeMetal} position={[-0.55, 1.1, -0.1]}>
+        <boxGeometry args={[0.8, 0.3, 0.05]} />
+      </mesh>
+      {/* Folder front (slightly open) */}
+      <mesh material={materials.scuffedMetal} position={[0, -0.05, 0.15]} rotation={[0.25, 0, 0]}>
+        <boxGeometry args={[2.2, 1.4, 0.04]} />
+      </mesh>
+      {/* Documents peeking out */}
+      <mesh material={materials.silver} position={[0.1, 0.35, 0.02]}>
+        <boxGeometry args={[1.8, 1.2, 0.02]} />
+      </mesh>
+      <mesh material={materials.darkMetal} position={[-0.05, 0.3, 0.05]}>
+        <boxGeometry args={[1.8, 1.2, 0.02]} />
+      </mesh>
+      {/* GOST stamp accent */}
+      <mesh material={materials.greenMetal} position={[0.5, 0.1, 0.08]}>
+        <boxGeometry args={[0.6, 0.4, 0.015]} />
+      </mesh>
+    </group>
+  );
+}
+
+export function B2BLive3D({ type }: { type: 'logistics' | 'certificate' | 'finance' | 'folder' }) {
+  const color = type === 'certificate' || type === 'folder' ? (type === 'folder' ? 'orange' : 'green') : 'orange';
   const envColor = color === "orange" ? "#FF5722" : "#00E676";
 
   return (
@@ -642,6 +683,7 @@ export function B2BLive3D({ type }: { type: 'logistics' | 'certificate' | 'finan
           {type === 'logistics' && <Logistics3D />}
           {type === 'certificate' && <Certificate3D />}
           {type === 'finance' && <Finance3D />}
+          {type === 'folder' && <Folder3D />}
         </group>
       </LazyCanvas>
     </div>
