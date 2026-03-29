@@ -10,64 +10,72 @@ export default function BlueprintBackground() {
         height="100%" 
         preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="opacity-[0.15]"
+        className="opacity-[0.25]"
       >
         <defs>
-          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-          </pattern>
-          <pattern id="diagonal-hatch" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
-            <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+          <linearGradient id="beam-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.1)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.4)" />
+          </linearGradient>
+          <pattern id="diagonal-hatch" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="8" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
           </pattern>
         </defs>
 
-        {/* Base Grid */}
-        <rect width="100%" height="100%" fill="url(#grid)" />
+        {/* --- ВАЖНО: Убран мелкий шум (grid), оставлены только четкие несущие конструкции --- */}
 
-        {/* Structural Main Columns (I-Beams) */}
+        {/* ОСНОВНЫЕ ВЕРТИКАЛЬНЫЕ КОЛОННЫ (ДВУТАВРЫ) */}
+        {/* Центральная часть (самая мощная) */}
+        <rect x="35%" y="0" width="24" height="100%" fill="url(#beam-grad)" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
+        <rect x="65%" y="0" width="24" height="100%" fill="url(#beam-grad)" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
+        
+        {/* Боковые колонны */}
         <rect x="15%" y="0" width="12" height="100%" fill="url(#diagonal-hatch)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
-        <rect x="50%" y="0" width="20" height="100%" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.2)" strokeWidth="2" />
         <rect x="85%" y="0" width="12" height="100%" fill="url(#diagonal-hatch)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
 
-        {/* Horizontal Girders */}
-        <rect x="0" y="25%" width="100%" height="16" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.4)" strokeWidth="2" />
-        <rect x="0" y="55%" width="100%" height="8" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
-        <rect x="0" y="80%" width="100%" height="16" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.4)" strokeWidth="2" />
+        {/* ГОРИЗОНТАЛЬНЫЕ БАЛКИ (ПЕРЕКРЫТИЯ) */}
+        {/* Уровень 1 */}
+        <rect x="0" y="20%" width="100%" height="16" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.6)" strokeWidth="2" />
+        {/* Уровень 2 */}
+        <rect x="0" y="50%" width="100%" height="16" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.6)" strokeWidth="2" />
+        {/* Уровень 3 */}
+        <rect x="0" y="80%" width="100%" height="16" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.6)" strokeWidth="2" />
 
-        {/* Diagonal Cross-Bracings */}
-        {/* Top Section */}
-        <line x1="15%" y1="5%" x2="50%" y2="25%" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
-        <line x1="50%" y1="5%" x2="15%" y2="25%" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
-        <line x1="50%" y1="5%" x2="85%" y2="25%" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
-        <line x1="85%" y1="5%" x2="50%" y2="25%" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
+        {/* ДИАГОНАЛЬНЫЕ РАСКОСЫ (СВЯЗИ ЖЕСТКОСТИ) - ТОЛЬКО В ЦЕНТРЕ */}
+        {/* Блок 1: От 20% до 50% */}
+        <line x1="35%" y1="20%" x2="65%" y2="50%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" />
+        <line x1="65%" y1="20%" x2="35%" y2="50%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" />
+        
+        {/* Блок 2: От 50% до 80% */}
+        <line x1="35%" y1="50%" x2="65%" y2="80%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" />
+        <line x1="65%" y1="50%" x2="35%" y2="80%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" />
 
-        {/* Middle Section */}
-        <line x1="15%" y1="25%" x2="50%" y2="55%" stroke="rgba(255,255,255,0.15)" strokeWidth="2" strokeDasharray="15 5" />
-        <line x1="50%" y1="25%" x2="15%" y2="55%" stroke="rgba(255,255,255,0.15)" strokeWidth="2" strokeDasharray="15 5" />
-        <line x1="50%" y1="25%" x2="85%" y2="55%" stroke="rgba(255,255,255,0.15)" strokeWidth="2" strokeDasharray="15 5" />
-        <line x1="85%" y1="25%" x2="50%" y2="55%" stroke="rgba(255,255,255,0.15)" strokeWidth="2" strokeDasharray="15 5" />
-
-        {/* Bottom Section */}
-        <line x1="15%" y1="55%" x2="50%" y2="80%" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
-        <line x1="50%" y1="55%" x2="15%" y2="80%" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
-        <line x1="50%" y1="55%" x2="85%" y2="80%" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
-        <line x1="85%" y1="55%" x2="50%" y2="80%" stroke="rgba(255,255,255,0.2)" strokeWidth="3" />
-
-        {/* Technical measuring indicators and blueprint details */}
-        <g stroke="#FF5722" strokeWidth="1" fill="none">
-          <circle cx="50%" cy="25%" r="12" />
-          <circle cx="50%" cy="80%" r="12" />
+        {/* ИНЖЕНЕРНЫЕ ОТМЕТКИ (КРАСИВЫЕ ЧЕРТЕЖНЫЕ СНОСКИ) */}
+        <g stroke="#FF5722" strokeWidth="2" fill="none">
+          {/* Сноска 1 */}
+          <circle cx="50%" cy="20%" r="20" />
+          <line x1="45%" y1="20%" x2="55%" y2="20%" />
+          <line x1="50%" y1="15%" x2="50%" y2="25%" />
         </g>
         
-        <text x="16%" y="22%" fill="#FF5722" fontSize="24" fontFamily="monospace" fontWeight="bold">BEAM K-12</text>
-        <text x="86%" y="78%" fill="#00E676" fontSize="24" fontFamily="monospace" fontWeight="bold">STRUCT-9X</text>
+        <text x="53%" y="19%" fill="#FF5722" fontSize="24" fontFamily="monospace" fontWeight="bold" letterSpacing="2">A-1 КОЛОННА</text>
+        
+        <g stroke="#00E676" strokeWidth="2" fill="none">
+          {/* Указатель высоты */}
+          <line x1="10%" y1="80%" x2="15%" y2="80%" />
+          <polygon points="12.5%,78% 13.5%,80% 11.5%,80%" fill="#00E676" />
+        </g>
+        
+        <text x="11%" y="79%" fill="#00E676" fontSize="20" fontFamily="monospace" fontWeight="bold">УРОВЕНЬ +14.5m</text>
       </svg>
 
-      {/* Massive radial spotlight behind the blueprint to give depth */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-radial-gradient from-transparent via-graphite/80 to-graphite pointer-events-none mix-blend-multiply" />
-      {/* Top and Bottom fade masks to blend seamlessly with surrounding sections */}
-      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-graphite to-transparent pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-graphite to-transparent pointer-events-none" />
+      {/* Мягкая подсветка чертежа по центру */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-radial-gradient from-transparent via-graphite/90 to-graphite pointer-events-none mix-blend-multiply" />
+      
+      {/* Плавное растворение сверху и снизу, чтобы фон бесшовно уходил в другие блоки */}
+      <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-graphite to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-graphite to-transparent pointer-events-none" />
     </div>
   );
 }

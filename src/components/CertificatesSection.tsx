@@ -118,14 +118,14 @@ export default function CertificatesSection() {
               {/* Control Buttons */}
               <button 
                 onClick={() => scrollByAmount('left')}
-                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 bg-graphite/80 hover:bg-white text-zinc-400 hover:text-graphite w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center border border-white/10 transition-all opacity-0 lg:group-hover/slider:opacity-100 shadow-2xl backdrop-blur-md translate-x-4 lg:group-hover/slider:translate-x-0"
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-50 bg-graphite/80 hover:bg-white text-zinc-400 hover:text-graphite w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center border border-white/10 transition-all opacity-0 lg:group-hover/slider:opacity-100 shadow-2xl backdrop-blur-md translate-x-4 lg:group-hover/slider:translate-x-0"
               >
                 <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8" />
               </button>
 
               <button 
                 onClick={() => scrollByAmount('right')}
-                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 bg-graphite/80 hover:bg-white text-zinc-400 hover:text-graphite w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center border border-white/10 transition-all opacity-0 lg:group-hover/slider:opacity-100 shadow-2xl backdrop-blur-md -translate-x-4 lg:group-hover/slider:translate-x-0"
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-50 bg-graphite/80 hover:bg-white text-zinc-400 hover:text-graphite w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center border border-white/10 transition-all opacity-0 lg:group-hover/slider:opacity-100 shadow-2xl backdrop-blur-md -translate-x-4 lg:group-hover/slider:translate-x-0"
               >
                 <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8" />
               </button>
