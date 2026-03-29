@@ -12,6 +12,9 @@ import {
   Send,
   CheckCircle,
 } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const ScannerLive3D = dynamic(() => import("./LiveIlls").then(mod => mod.ScannerLive3D), { ssr: false });
 
 interface UploadedFile {
   file: File;
@@ -143,12 +146,10 @@ export default function UploadSection() {
             Быстрый запрос
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-800 mt-4 mb-6">
-            Загрузите{" "}
-            <span className="gradient-text-orange">смету</span>
+            Хватит тратить время <span className="gradient-text-orange">на поиск.</span>
           </h2>
           <p className="text-silver text-lg max-w-2xl mx-auto">
-            Перетащите файл со сметой — Excel, PDF или фото. Мы рассчитаем
-            стоимость и свяжемся с вами в течение 30 минут.
+            Скиньте фото сметы — остальное мы берем на себя. Принимаем файлы в любом виде, даже рукописные списки. Рассчитаем стоимость за 30 минут.
           </p>
         </motion.div>
 
@@ -187,26 +188,31 @@ export default function UploadSection() {
                   {/* Drop zone */}
                   <div
                     {...getRootProps()}
-                    className={`relative border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-300 ${
+                    className={`relative border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-300 overflow-hidden ${
                       isDragActive
-                        ? "border-accent-orange bg-accent-orange/5 scale-[1.02]"
+                        ? "border-accent-green bg-accent-green/10 scale-[1.02] shadow-[0_0_30px_rgba(0,230,118,0.2)]"
                         : "border-border hover:border-accent-orange/40 hover:bg-surface/50"
                     }`}
                   >
                     <input {...getInputProps()} />
+                    
+                    {/* 3D Scanner strictly on drag */}
+                    {isDragActive && <ScannerLive3D />}
+
                     <motion.div
                       animate={isDragActive ? { scale: 1.1, y: -5 } : { scale: 1, y: 0 }}
                       transition={{ duration: 0.3 }}
+                      className="relative z-10"
                     >
                       <Upload
                         size={40}
-                        className={`mx-auto mb-4 ${
-                          isDragActive ? "text-accent-orange" : "text-steel"
+                        className={`mx-auto mb-4 transition-colors duration-300 ${
+                          isDragActive ? "text-accent-green drop-shadow-[0_0_15px_rgba(0,230,118,1)]" : "text-steel"
                         }`}
                       />
-                      <p className="text-white font-medium mb-1">
+                      <p className={`font-medium mb-1 transition-colors duration-300 ${isDragActive ? "text-accent-green" : "text-white"}`}>
                         {isDragActive
-                          ? "Отпустите файл здесь"
+                          ? "Отпустите файлы для загрузки"
                           : "Перетащите файл или нажмите для выбора"}
                       </p>
                       <p className="text-sm text-steel">

@@ -5,6 +5,8 @@ import HeroSection from "@/components/HeroSection";
 import Footer from "@/components/Footer";
 import PriceModal from "@/components/PriceModal";
 
+const RulesSection = dynamic(() => import("@/components/RulesSection"));
+const PartnersMarquee = dynamic(() => import("@/components/PartnersMarquee"));
 const CatalogSection = dynamic(() => import("@/components/CatalogSection"));
 const CalculatorSection = dynamic(() => import("@/components/CalculatorSection"));
 const UploadSection = dynamic(() => import("@/components/UploadSection"));
@@ -17,7 +19,9 @@ export default function Home() {
       <Header />
       <main className="overflow-x-hidden">
         <HeroSection />
+        <PartnersMarquee />
         <Suspense fallback={<div className="min-h-screen bg-graphite flex items-center justify-center"><div className="w-16 h-16 border-4 border-accent-orange border-t-transparent rounded-full animate-spin"></div></div>}>
+          <RulesSection />
           <CatalogSection />
           <CalculatorSection />
           <UploadSection />

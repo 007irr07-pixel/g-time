@@ -88,15 +88,7 @@ export default function HeroSection() {
       {/* Grid texture overlay */}
       <div className="absolute inset-0 steel-mesh opacity-20" />
 
-      {/* Diagonal laser accents */}
-      <motion.div style={{ y: yBg2 }} className="absolute inset-0 pointer-events-none">
-        <motion.div
-          className="absolute top-0 right-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-accent-orange/30 to-transparent"
-          initial={{ scaleY: 0, opacity: 0 }}
-          animate={{ scaleY: 1, opacity: 1 }}
-          transition={{ duration: 2, delay: 0.5, ease: "circOut" }}
-        />
-      </motion.div>
+
 
       {/* Main Content Area */}
       <motion.div
@@ -106,6 +98,15 @@ export default function HeroSection() {
         <div className="max-w-5xl">
 
 
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="mb-6 inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-sm font-semibold tracking-widest text-silver uppercase"
+          >
+            Алматы и весь Казахстан <span className="text-accent-orange mx-2">•</span> Снабжение объектов 24/7
+          </motion.div>
+
           {/* Staggered Cinematic Headline */}
           <motion.h1
             variants={titleVariants}
@@ -113,39 +114,37 @@ export default function HeroSection() {
             animate="visible"
             className="text-[2rem] sm:text-[3rem] md:text-[4rem] lg:text-[4.5rem] font-heading font-900 leading-[1.1] tracking-tight mb-8 px-2"
           >
-            Металлопрокат оптом и в розницу — <br className="hidden sm:block" />
-            <span className="gradient-text-orange inline-block">
-              отгрузка в день заказа
-            </span>
+            {renderStaggeredText("Арматура и металлопрокат с отгрузкой за 24 часа.")}
             <br className="hidden sm:block" />
-            по всему Казахстану.
+            <motion.span variants={letterVariants} className="gradient-text-orange inline-block drop-shadow-[0_0_15px_rgba(255,87,34,0.4)] mt-2">
+              Или оплатим простой вашей техники.
+            </motion.span>
           </motion.h1>
 
           {/* Subtitle with fade up */}
           <motion.p
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+            transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
             className="text-xl sm:text-2xl text-silver max-w-3xl mb-12 leading-[1.6] font-light"
           >
-            Более 10 000 позиций всегда в наличии на собственных складах. Работаем по стандартам РК, присутствуем в АГСК, предоставляем сертификаты{" "}
-            <span className="text-white font-medium border-b border-accent-green/30 pb-0.5">СТ-KZ</span> и доставляем собственными длинномерами.
+            <strong className="text-white font-medium">50 000 тонн металла</strong> на складах. Фиксируем цену в день счета, даем отсрочку платежа и гарантируем честный вес по ГОСТу.
           </motion.p>
 
           {/* Premium CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.4, ease: "easeOut" }}
+            transition={{ duration: 1, delay: 1.0, ease: "easeOut" }}
             className="flex flex-col sm:flex-row gap-5"
           >
             <a
-              href="#catalog"
-              className="group relative inline-flex items-center justify-center gap-4 bg-accent-orange text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden"
+              href="#calculator"
+              className="group relative inline-flex items-center justify-center gap-4 bg-accent-orange text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden shadow-[0_0_30px_rgba(255,87,34,0.3)] hover:shadow-[0_0_40px_rgba(255,87,34,0.5)]"
             >
               {/* Button inner glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-              <span className="relative z-10">Рассчитать смету</span>
+              <span className="relative z-10">Рассчитать смету за 15 минут</span>
               <ArrowRight
                 size={20}
                 className="relative z-10 group-hover:translate-x-1.5 transition-transform"
@@ -154,10 +153,10 @@ export default function HeroSection() {
 
             <button
               onClick={onOpenPriceModal}
-              className="group relative inline-flex items-center justify-center gap-4 bg-surface/50 backdrop-blur-md border border-white/10 hover:border-accent-orange/40 hover:bg-surface text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              className="group relative inline-flex items-center justify-center gap-4 bg-white/5 backdrop-blur-md border border-white/10 hover:border-accent-orange/40 hover:bg-surface text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               <Download size={20} className="text-silver group-hover:text-accent-orange transition-colors" />
-              <span>Скачать оптовый прайс</span>
+              <span>Получить прайс в WhatsApp</span>
             </button>
           </motion.div>
 

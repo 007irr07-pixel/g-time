@@ -5,23 +5,6 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { X, ZoomIn, FileText, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
-const certificateImages = [
-  "/certificates/sert1_big.jpg",
-  "/certificates/sert2_big.jpg",
-  "/certificates/sert3_big.jpg",
-  "/certificates/sert4_big.jpg",
-  "/certificates/sert10_big.png",
-  "/certificates/sert11_big.jpg",
-  "/certificates/sert12_big.jpg",
-  "/certificates/sert13_big.jpg",
-  "/certificates/sert14_big.jpg",
-  "/certificates/sert15_big.jpg",
-  "/certificates/sert16_big.jpg",
-  "/certificates/sert17_big.jpg",
-  "/certificates/sert18_big.jpg",
-  "/certificates/sert19_big.jpg",
-];
-
 const recommendationImages = [
   "/recommendations/letter1_big.jpg",
   "/recommendations/letter2_big.jpg",
@@ -40,24 +23,21 @@ export default function CertificatesSection() {
   const x1 = useTransform(scrollYProgress, [0, 1], [0, -500]);
   const x2 = useTransform(scrollYProgress, [0, 1], [-500, 0]);
 
-  const [activeTab, setActiveTab] = useState<"certificates" | "recommendations">("certificates");
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
-  const currentArray = activeTab === "certificates" ? certificateImages : recommendationImages;
-
-  const lightboxIndex = lightboxImage ? currentArray.indexOf(lightboxImage) : -1;
-  const hasMultiple = currentArray.length > 1;
+  const lightboxIndex = lightboxImage ? recommendationImages.indexOf(lightboxImage) : -1;
+  const hasMultiple = recommendationImages.length > 1;
 
   // Function to navigate without causing hooks closure issues
   const navigateLightbox = (direction: 'next' | 'prev') => {
     if (lightboxIndex === -1) return;
     let newIndex;
     if (direction === 'next') {
-      newIndex = lightboxIndex === currentArray.length - 1 ? 0 : lightboxIndex + 1;
+      newIndex = lightboxIndex === recommendationImages.length - 1 ? 0 : lightboxIndex + 1;
     } else {
-      newIndex = lightboxIndex === 0 ? currentArray.length - 1 : lightboxIndex - 1;
+      newIndex = lightboxIndex === 0 ? recommendationImages.length - 1 : lightboxIndex - 1;
     }
-    setLightboxImage(currentArray[newIndex]);
+    setLightboxImage(recommendationImages[newIndex]);
   };
 
   // Lock body scroll when lightbox is open
@@ -68,15 +48,10 @@ export default function CertificatesSection() {
 
   // Handle ESC and Arrow keys for Lightbox
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { 
-      if (!lightboxImage) return;
-      if (e.key === 'Escape') setLightboxImage(null); 
-      else if (e.key === 'ArrowRight') navigateLightbox('next');
-      else if (e.key === 'ArrowLeft') navigateLightbox('prev');
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [lightboxImage, lightboxIndex, currentArray]);
+  }, [lightboxImage, lightboxIndex, recommendationImages]);
 
   return (
     <section id="certificates" ref={containerRef} className="relative py-32 sm:py-48 overflow-hidden bg-graphite">
@@ -87,112 +62,73 @@ export default function CertificatesSection() {
       {/* Cinematic Marquee Text Background */}
       <div className="absolute top-[20%] w-full whitespace-nowrap opacity-[0.03] select-none pointer-events-none flex flex-col gap-10 overflow-hidden">
         <motion.div style={{ x: x1 }} className="text-[12rem] font-heading font-900 uppercase">
-          ЛИЦЕНЗИИ • СЕРТИФИКАТЫ КАЧЕСТВА ГОСТ • ЛИЦЕНЗИИ • СЕРТИФИКАТЫ КАЧЕСТВА ГОСТ
+          ОТЗЫВЫ ПАРТНЕРОВ • БЛАГОДАРНОСТЬ • ОТЗЫВЫ ПАРТНЕРОВ • БЛАГОДАРНОСТЬ
         </motion.div>
         <motion.div 
           className="text-[12rem] font-heading font-900 uppercase text-transparent" 
           style={{ WebkitTextStroke: "2px white", x: x2 }}
         >
-          ПОДТВЕРЖДЕНИЕ КАЧЕСТВА • НАДЕЖНОСТЬ • ПОДТВЕРЖДЕНИЕ КАЧЕСТВА • НАДЕЖНОСТЬ
+          НАМ ДОВЕРЯЮТ • НАДЕЖНОСТЬ • НАМ ДОВЕРЯЮТ • НАДЕЖНОСТЬ
         </motion.div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-16 sm:mb-24">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 mt-2 mb-6 tracking-tight text-white">
-            Наши <span className="gradient-text-orange">сертификаты</span> и <br className="hidden sm:block" />рекомендательные письма.
+            Рекомендательные письма от <span className="gradient-text-orange">наших партнеров.</span>
           </h2>
-          <p className="text-zinc-100 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">Мы гордимся прозрачностью нашей работы. Каждая партия металла имеет паспорт качества, а наш профессионализм подтвержден официальными письмами от крупнейших партнеров.</p>
+          <p className="text-zinc-100 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">Мы гордимся прозрачностью нашей работы. Наш профессионализм подтвержден официальными письмами от крупнейших партнеров Казахстана.</p>
         </motion.div>
 
-        {/* Tab Switcher & Gallery Interactive Block */}
+        {/* Gallery Interactive Block */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex flex-col gap-8"
+          className="flex flex-col gap-8 w-full"
         >
-
-          {/* Centralized Tab Switcher */}
-          <div className="flex justify-center w-full z-20">
-            <div className="flex bg-graphite/40 backdrop-blur-xl p-1.5 rounded-full border border-white/10 shadow-2xl relative">
-              <button 
-                onClick={() => setActiveTab("certificates")} 
-                className={`relative z-10 px-6 sm:px-10 py-3 rounded-full font-bold text-sm tracking-widest uppercase transition-colors duration-300 ${activeTab === 'certificates' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
-              >
-                Сертификаты
-                {activeTab === 'certificates' && (
-                  <motion.div layoutId="tabMarker" className="absolute inset-0 bg-gradient-to-r from-accent-orange/80 to-accent-orange/40 rounded-full -z-10 shadow-[0_0_20px_rgba(255,87,34,0.3)]" />
-                )}
-              </button>
-              <button 
-                onClick={() => setActiveTab("recommendations")} 
-                className={`relative z-10 px-6 sm:px-10 py-3 rounded-full font-bold text-sm tracking-widest uppercase transition-colors duration-300 ${activeTab === 'recommendations' ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
-              >
-                Отзывы клиентов
-                {activeTab === 'recommendations' && (
-                  <motion.div layoutId="tabMarker" className="absolute inset-0 bg-gradient-to-r from-accent-green/80 to-accent-green/40 rounded-full -z-10 shadow-[0_0_20px_rgba(0,230,118,0.3)]" />
-                )}
-              </button>
+          {recommendationImages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 bg-graphite/20 backdrop-blur-xl border border-white/5 rounded-[2rem]">
+              <div className="bg-white/5 p-6 rounded-full mb-6">
+                <FileText className="w-12 h-12 text-zinc-500" />
+              </div>
+              <h3 className="text-2xl font-heading font-medium text-white mb-2">Отзывы загружаются</h3>
+              <p className="text-zinc-400 text-center max-w-sm">Здесь скоро появятся официальные благодарственные письма от наших крупных партнеров.</p>
             </div>
-          </div>
-
-          <div className="w-full">
-            <AnimatePresence mode="wait">
-              {currentArray.length === 0 ? (
-                // EMPTY STATE
-                <motion.div 
-                  key="empty"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4 }}
-                  className="flex flex-col items-center justify-center py-20 bg-graphite/20 backdrop-blur-xl border border-white/5 rounded-[2rem]"
-                >
-                  <div className="bg-white/5 p-6 rounded-full mb-6">
-                    <FileText className="w-12 h-12 text-zinc-500" />
-                  </div>
-                  <h3 className="text-2xl font-heading font-medium text-white mb-2">Отзывы загружаются</h3>
-                  <p className="text-zinc-400 text-center max-w-sm">Здесь скоро появятся официальные благодарственные письма от наших крупных партнеров.</p>
-                </motion.div>
-              ) : (
-                // PREMIUM STRICT GRID GALLERY
-                <motion.div 
-                  key={activeTab}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
-                  transition={{ duration: 0.4 }}
-                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6 w-full"
-                >
-                  {currentArray.map((src, i) => (
-                    <motion.div
-                      key={src}
-                      whileHover={{ scale: 1.03, y: -4 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => setLightboxImage(src)}
-                      className="relative aspect-square w-full cursor-zoom-in rounded-2xl overflow-hidden shadow-xl group border border-white/10 bg-graphite/40 transform-gpu z-10 hover:z-20 hover:shadow-2xl hover:border-white/30"
-                    >
-                      <Image 
-                        src={src} 
-                        alt="Документ" 
-                        fill
-                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                      />
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-                        <div className="bg-white/20 backdrop-blur-md p-3 sm:p-4 rounded-full border border-white/20 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl">
-                          <ZoomIn className="w-6 h-6 sm:w-8 sm:h-8 text-white drop-shadow-md" />
-                        </div>
+          ) : (
+            <div className="w-full overflow-hidden relative">
+              {/* Fade masks for elegant scrolling */}
+              <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-r from-graphite to-transparent z-10 pointer-events-none" />
+              <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-l from-graphite to-transparent z-10 pointer-events-none" />
+              
+              <div className="flex overflow-x-auto gap-6 sm:gap-10 w-full snap-x snap-mandatory pt-4 pb-12 px-8 sm:px-20 hidescrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                {recommendationImages.map((src, i) => (
+                  <motion.div
+                    key={src}
+                    whileHover={{ scale: 1.03, y: -4 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => setLightboxImage(src)}
+                    className="relative shrink-0 w-[260px] sm:w-[320px] aspect-[1/1.3] cursor-zoom-in rounded-2xl overflow-hidden shadow-xl group border border-white/10 bg-graphite/40 transform-gpu snap-center z-10 hover:z-20 hover:shadow-2xl hover:border-white/30"
+                  >
+                    <Image 
+                      src={src} 
+                      alt="Документ" 
+                      fill
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
+                      sizes="(max-width: 640px) 260px, 320px"
+                    />
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                      <div className="bg-white/20 backdrop-blur-md p-3 sm:p-4 rounded-full border border-white/20 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl">
+                        <ZoomIn className="w-6 h-6 sm:w-8 sm:h-8 text-white drop-shadow-md" />
                       </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
         </motion.div>
       </div>
 

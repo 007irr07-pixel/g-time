@@ -34,9 +34,10 @@ function AnimatedCounter({ target, suffix = "", duration = 2.5 }: { target: numb
 /* Removed legacy B2B SVGs in favor of B2BLive3D WebGL scenes */
 
 const pillars = [
-  { type: "logistics" as const, title: "Собственный автопарк", value: 50, suffix: "+", unit: "тягачей на линии", desc: "Оперативная мультимодальная доставка длинномерами по всему РК. Комплектуем сложные сборные грузы день в день.", color: "orange" },
-  { type: "certificate" as const, title: "Безупречная документация", value: 100, suffix: "%", unit: "чистота сделок", desc: "Полная юридическая прозрачность: паспорта качества завода-изготовителя, сертификаты ГОСТ и СТ-KZ для каждой тонны металла.", color: "green" },
-  { type: "finance" as const, title: "Стандарты РК", value: 100, suffix: "%", unit: "ГОСТ и АГСК", desc: "Наш металлопрокат присутствует в каталогах АГСК, что гарантирует качество и беспроблемное прохождение госэкспертизы.", color: "orange" },
+  { type: "logistics" as const, title: "Автопарк", value: 50, suffix: "+", unit: "единиц транспорта", desc: "Свой автопарк — ваша страховка от простоев. Доставляем точно в час. Наши водители всегда на связи, а логистика отлажена до минуты.", color: "orange" },
+  { type: "certificate" as const, title: "Документы", value: 100, suffix: "%", unit: "прозрачность", desc: "Документы, к которым нет вопросов. Сертификаты и ЭСФ передаем вместе с металлом. Никаких проблем с технадзором и налоговой.", color: "green" },
+  { type: "finance" as const, title: "Финансы", value: 2, suffix: " дня", unit: "на одобрение лимита", desc: "Стройте сейчас — платите потом. Гибкая отсрочка платежа для партнеров. Помогаем масштабировать объекты без кассовых разрывов. Лимит на отсрочку за 2 дня.", color: "orange" },
+  { type: "certificate" as const, title: "Сертификаты", value: 100, suffix: "%", unit: "стандарты ГОСТ", desc: "Наши сертификаты и рекомендательные письма. Мы гордимся прозрачностью нашей работы. Каждая партия металла имеет паспорт качества, а наш профессионализм подтвержден официальными письмами от крупнейших партнеров.", color: "green" },
 ];
 
 function PillarCard({ pillar, index }: { pillar: typeof pillars[0], index: number }) {
@@ -116,12 +117,12 @@ export default function B2BSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-24">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 mt-2 mb-6 tracking-tight text-white leading-tight">
-            Бесперебойное снабжение <br className="hidden lg:block"/><span className="gradient-text-orange">ваших строительных объектов.</span>
+            Бесперебойное снабжение <br className="hidden lg:block"/><span className="gradient-text-orange">ваших объектов 24/7.</span>
           </h2>
-          <p className="text-zinc-100 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">Мы берем на себя всю логистику, маркировку и документальное сопровождение, гарантируя поставку металла без риска срыва сроков.</p>
+          <p className="text-zinc-100 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">Берем на себя логистику, маркировку и документы. Гарантируем поставку точно в срок, чтобы ваша стройка не останавливалась ни на час.</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {pillars.map((pillar, i) => (
             <PillarCard key={pillar.title} pillar={pillar} index={i} />
           ))}

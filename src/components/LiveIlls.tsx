@@ -842,3 +842,117 @@ export function CardLive3D({ type, color }: { type: string, color: "orange" | "g
     </div>
   );
 }
+
+// ==============================================
+// RULES SECTION 3D MODELS
+// ==============================================
+
+function RulesScaleBeam() {
+  const materials = usePremiumMaterials();
+  const iBeamShape = useMemo(() => {
+    const s = new THREE.Shape();
+    const w = 1.0, h = 1.6, t = 0.15;
+    s.moveTo(-w / 2, h / 2); s.lineTo(w / 2, h / 2); s.lineTo(w / 2, h / 2 - t); s.lineTo(t / 2, h / 2 - t); s.lineTo(t / 2, -h / 2 + t); s.lineTo(w / 2, -h / 2 + t); s.lineTo(w / 2, -h / 2); s.lineTo(-w / 2, -h / 2); s.lineTo(-w / 2, -h / 2 + t); s.lineTo(-t / 2, -h / 2 + t); s.lineTo(-t / 2, h / 2 - t); s.lineTo(-w / 2, h / 2 - t); s.lineTo(-w / 2, h / 2);
+    return s;
+  }, []);
+
+  return (
+    <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
+      <group rotation={[Math.PI / 6, -Math.PI / 4, 0]} scale={1.2}>
+        {/* Scale Platform */}
+        <mesh material={materials.darkMetal} position={[0, -1, 0]}>
+          <boxGeometry args={[4, 0.2, 3]} />
+        </mesh>
+        {/* Neon Display */}
+        <mesh position={[1.5, -0.9, 1.5]}>
+          <boxGeometry args={[0.8, 0.3, 0.4]} />
+          <meshBasicMaterial color="#00E676" />
+        </mesh>
+        
+        {/* I-Beam */}
+        <mesh material={materials.scuffedMetal} position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+          <extrudeGeometry args={[iBeamShape, { depth: 2, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.05, bevelThickness: 0.05 }]} />
+        </mesh>
+      </group>
+    </Float>
+  );
+}
+
+function RulesFloatingCombo() {
+  const materials = usePremiumMaterials();
+  return (
+    <group>
+      <Float speed={2} rotationIntensity={0.8} floatIntensity={1}>
+        <group rotation={[Math.PI / 4, -Math.PI / 6, 0]} scale={1.2}>
+          <RealisticPipe outerRadius={0.6} innerRadius={0.5} length={4} material={materials.silver} position={[-1, 0, 0]} />
+          <RealisticSquarePipe size={1} wallThickness={0.1} length={3} material={materials.darkMetal} position={[1, 0.5, 0]} />
+        </group>
+      </Float>
+      {Array.from({ length: 15 }).map((_, i) => (
+        <Spark key={`rules-spark-${i}`} />
+      ))}
+    </group>
+  );
+}
+
+function RulesHologramDoc() {
+  const materials = usePremiumMaterials();
+  const holoMat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#FF5722", transparent: true, opacity: 0.6, wireframe: true }), []);
+  return (
+    <Float speed={1.5} rotationIntensity={0.4} floatIntensity={0.8}>
+      <group rotation={[Math.PI / 6, -Math.PI / 5, 0]} scale={1.2}>
+        <RealisticPipe outerRadius={0.8} innerRadius={0.7} length={4} material={materials.silver} position={[0, -1, 0]} rotation={[0, 0, Math.PI / 2]} />
+        <mesh material={holoMat} position={[0, 1, 0]} rotation={[-Math.PI / 8, 0, 0]}>
+          <planeGeometry args={[2.5, 3.5, 10, 10]} />
+        </mesh>
+        {/* Glow center */}
+        <mesh position={[0, 1, 0]}>
+          <sphereGeometry args={[0.4, 16, 16]} />
+          <meshBasicMaterial color="#FF5722" transparent opacity={0.3} />
+        </mesh>
+      </group>
+    </Float>
+  );
+}
+
+export function RulesLive3D({ type }: { type: 'weight' | 'search' | 'transparency' }) {
+  return (
+    <div className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-80 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden rounded-2xl">
+      <LazyCanvas camera={{ position: [0, 0, 8], fov: 45 }} gl={{ alpha: true, antialias: true, dpr: [1, 1.5] }}>
+        <ambientLight intensity={1.5} />
+        <directionalLight position={[5, 10, 5]} intensity={4} color="#ffffff" />
+        <Environment preset="city" />
+        <directionalLight position={[-5, -5, -5]} intensity={2.5} color={type === 'weight' ? "#00E676" : "#FF5722"} />
+        
+        <group position={[0, 0, 0]}>
+          {type === 'weight' && <RulesScaleBeam />}
+          {type === 'search' && <RulesFloatingCombo />}
+          {type === 'transparency' && <RulesHologramDoc />}
+        </group>
+      </LazyCanvas>
+    </div>
+  );
+}
+
+// ==============================================
+// SCANNER DROPZONE 3D
+// ==============================================
+
+export function ScannerLive3D() {
+  const holoMat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#00E676", transparent: true, opacity: 0.8, wireframe: true }), []);
+  return (
+    <div className="absolute inset-0 pointer-events-none z-0 mix-blend-screen opacity-50">
+      <LazyCanvas camera={{ position: [0, 0, 5], fov: 40 }} gl={{ alpha: true }}>
+        <Float speed={3} rotationIntensity={0.5} floatIntensity={0.5}>
+          <mesh material={holoMat} rotation={[-Math.PI / 4, 0, 0]}>
+            <planeGeometry args={[2, 2.5, 8, 8]} />
+          </mesh>
+          <mesh position={[0, 0, 0.1]} rotation={[-Math.PI / 4, 0, 0]}>
+            <planeGeometry args={[1.8, 2.3]} />
+            <meshBasicMaterial color="#00E676" transparent opacity={0.1} />
+          </mesh>
+        </Float>
+      </LazyCanvas>
+    </div>
+  );
+}
