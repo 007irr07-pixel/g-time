@@ -124,7 +124,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
-            className="text-xl sm:text-2xl text-white max-w-3xl mb-12 leading-[1.6] font-medium drop-shadow-[0_4px_20px_rgba(0,0,0,1)] bg-graphite/40 backdrop-blur-sm p-4 rounded-xl border border-white/10"
+            className="text-xl sm:text-2xl text-white max-w-3xl mb-12 leading-[1.6] font-light drop-shadow-[0_4px_30px_rgba(0,0,0,1)]"
           >
             <strong className="text-white font-semibold">50 000 тонн металла</strong> на складах. Фиксируем цену в день счета, даем отсрочку платежа и гарантируем честный вес по ГОСТу.
           </motion.p>
@@ -163,7 +163,7 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5, delay: 1.8 }}
-            className="flex flex-wrap gap-10 sm:gap-16 mt-20 pt-10 border-t border-white/5"
+            className="flex flex-wrap gap-10 sm:gap-16 mt-12 pt-10 border-t border-white/5"
           >
             {[
               { value: "12+", label: "лет доверия" },

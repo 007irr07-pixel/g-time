@@ -12,6 +12,19 @@ export default function PriceModal() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  const formatPhone = (value: string) => {
+    // Strip everything except digits
+    const digits = value.replace(/\D/g, "");
+    // Always start with 7
+    const local = digits.startsWith("7") ? digits.slice(1) : digits;
+    let result = "+7";
+    if (local.length > 0) result += " " + local.slice(0, 3);
+    if (local.length > 3) result += " " + local.slice(3, 6);
+    if (local.length > 6) result += " " + local.slice(6, 8);
+    if (local.length > 8) result += " " + local.slice(8, 10);
+    return result;
+  };
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -143,9 +156,10 @@ export default function PriceModal() {
                       <input
                         type="tel"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        placeholder="+7 (700) 000-00-00"
+                        onChange={(e) => setPhone(formatPhone(e.target.value))}
+                        placeholder="+7 700 000 00 00"
                         required
+                        maxLength={16}
                         className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-orange/50 focus:outline-none focus:ring-1 focus:ring-accent-orange/30 transition-all"
                       />
                     </div>
