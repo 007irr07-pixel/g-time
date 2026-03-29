@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { FolderCheck } from "lucide-react";
 import TiltCard from "./TiltCard";
 import dynamic from "next/dynamic";
 
@@ -36,7 +37,7 @@ function AnimatedCounter({ target, suffix = "", duration = 2.5 }: { target: numb
 const pillars = [
   { type: "logistics" as const, title: "Автопарк", value: 50, suffix: "+", unit: "единиц транспорта", desc: "Свой автопарк — ваша страховка от простоев. Доставляем точно в час. Наши водители всегда на связи, а логистика отлажена до минуты.", color: "orange" },
   { type: "certificate" as const, title: "Документы", value: 100, suffix: "%", unit: "прозрачность", desc: "Документы, к которым нет вопросов. Сертификаты и ЭСФ передаем вместе с металлом. Никаких проблем с технадзором и налоговой.", color: "green" },
-  { type: "certificate" as const, title: "Стандарты АГСК", value: 100, suffix: "%", unit: "соответствие ГОСТ", desc: "Паспорта качества и официальные сертификаты. Наш металлопрокат присутствует в каталогах АГСК, что гарантирует качество и беспроблемное прохождение госэкспертизы.", color: "orange" },
+  { type: "agsk" as const, title: "Стандарты АГСК", value: 100, suffix: "%", unit: "соответствие ГОСТ", desc: "Паспорта качества и официальные сертификаты. Наш металлопрокат присутствует в каталогах АГСК, что гарантирует качество и беспроблемное прохождение госэкспертизы.", color: "orange" },
 ];
 
 function PillarCard({ pillar, index }: { pillar: typeof pillars[0], index: number }) {
@@ -55,8 +56,15 @@ function PillarCard({ pillar, index }: { pillar: typeof pillars[0], index: numbe
         onHoverEnd={() => setHovered(false)}
         className={`relative group bg-graphite/25 backdrop-blur-xl rounded-3xl p-10 border border-white/5 hover:border-${pillar.color === 'orange' ? 'accent-orange/30' : 'accent-green/30'} flex flex-col justify-between overflow-hidden cursor-pointer h-full min-h-[400px]`}
       >
-        {/* Giant Background 3D WebGL scene */}
-        <B2BLive3D type={pillar.type} />
+        {/* Render Folder icon for AGSK, else Giant Background 3D WebGL scene */}
+        {pillar.type === 'agsk' ? (
+          <div className="absolute -right-20 -bottom-20 pointer-events-none opacity-[0.15] group-hover:opacity-40 transition-opacity duration-700">
+            <FolderCheck className="w-[400px] h-[400px] text-accent-orange" strokeWidth={0.5} />
+          </div>
+        ) : (
+          <B2BLive3D type={pillar.type as any} />
+        )}
+
         {/* Readability dark vignettes for top/bottom text */}
         <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-graphite/90 via-graphite/20 to-transparent pointer-events-none mix-blend-multiply" />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-graphite/95 via-graphite/40 to-transparent pointer-events-none mix-blend-multiply" />
