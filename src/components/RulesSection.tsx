@@ -67,12 +67,7 @@ export default function RulesSection() {
   const containerRef = useRef(null);
 
   return (
-    <section id="rules" ref={containerRef} className="relative py-24 sm:py-32 overflow-hidden bg-graphite border-y border-white/5">
-      {/* Texture background (Metallurgical Schematic Grid) */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-      <div className="absolute inset-0 noise-bg mix-blend-overlay opacity-50" />
-      <div className="absolute inset-0 steel-mesh opacity-10" />
-
+    <section id="rules" ref={containerRef} className="relative py-24 sm:py-32 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-left mb-16 border-l-4 border-accent-orange pl-6">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 tracking-tight text-white leading-tight">

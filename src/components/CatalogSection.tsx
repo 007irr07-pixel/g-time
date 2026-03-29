@@ -168,12 +168,6 @@ export default function CatalogSection() {
   return (
     <>
       <section id="catalog" className="relative py-24 sm:py-40 perspective-[2000px]">
-      {/* Deep dark background matching Hero */}
-      <div className="absolute inset-0 bg-graphite" />
-      
-      {/* Grid texture overlay matching Hero */}
-      <div className="absolute inset-0 steel-mesh opacity-20" />
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <motion.div
