@@ -14,11 +14,22 @@ export async function POST(req: NextRequest) {
         user: process.env.SMTP_USER || "info@g-time.kz",
         pass: process.env.SMTP_PASSWORD || "",
       },
+      tls: {
+        rejectUnauthorized: false
+      }
     });
 
     const fileList = files?.length
-      ? `\n\nПрикрепленные файлы:\n${files.map((f: string) => `• ${f}`).join("\n")}`
+      ? `\n\nПрикрепленные файлы:\n${files.map((f: any) => typeof f === 'string' ? `• ${f}` : `• ${f.name}`).join("\n")}`
       : "";
+
+    const mailAttachments = files?.length
+      ? files.map((f: any) => ({
+          filename: f.name || f,
+          content: f.content ? f.content.split('base64,')[1] : '',
+          encoding: 'base64'
+        })).filter((a: any) => a.content)
+      : [];
 
     const subject = type === 'price'
       ? `Запрос прайс-листа от ${name}`
@@ -38,7 +49,7 @@ export async function POST(req: NextRequest) {
         <h2>Новая заявка на расчет сметы</h2>
         <p><strong>Имя:</strong> ${name}</p>
         <p><strong>Телефон:</strong> ${phone}</p>
-        ${files?.length ? `<p><strong>Файлы:</strong></p><ul>${files.map((f: string) => `<li>${f}</li>`).join("")}</ul>` : ""}
+        ${files?.length ? `<p><strong>Файлы:</strong></p><ul>${files.map((f: any) => `<li>${typeof f === 'string' ? f : f.name}</li>`).join("")}</ul>` : ""}
       `;
 
     await transporter.sendMail({
@@ -47,6 +58,7 @@ export async function POST(req: NextRequest) {
       subject,
       text,
       html,
+      attachments: mailAttachments.length > 0 ? mailAttachments : undefined,
     });
 
     return NextResponse.json({ success: true });

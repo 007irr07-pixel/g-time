@@ -11,6 +11,7 @@ export default function PriceModal() {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const formatPhone = (value: string) => {
     // Strip everything except digits
@@ -44,12 +45,15 @@ export default function PriceModal() {
     if (!name || !phone) return;
 
     setLoading(true);
+    setIsError(false);
     try {
-      await fetch('/api/submit', {
+      const res = await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, type: 'price' }),
       });
+
+      if (!res.ok) throw new Error("Ошибка сервера");
 
       // Download the catalog
       const link = document.createElement('a');
@@ -68,6 +72,7 @@ export default function PriceModal() {
       }, 2000);
     } catch (error) {
       console.error(error);
+      setIsError(true);
     } finally {
       setLoading(false);
     }
@@ -121,6 +126,30 @@ export default function PriceModal() {
                   <p className="text-silver text-sm">
                     Каталог будет отправлен на ваш WhatsApp
                   </p>
+                </motion.div>
+              ) : isError ? (
+                <motion.div
+                  key="error"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-8"
+                >
+                  <X
+                    size={56}
+                    className="text-red-500 mx-auto mb-4"
+                  />
+                  <h3 className="text-xl font-heading font-700 text-white mb-2">
+                    Ошибка
+                  </h3>
+                  <p className="text-silver text-sm mb-6">
+                    Не удалось отправить заявку.
+                  </p>
+                  <button
+                    onClick={() => setIsError(false)}
+                    className="bg-graphite border border-border text-white px-6 py-2 rounded-xl hover:bg-surface transition-colors text-sm"
+                  >
+                    Назад
+                  </button>
                 </motion.div>
               ) : (
                 <motion.div key="form">

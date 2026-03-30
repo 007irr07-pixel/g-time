@@ -26,6 +26,15 @@ export default function UploadSection() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const toBase64 = (file: File) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const newFiles = acceptedFiles.map((file) => ({
@@ -78,26 +87,41 @@ export default function UploadSection() {
 
   const handleSubmit = async () => {
     if (!name || !phone) return;
+    setIsSubmitting(true);
+    setIsError(false);
     try {
-      await fetch("/api/submit", {
+      const filesWithData = await Promise.all(
+        files.map(async (f) => ({
+          name: f.file.name,
+          content: await toBase64(f.file)
+        }))
+      );
+
+      const res = await fetch("/api/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
           phone,
-          files: files.map((f) => f.file.name),
+          files: filesWithData,
         }),
       });
+
+      if (!res.ok) throw new Error("Ошибка сервера");
+      
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setFiles([]);
+        setName("");
+        setPhone("");
+      }, 3000);
     } catch (e) {
       console.error("Submit error:", e);
+      setIsError(true);
+    } finally {
+      setIsSubmitting(false);
     }
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFiles([]);
-      setName("");
-      setPhone("");
-    }, 3000);
   };
 
   return (
@@ -182,6 +206,31 @@ export default function UploadSection() {
                   <p className="text-silver">
                     Наш менеджер свяжется с вами в ближайшее время
                   </p>
+                </motion.div>
+              ) : isError ? (
+                <motion.div
+                  key="error"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="text-center py-12"
+                >
+                  <X
+                    size={64}
+                    className="text-red-500 mx-auto mb-4"
+                  />
+                  <h3 className="text-2xl font-heading font-700 text-white mb-2">
+                    Ошибка отправки
+                  </h3>
+                  <p className="text-silver mb-6">
+                    Произошла ошибка при отправке заявки. Пожалуйста, попробуйте снова или свяжитесь с нами напрямую.
+                  </p>
+                  <button
+                    onClick={() => setIsError(false)}
+                    className="bg-graphite border border-border text-white px-6 py-2 rounded-xl hover:bg-surface transition-colors"
+                  >
+                    Попробовать еще раз
+                  </button>
                 </motion.div>
               ) : (
                 <motion.div key="form" initial={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -291,11 +340,16 @@ export default function UploadSection() {
                   {/* Submit */}
                   <button
                     onClick={handleSubmit}
-                    disabled={!name || !phone}
+                    disabled={!name || !phone || isSubmitting}
                     className="w-full mt-6 flex items-center justify-center gap-2 bg-accent-orange hover:bg-accent-orange-dark disabled:bg-steel disabled:cursor-not-allowed text-white font-semibold px-6 py-4 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
-                    <Send size={18} />
-                    Отправить смету на расчет
+                    {isSubmitting ? (
+                       <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                       </svg>
+                    ) : <Send size={18} />}
+                    {isSubmitting ? "Отправка..." : "Отправить смету на расчет"}
                   </button>
                 </motion.div>
               )}
