@@ -21,20 +21,22 @@ export default function Home() {
       <main className="overflow-x-hidden relative bg-graphite">
         <div className="absolute inset-0 steel-mesh opacity-20 pointer-events-none z-0" />
         <HeroSection />
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-16 h-16 border-4 border-accent-orange border-t-transparent rounded-full animate-spin"></div></div>}>
-          <div className="relative overflow-hidden">
-            {/* Seamless steel-mesh grid is globally applied to main */}
-            <BlueprintBackground />
-            
+        <div className="relative overflow-hidden">
+          {/* Seamless steel-mesh grid is globally applied to main */}
+          <BlueprintBackground />
+          
+          <Suspense fallback={<div className="min-h-[500px] flex items-center justify-center"><div className="w-12 h-12 border-4 border-accent-orange border-t-transparent rounded-full animate-spin"></div></div>}>
             <CatalogSection />
-            <RulesSection />
-          </div>
-          <CalculatorSection />
-          <PartnersMarquee />
-          <UploadSection />
+          </Suspense>
+          <RulesSection />
+        </div>
+        <CalculatorSection />
+        <PartnersMarquee />
+        <UploadSection />
+        <Suspense fallback={<div className="min-h-[500px] flex items-center justify-center"><div className="w-12 h-12 border-4 border-accent-orange border-t-transparent rounded-full animate-spin"></div></div>}>
           <B2BSection />
-          <CertificatesSection />
         </Suspense>
+        <CertificatesSection />
       </main>
       <Footer />
       <PriceModal />

@@ -43,7 +43,7 @@ function LoadingSkeleton() {
 }
 
 // --- PROCEDURAL CLEAN BRUSHED NORMAL MAP ---
-function createScratchNormalMap(size = 256): THREE.CanvasTexture {
+function createScratchNormalMap(size = 128): THREE.CanvasTexture {
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
@@ -54,7 +54,7 @@ function createScratchNormalMap(size = 256): THREE.CanvasTexture {
   ctx.fillRect(0, 0, size, size);
 
   // Micro-brushing for new rolled steel
-  for (let i = 0; i < 1500; i++) {
+  for (let i = 0; i < 50; i++) {
     const x = Math.random() * size;
     const y = Math.random() * size;
     const angle = (Math.random() - 0.5) * 0.1;
@@ -83,7 +83,7 @@ function createScratchNormalMap(size = 256): THREE.CanvasTexture {
 }
 
 // --- PROCEDURAL CLEAN ROUGHNESS MAP ---
-function createRoughnessMap(size = 512): THREE.CanvasTexture {
+function createRoughnessMap(size = 128): THREE.CanvasTexture {
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
@@ -94,7 +94,7 @@ function createRoughnessMap(size = 512): THREE.CanvasTexture {
   ctx.fillRect(0, 0, size, size);
 
   // Micro-variation (anisotropic streaks)
-  for (let i = 0; i < 2000; i++) {
+  for (let i = 0; i < 50; i++) {
     const x = Math.random() * size;
     const y = Math.random() * size;
     const val = 40 + Math.random() * 30; // 40 to 70
@@ -113,13 +113,16 @@ function createRoughnessMap(size = 512): THREE.CanvasTexture {
 // --- ENHANCED PREMIUM MATERIALS (NEW STEEL) ---
 let globalNormalMap: THREE.CanvasTexture | null = null;
 let globalRoughnessMap: THREE.CanvasTexture | null = null;
+let globalMaterials: any = null;
 
 function usePremiumMaterials() {
   return useMemo(() => {
+    if (globalMaterials) return globalMaterials;
+
     if (!globalNormalMap && typeof document !== "undefined") {
       try {
-        globalNormalMap = createScratchNormalMap(256);
-        globalRoughnessMap = createRoughnessMap(512);
+        globalNormalMap = createScratchNormalMap(128);
+        globalRoughnessMap = createRoughnessMap(128);
       } catch {
         // SSR fallback
       }
@@ -131,7 +134,7 @@ function usePremiumMaterials() {
       roughnessMap: globalRoughnessMap || undefined,
     };
 
-    return {
+    globalMaterials = {
       // Clean, new steel
       scuffedMetal: new THREE.MeshPhysicalMaterial({
         color: "#A8B0B8",
@@ -214,6 +217,7 @@ function usePremiumMaterials() {
       // Void Black for deep holes
       void: new THREE.MeshBasicMaterial({ color: "#050505" }),
     };
+    return globalMaterials;
   }, []);
 }
 
