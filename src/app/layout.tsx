@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
 import { ModalProvider } from "@/components/ModalContext";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -30,6 +31,23 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`scroll-smooth ${inter.variable} ${manrope.variable}`}>
       <body className="bg-graphite text-white antialiased">
+        <Script id="gtm" strategy="afterInteractive">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-5SF8VRS2');
+          `}
+        </Script>
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-5SF8VRS2"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <ModalProvider>
           {children}
         </ModalProvider>
