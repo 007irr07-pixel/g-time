@@ -34,14 +34,14 @@ function ProductTable({ sub, searchQuery }: { sub: SubCategory; searchQuery: str
         <p className="text-silver text-base max-w-lg leading-relaxed">{sub.note}</p>
         <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
           <a
-            href="tel:+77081692017"
+            href="tel:+77478390605"
             className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue-dark text-white text-sm font-bold px-8 py-4 rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_10px_20px_rgba(0,71,154,0.2)]"
           >
             <Phone size={16} />
             Позвонить
           </a>
           <button
-            onClick={() => window.open("https://wa.me/77081692017", "_blank")}
+            onClick={() => window.open("https://wa.me/77478390605", "_blank")}
             className="flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-bold px-8 py-4 rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_10px_20px_rgba(8,145,178,0.2)]"
           >
             WhatsApp
@@ -269,14 +269,14 @@ export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsM
                   Скачать прайс-лист PDF
                 </a>
                 <a
-                  href="tel:+77070500964"
+                  href="tel:+77478390605"
                   className="flex items-center gap-2 text-sm font-bold text-white hover:text-accent-blue transition-colors"
                 >
                   <Phone size={14} className="text-accent-blue" />
-                  +7 (707) 050 09 64
+                  +7 747 839 06 05
                 </a>
                 <a
-                  href="https://wa.me/77081692017"
+                  href="https://wa.me/77478390605"
                   target="_blank"
                   className="hidden sm:flex items-center gap-2 bg-cyan-600/10 hover:bg-cyan-600/20 text-cyan-500 text-xs font-bold px-4 py-2 rounded-xl transition-all border border-cyan-600/20"
                 >
