@@ -2,10 +2,11 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowRight, Download, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
 import dynamic from "next/dynamic";
 
 const HeroLive3D = dynamic(() => import("./LiveIlls").then(mod => mod.HeroLive3D), { ssr: false });
+const HeroHexBg = dynamic(() => import("./BlueprintBackground"), { ssr: false });
 
 import { useModal } from "./ModalContext";
 
@@ -75,6 +76,11 @@ export default function HeroSection() {
       className="relative min-h-screen flex items-center overflow-hidden perspective-[1000px]"
     >
       {/* Deep dark background is now handled globally */}
+
+      {/* Static 3D hex pattern — top-right */}
+      <div className="absolute top-0 right-0 bottom-0 w-full h-full pointer-events-none z-[1] opacity-60">
+        <HeroHexBg />
+      </div>
 
       {/* Dynamic Parallax Hero Illustration (WebGL) */}
       <motion.div
@@ -151,13 +157,15 @@ export default function HeroSection() {
               />
             </a>
 
-            <button
-              onClick={onOpenPriceModal}
-              className="group relative inline-flex items-center justify-center gap-4 bg-graphite/80 backdrop-blur-xl border border-white/20 hover:border-accent-cyan/60 hover:bg-gunmetal/90 text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+            <a
+              href="https://wa.me/77478390605"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-flex items-center justify-center gap-4 bg-graphite/80 backdrop-blur-xl border border-white/20 hover:border-[#25D366]/60 hover:bg-gunmetal/90 text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
             >
-              <Download size={20} className="text-accent-cyan group-hover:text-white transition-colors drop-shadow-md" />
-              <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Получить прайс в WhatsApp</span>
-            </button>
+              <MessageCircle size={20} className="text-[#25D366] group-hover:text-white transition-colors drop-shadow-md" />
+              <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Перейти на WhatsApp</span>
+            </a>
           </motion.div>
 
           {/* Premium Stats Row */}

@@ -3,18 +3,18 @@
 @source "./";
 
 @theme {
-  --color-graphite: #050B14;
-  --color-gunmetal: #0A1424;
-  --color-gunmetal-light: #111D33;
-  --color-steel: #223554;
+  --color-graphite: #0D1829;
+  --color-gunmetal: #132035;
+  --color-gunmetal-light: #1A2A44;
+  --color-steel: #2A4268;
   --color-silver: #8A9CB2;
   --color-light-silver: #B0C5DE;
   --color-accent-blue: #00479A;
   --color-accent-blue-dark: #003B73;
   --color-accent-cyan: #5DB0E5;
   --color-accent-cyan-dark: #3A8CC7;
-  --color-surface: #0A1424;
-  --color-surface-hover: #111D33;
+  --color-surface: #132035;
+  --color-surface-hover: #1A2A44;
   --color-border: #223554;
   --color-border-accent: #5DB0E533;
 

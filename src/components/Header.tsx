@@ -120,11 +120,11 @@ export default function Header() {
 
             {/* Phone */}
             <a
-              href="tel:+77478393548"
+              href="tel:+77478390605"
               className="flex items-center gap-2 text-sm font-semibold text-white hover:text-accent-blue transition-colors"
             >
               <Phone size={14} />
-              +7 747 839-35-48
+              +7 747 839-06-05
             </a>
 
             {/* CTA */}
@@ -169,11 +169,11 @@ export default function Header() {
               ))}
               <div className="pt-4 border-t border-border space-y-3">
                 <a
-                  href="tel:+77478393548"
+                  href="tel:+77478390605"
                   className="flex items-center gap-2 text-sm font-semibold text-white"
                 >
                   <Phone size={14} className="text-accent-blue" />
-                  +7 747 839-35-48
+                  +7 747 839-06-05
                 </a>
                 <button
                   onClick={() => {

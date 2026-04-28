@@ -1,81 +1,184 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 
+/**
+ * HexagonBackground — beautiful static 3D hexagon grid in site colours.
+ * Rendered entirely in SVG, positioned to the top-right corner.
+ */
 export default function BlueprintBackground() {
+  // Hex geometry helpers
+  const HEX_R = 44;        // outer radius
+  const HEX_COLS = 9;
+  const HEX_ROWS = 12;
+  const W = HEX_R * Math.sqrt(3);   // flat-to-flat width
+  const H = HEX_R * 2;              // height
+
+  // Build one flat-top hexagon path centered at (cx, cy)
+  const hexPath = (cx: number, cy: number, r: number) => {
+    const pts = Array.from({ length: 6 }, (_, i) => {
+      const angle = (Math.PI / 180) * (60 * i - 30);
+      return `${cx + r * Math.cos(angle)},${cy + r * Math.sin(angle)}`;
+    });
+    return `M ${pts.join(" L ")} Z`;
+  };
+
+  // Build hex top-face (parallelogram-ish) for 3D illusion
+  const hexTopPath = (cx: number, cy: number, r: number, dz: number) => {
+    // Shift the top face slightly up by dz
+    const pts = Array.from({ length: 6 }, (_, i) => {
+      const angle = (Math.PI / 180) * (60 * i - 30);
+      return `${cx + r * Math.cos(angle)},${cy + r * Math.sin(angle) - dz}`;
+    });
+    return `M ${pts.join(" L ")} Z`;
+  };
+
+  // Left side (darker) and right side (lighter) paths for the 3D side walls
+  const hexLeftWall = (cx: number, cy: number, r: number, dz: number) => {
+    const angles = [150, 210, 270].map(d => (Math.PI / 180) * (d - 30));
+    const bottom = angles.map(a => `${cx + r * Math.cos(a)},${cy + r * Math.sin(a)}`);
+    const top = angles.map(a => `${cx + r * Math.cos(a)},${cy + r * Math.sin(a) - dz}`);
+    return `M ${top[0]} L ${top[1]} L ${top[2]} L ${bottom[2]} L ${bottom[1]} L ${bottom[0]} Z`;
+  };
+
+  const hexRightWall = (cx: number, cy: number, r: number, dz: number) => {
+    const angles = [270, 330, 30].map(d => (Math.PI / 180) * (d - 30));
+    const bottom = angles.map(a => `${cx + r * Math.cos(a)},${cy + r * Math.sin(a)}`);
+    const top = angles.map(a => `${cx + r * Math.cos(a)},${cy + r * Math.sin(a) - dz}`);
+    return `M ${top[0]} L ${top[1]} L ${top[2]} L ${bottom[2]} L ${bottom[1]} L ${bottom[0]} Z`;
+  };
+
+  const hexes: { cx: number; cy: number; dz: number }[] = [];
+
+  for (let row = 0; row < HEX_ROWS; row++) {
+    for (let col = 0; col < HEX_COLS; col++) {
+      const cx = col * W + (row % 2 === 1 ? W / 2 : 0);
+      const cy = row * (H * 0.75);
+      // Vary the 3D depth based on position — deeper in the centre
+      const distFromCentre = Math.sqrt(
+        Math.pow(col - HEX_COLS / 2, 2) + Math.pow(row - HEX_ROWS / 2, 2)
+      );
+      const dz = Math.max(4, 20 - distFromCentre * 2);
+      hexes.push({ cx, cy, dz });
+    }
+  }
+
+  const viewW = HEX_COLS * W + W / 2;
+  const viewH = HEX_ROWS * (H * 0.75) + H * 0.25 + 30;
+
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-      <svg 
-        width="100%" 
-        height="100%" 
-        preserveAspectRatio="none"
+    <div
+      className="absolute top-0 right-0 pointer-events-none overflow-hidden z-0"
+      style={{ width: "62%", height: "100vh" }}
+    >
+      {/* Fade gradient masks — left and bottom */}
+      <div
+        className="absolute inset-0 z-10"
+        style={{
+          background:
+            "linear-gradient(to right, var(--color-graphite) 0%, transparent 28%), " +
+            "linear-gradient(to top, var(--color-graphite) 0%, transparent 28%)",
+        }}
+      />
+
+      <svg
+        viewBox={`0 0 ${viewW} ${viewH}`}
+        preserveAspectRatio="xMaxYMin slice"
         xmlns="http://www.w3.org/2000/svg"
-        className="opacity-[0.1]"
+        style={{ width: "100%", height: "100%", display: "block" }}
       >
         <defs>
-          <linearGradient id="beam-grad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
-            <stop offset="50%" stopColor="rgba(255,255,255,0.1)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.4)" />
+          {/* Blue glow filter */}
+          <filter id="hex-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+
+          {/* Radial fade so edges dissolve */}
+          <radialGradient id="hex-fade" cx="75%" cy="25%" r="70%">
+            <stop offset="0%" stopColor="white" stopOpacity="1" />
+            <stop offset="60%" stopColor="white" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </radialGradient>
+
+          <mask id="hex-mask">
+            <rect width="100%" height="100%" fill="url(#hex-fade)" />
+          </mask>
+
+          {/* Top-face gradient */}
+          <linearGradient id="top-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#1A3A6E" />
+            <stop offset="100%" stopColor="#0A2050" />
           </linearGradient>
-          <pattern id="diagonal-hatch" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
-            <line x1="0" y1="0" x2="0" y2="8" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-          </pattern>
+
+          {/* Left-wall gradient (darker) */}
+          <linearGradient id="left-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#07163A" />
+            <stop offset="100%" stopColor="#040D25" />
+          </linearGradient>
+
+          {/* Right-wall gradient (medium) */}
+          <linearGradient id="right-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#0F2858" />
+            <stop offset="100%" stopColor="#071840" />
+          </linearGradient>
         </defs>
 
-        {/* --- ВАЖНО: Убран мелкий шум (grid), оставлены только четкие несущие конструкции --- */}
-
-        {/* ОСНОВНЫЕ ВЕРТИКАЛЬНЫЕ КОЛОННЫ (ДВУТАВРЫ) */}
-        {/* Центральная часть (самая мощная) */}
-        <rect x="35%" y="0" width="24" height="100%" fill="url(#beam-grad)" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
-        <rect x="65%" y="0" width="24" height="100%" fill="url(#beam-grad)" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
-        
-        {/* Боковые колонны */}
-        <rect x="15%" y="0" width="12" height="100%" fill="url(#diagonal-hatch)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
-        <rect x="85%" y="0" width="12" height="100%" fill="url(#diagonal-hatch)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
-
-        {/* ГОРИЗОНТАЛЬНЫЕ БАЛКИ (ПЕРЕКРЫТИЯ) */}
-        {/* Уровень 1 */}
-        <rect x="0" y="20%" width="100%" height="16" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.6)" strokeWidth="2" />
-        {/* Уровень 2 */}
-        <rect x="0" y="50%" width="100%" height="16" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.6)" strokeWidth="2" />
-        {/* Уровень 3 */}
-        <rect x="0" y="80%" width="100%" height="16" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.6)" strokeWidth="2" />
-
-        {/* ДИАГОНАЛЬНЫЕ РАСКОСЫ (СВЯЗИ ЖЕСТКОСТИ) - ТОЛЬКО В ЦЕНТРЕ */}
-        {/* Блок 1: От 20% до 50% */}
-        <line x1="35%" y1="20%" x2="65%" y2="50%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" />
-        <line x1="65%" y1="20%" x2="35%" y2="50%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" />
-        
-        {/* Блок 2: От 50% до 80% */}
-        <line x1="35%" y1="50%" x2="65%" y2="80%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" />
-        <line x1="65%" y1="50%" x2="35%" y2="80%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" />
-
-        {/* ИНЖЕНЕРНЫЕ ОТМЕТКИ (КРАСИВЫЕ ЧЕРТЕЖНЫЕ СНОСКИ) */}
-        <g stroke="#00479A" strokeWidth="2" fill="none">
-          {/* Сноска 1 (Перемещена вправо) */}
-          <circle cx="85%" cy="20%" r="20" />
-          <line x1="80%" y1="20%" x2="90%" y2="20%" />
-          <line x1="85%" y1="15%" x2="85%" y2="25%" />
+        {/* All hexes clipped by the radial mask */}
+        <g mask="url(#hex-mask)">
+          {hexes.map(({ cx, cy, dz }, i) => (
+            <g key={i}>
+              {/* Bottom border face */}
+              <path
+                d={hexPath(cx, cy, HEX_R)}
+                fill="none"
+                stroke="#5DB0E5"
+                strokeWidth="0.4"
+                strokeOpacity="0.18"
+              />
+              {/* Right side wall */}
+              <path
+                d={hexRightWall(cx, cy, HEX_R - 1, dz)}
+                fill="url(#right-grad)"
+                stroke="#00479A"
+                strokeWidth="0.5"
+                strokeOpacity="0.35"
+                fillOpacity="0.55"
+              />
+              {/* Left side wall */}
+              <path
+                d={hexLeftWall(cx, cy, HEX_R - 1, dz)}
+                fill="url(#left-grad)"
+                stroke="#00479A"
+                strokeWidth="0.5"
+                strokeOpacity="0.25"
+                fillOpacity="0.55"
+              />
+              {/* Top face */}
+              <path
+                d={hexTopPath(cx, cy, HEX_R - 1, dz)}
+                fill="url(#top-grad)"
+                stroke="#5DB0E5"
+                strokeWidth="0.7"
+                strokeOpacity="0.45"
+                fillOpacity="0.7"
+                filter="url(#hex-glow)"
+              />
+              {/* Inner highlight ring on top face */}
+              <path
+                d={hexTopPath(cx, cy, HEX_R * 0.55, dz)}
+                fill="none"
+                stroke="#5DB0E5"
+                strokeWidth="0.4"
+                strokeOpacity="0.2"
+              />
+            </g>
+          ))}
         </g>
-        
-        <text x="73%" y="19%" fill="#00479A" fontSize="24" fontFamily="monospace" fontWeight="bold" letterSpacing="2">A-1 КОЛОННА</text>
-        
-        <g stroke="#5DB0E5" strokeWidth="2" fill="none">
-          {/* Указатель высоты (Перемещен вправо) */}
-          <line x1="80%" y1="80%" x2="85%" y2="80%" />
-          <polygon points="82.5%,78% 83.5%,80% 81.5%,80%" fill="#5DB0E5" />
-        </g>
-        
-        <text x="64%" y="79%" fill="#5DB0E5" fontSize="20" fontFamily="monospace" fontWeight="bold">УРОВЕНЬ +14.5m</text>
       </svg>
-
-      {/* Мягкая подсветка чертежа по центру */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-radial-gradient from-transparent via-graphite/90 to-graphite pointer-events-none mix-blend-multiply" />
-      
-      {/* Плавное растворение снизу */}
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-graphite to-transparent pointer-events-none" />
     </div>
   );
 }
-
