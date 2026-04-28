@@ -3,20 +3,20 @@
 @source "./";
 
 @theme {
-  --color-graphite: #0D1829;
-  --color-gunmetal: #132035;
-  --color-gunmetal-light: #1A2A44;
-  --color-steel: #2A4268;
-  --color-silver: #8A9CB2;
-  --color-light-silver: #B0C5DE;
-  --color-accent-blue: #00479A;
-  --color-accent-blue-dark: #003B73;
-  --color-accent-cyan: #5DB0E5;
-  --color-accent-cyan-dark: #3A8CC7;
-  --color-surface: #132035;
-  --color-surface-hover: #1A2A44;
-  --color-border: #223554;
-  --color-border-accent: #5DB0E533;
+  --color-graphite: #16263E;
+  --color-gunmetal: #1C3050;
+  --color-gunmetal-light: #243A5E;
+  --color-steel: #325880;
+  --color-silver: #8AACCC;
+  --color-light-silver: #B8D4EE;
+  --color-accent-blue: #1A8CC8;
+  --color-accent-blue-dark: #1270A6;
+  --color-accent-cyan: #5BC8F0;
+  --color-accent-cyan-dark: #2AAEDE;
+  --color-surface: #1C3050;
+  --color-surface-hover: #243A5E;
+  --color-border: #2E4E72;
+  --color-border-accent: #5BC8F033;
 
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-heading: var(--font-manrope), system-ui, -apple-system, sans-serif;
@@ -65,23 +65,23 @@ h1, h2, h3, h4 {
 
 /* Glow effects */
 .glow-blue {
-  box-shadow: 0 0 30px rgba(0, 71, 154, 0.15), 0 0 60px rgba(0, 71, 154, 0.05);
+  box-shadow: 0 0 30px rgba(26, 140, 200, 0.2), 0 0 60px rgba(26, 140, 200, 0.08);
 }
 
 .glow-cyan {
-  box-shadow: 0 0 30px rgba(93, 176, 229, 0.15), 0 0 60px rgba(93, 176, 229, 0.05);
+  box-shadow: 0 0 30px rgba(91, 200, 240, 0.2), 0 0 60px rgba(91, 200, 240, 0.08);
 }
 
 /* Gradient text */
 .gradient-text-blue {
-  background: linear-gradient(135deg, #00479A, #0066CC);
+  background: linear-gradient(135deg, #1A8CC8, #5BC8F0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-cyan {
-  background: linear-gradient(135deg, #5DB0E5, #8BE9FD);
+  background: linear-gradient(135deg, #5BC8F0, #A8E8FF);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -128,7 +128,7 @@ h1, h2, h3, h4 {
   content: '';
   position: absolute;
   inset: -2px;
-  background: conic-gradient(from 0deg, #00479A, #5DB0E5, #00479A);
+  background: conic-gradient(from 0deg, #1A8CC8, #5BC8F0, #1A8CC8);
   border-radius: inherit;
   animation: spin 4s linear infinite;
   z-index: -1;
@@ -140,8 +140,8 @@ h1, h2, h3, h4 {
 
 /* Pulse animation for CTAs */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(93, 176, 229, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(93, 176, 229, 0.5); }
+  0%, 100% { box-shadow: 0 0 20px rgba(91, 200, 240, 0.35); }
+  50% { box-shadow: 0 0 45px rgba(91, 200, 240, 0.6); }
 }
 
 .pulse-glow {
