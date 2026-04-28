@@ -6,6 +6,7 @@ export default function BlueprintSVG() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
       <svg 
+        viewBox="0 0 1000 1000"
         width="100%" 
         height="100%" 
         preserveAspectRatio="none"
@@ -43,18 +44,18 @@ export default function BlueprintSVG() {
         <line x1="65%" y1="50%" x2="35%" y2="80%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" />
 
         {/* ИНЖЕНЕРНЫЕ ОТМЕТКИ */}
-        <g stroke="#00479A" strokeWidth="2" fill="none">
-          <circle cx="85%" cy="20%" r="20" />
-          <line x1="80%" y1="20%" x2="90%" y2="20%" />
-          <line x1="85%" y1="15%" x2="85%" y2="25%" />
+        <g stroke="#1A8CC8" strokeWidth="2" fill="none">
+          <circle cx="850" cy="200" r="20" />
+          <line x1="800" y1="200" x2="900" y2="200" />
+          <line x1="850" y1="150" x2="850" y2="250" />
         </g>
-        <text x="73%" y="19%" fill="#00479A" fontSize="24" fontFamily="monospace" fontWeight="bold" letterSpacing="2">A-1 КОЛОННА</text>
+        <text x="730" y="190" fill="#1A8CC8" fontSize="24" fontFamily="monospace" fontWeight="bold" letterSpacing="2">A-1 КОЛОННА</text>
         
-        <g stroke="#5DB0E5" strokeWidth="2" fill="none">
-          <line x1="80%" y1="80%" x2="85%" y2="80%" />
-          <polygon points="82.5%,78% 83.5%,80% 81.5%,80%" fill="#5DB0E5" />
+        <g stroke="#1A8CC8" strokeWidth="2" fill="none">
+          <line x1="800" y1="800" x2="850" y2="800" />
+          <polygon points="825,760 835,800 815,800" fill="#5BC8F0" />
         </g>
-        <text x="64%" y="79%" fill="#5DB0E5" fontSize="20" fontFamily="monospace" fontWeight="bold">УРОВЕНЬ +14.5m</text>
+        <text x="640" y="790" fill="#5BC8F0" fontSize="20" fontFamily="monospace" fontWeight="bold">УРОВЕНЬ +14.5m</text>
       </svg>
 
       {/* Подсветка по центру */}

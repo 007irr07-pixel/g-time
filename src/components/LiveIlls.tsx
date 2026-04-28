@@ -556,11 +556,11 @@ export function HeroLive3D() {
   if (!loaded) return <LoadingSkeleton />;
 
   return (
-    <LazyCanvas camera={{ position: [0, 0, 22], fov: 45 }} gl={{ alpha: true, antialias: true, powerPreference: "default", dpr: [1, 1.5] }}>
+    <LazyCanvas camera={{ position: [0, 0, 22], fov: 45 }} gl={{ alpha: true, antialias: false, powerPreference: "high-performance", failIfMajorPerformanceCaveat: false, dpr: [1, 1.2] }}>
       <ambientLight intensity={0.5} />
       {/* Dramatic Studio Lighting for metal reflections */}
       <directionalLight position={[10, 10, 5]} intensity={3} color="#ffffff" />
-      <directionalLight position={[-10, -10, -5]} intensity={1.5} color="#5DB0E5" />
+      <directionalLight position={[-10, -10, -5]} intensity={1.5} color="#5BC8F0" />
       {/* Rim light from behind for edge highlights */}
       <directionalLight position={[-5, 0, -15]} intensity={2} color="#ffffff" />
       {/* Fill light to prevent pure-black shadows */}
