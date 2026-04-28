@@ -7,28 +7,36 @@ import * as THREE from "three";
 import { useInView } from "framer-motion";
 
 
-// --- LAZY CANVAS WRAPPER TO PREVENT WEBGL CONTEXT LIMIT CRASH ---
+// --- PERSISTENT CANVAS: loads once, stays in GPU memory forever ---
 function LazyCanvas({ children, camera, gl }: any) {
   const ref = useRef<HTMLDivElement>(null);
 
-  // isMounted keeps the Canvas alive 200px off-screen, then destroys it to free WebGL context
-  const isMounted = useInView(ref, { margin: "200px" });
-
-  // 2. isVisible stops the 3D rendering loop EXACTLY when it leaves the screen (saves battery)
+  // Canvas is ALWAYS mounted — never destroyed, stays in GPU memory
+  // Only the render loop pauses when off-screen to save battery
   const isVisible = useInView(ref, { margin: "0px" });
 
   return (
     <div ref={ref} className="absolute inset-0 w-full h-full pointer-events-none">
-      {isMounted && (
-        <Canvas
-          camera={camera}
-          gl={gl}
-          dpr={[1, 1.5]}
-          frameloop={isVisible ? "always" : "never"}
-        >
-          {children}
-        </Canvas>
-      )}
+      <Canvas
+        camera={camera}
+        gl={{
+          ...gl,
+          // Recover automatically from context loss
+          powerPreference: "high-performance",
+          failIfMajorPerformanceCaveat: false,
+        }}
+        dpr={[1, 1.2]}
+        frameloop={isVisible ? "always" : "demand"}
+        onCreated={({ gl: renderer }) => {
+          // Handle context lost — tell browser we want to restore it
+          const canvas = renderer.domElement;
+          canvas.addEventListener("webglcontextlost", (e) => {
+            e.preventDefault(); // Prevents browser from permanently losing context
+          });
+        }}
+      >
+        {children}
+      </Canvas>
     </div>
   );
 }
