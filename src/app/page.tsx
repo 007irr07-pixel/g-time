@@ -1,4 +1,4 @@
-﻿import dynamic from "next/dynamic";
+import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
@@ -12,7 +12,7 @@ const CalculatorSection = dynamic(() => import("@/components/CalculatorSection")
 const UploadSection = dynamic(() => import("@/components/UploadSection"));
 const B2BSection = dynamic(() => import("@/components/B2BSection"));
 const CertificatesSection = dynamic(() => import("@/components/CertificatesSection"));
-const BlueprintBackground = dynamic(() => import("@/components/BlueprintBackground"));
+const BlueprintSVG = dynamic(() => import("@/components/BlueprintSVG"));
 
 export default function Home() {
   return (
@@ -23,7 +23,7 @@ export default function Home() {
         <HeroSection />
         <div className="relative overflow-hidden">
           {/* Seamless steel-mesh grid is globally applied to main */}
-          <BlueprintBackground />
+          <BlueprintSVG />
           
           <Suspense fallback={<div className="min-h-[500px] flex items-center justify-center"><div className="w-12 h-12 border-4 border-accent-blue border-t-transparent rounded-full animate-spin"></div></div>}>
             <CatalogSection />

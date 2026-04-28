@@ -570,7 +570,6 @@ export function HeroLive3D() {
       <Environment preset="city" />
 
       <HeroRealisticPipes />
-      <FloatingHexagons />
 
       <Preload all />
     </LazyCanvas>
