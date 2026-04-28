@@ -1,153 +1,216 @@
 "use client";
 import React from "react";
 
+/**
+ * Continuous honeycomb surface with pressed-in depth effect and beautiful blue/teal gradient.
+ * Rendered as pure SVG — zero dependencies, fully static.
+ */
 export default function BlueprintBackground() {
+  // Pointy-top hex: circumradius R
+  const R = 52;
+  const W = R * Math.sqrt(3);   // hex width
+  const H = R * 2;              // hex height
+  const rows = 16;
+  const cols = 12;
+
+  // Build hex center positions for a honeycomb grid
+  const hexes: { cx: number; cy: number; col: number; row: number }[] = [];
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const cx = col * W + (row % 2 === 1 ? W / 2 : 0);
+      const cy = row * (H * 0.75);
+      hexes.push({ cx, cy, col, row });
+    }
+  }
+
+  // Pointy-top hex points
   const hexPts = (cx: number, cy: number, r: number) =>
     Array.from({ length: 6 }, (_, i) => {
-      const a = (Math.PI / 3) * i;
-      return `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`;
+      const a = (Math.PI / 3) * i - Math.PI / 6;
+      return `${(cx + r * Math.cos(a)).toFixed(2)},${(cy + r * Math.sin(a)).toFixed(2)}`;
     }).join(" ");
 
-  const hexes = [
-    // Foreground — large
-    { cx: 670, cy: 720, r: 130 }, { cx: 855, cy: 610, r: 118 },
-    { cx: 530, cy: 685, r: 108 }, { cx: 755, cy: 475, r: 100 },
-    { cx: 615, cy: 555, r: 96  }, { cx: 870, cy: 800, r: 90  },
-    // Midground
-    { cx: 440, cy: 565, r: 82 }, { cx: 680, cy: 375, r: 80 },
-    { cx: 810, cy: 330, r: 76 }, { cx: 525, cy: 450, r: 78 },
-    { cx: 880, cy: 430, r: 70 }, { cx: 370, cy: 455, r: 74 },
-    { cx: 640, cy: 255, r: 72 }, { cx: 765, cy: 215, r: 67 },
-    { cx: 880, cy: 265, r: 64 }, { cx: 490, cy: 335, r: 70 },
-    { cx: 355, cy: 345, r: 64 }, { cx: 580, cy: 160, r: 64 },
-    // Background — small
-    { cx: 700, cy: 140, r: 56 }, { cx: 840, cy: 145, r: 52 },
-    { cx: 450, cy: 235, r: 55 }, { cx: 310, cy: 250, r: 50 },
-    { cx: 750, cy: 65,  r: 49 }, { cx: 600, cy: 68,  r: 45 },
-    { cx: 450, cy: 120, r: 50 }, { cx: 880, cy: 75,  r: 42 },
-    { cx: 200, cy: 185, r: 45 }, { cx: 230, cy: 325, r: 48 },
-    { cx: 160, cy: 255, r: 40 }, { cx: 310, cy: 140, r: 45 },
-    { cx: 150, cy: 160, r: 37 }, { cx: 260, cy: 430, r: 36 },
-    { cx: 180, cy: 375, r: 33 }, { cx: 880, cy: 170, r: 34 },
-  ];
+  // Determine if hex is "pressed" based on position pattern
+  const isPressed = (col: number, row: number) => {
+    // Create an organic pressed pattern
+    const val = Math.sin(col * 1.3 + row * 0.9) * Math.cos(col * 0.7 - row * 1.1);
+    return val > 0.45;
+  };
 
-  const depth = (r: number) => r >= 110 ? 1.0 : r >= 80 ? 0.75 : r >= 55 ? 0.5 : 0.28;
+  // Depth-based color from position — gradient from cyan (top-right) to deep blue (bottom-left)
+  const getFaceId = (col: number, row: number) => {
+    const pressed = isPressed(col, row);
+    const pos = (col / cols + row / rows) / 2;
+    if (pressed) return pos > 0.5 ? "face-pressed-deep" : "face-pressed-mid";
+    return pos > 0.6 ? "face-normal-deep" : pos > 0.3 ? "face-normal-mid" : "face-normal-bright";
+  };
+
+  const viewW = cols * W + W / 2;
+  const viewH = rows * H * 0.75 + H * 0.25;
 
   return (
-    <div className="absolute top-0 right-0 pointer-events-none overflow-hidden z-0"
-      style={{ width: "62%", height: "100vh" }}>
-
-      {/* Ambient radial glow */}
-      <div className="absolute" style={{
-        right: "8%", top: "20%", width: "65%", height: "65%",
-        background: "radial-gradient(ellipse, rgba(93,176,229,0.07) 0%, rgba(0,71,154,0.04) 45%, transparent 70%)",
-        filter: "blur(50px)",
-      }} />
-
-      {/* Edge fade masks */}
+    <div
+      className="absolute top-0 right-0 pointer-events-none overflow-hidden z-0"
+      style={{ width: "60%", height: "110vh" }}
+    >
+      {/* Fade masks: left + bottom */}
       <div className="absolute inset-0 z-10" style={{
         background:
-          "linear-gradient(to right, var(--color-graphite) 0%, transparent 18%)," +
-          "linear-gradient(to top, var(--color-graphite) 0%, transparent 12%)",
+          "linear-gradient(to right, var(--color-graphite) 0%, rgba(13,24,41,0.6) 22%, transparent 45%)," +
+          "linear-gradient(to top, var(--color-graphite) 0%, transparent 18%)," +
+          "linear-gradient(to bottom, var(--color-graphite) 0%, transparent 12%)",
       }} />
 
-      <svg viewBox="0 0 960 900" preserveAspectRatio="xMaxYMin slice"
-        xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%", display: "block" }}>
+      {/* Soft ambient blue glow */}
+      <div className="absolute inset-0" style={{
+        background: "radial-gradient(ellipse at 75% 40%, rgba(0,120,220,0.08) 0%, transparent 65%)",
+      }} />
+
+      <svg
+        viewBox={`0 0 ${viewW} ${viewH}`}
+        preserveAspectRatio="xMaxYMin slice"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ width: "100%", height: "100%", display: "block" }}
+      >
         <defs>
-          <filter id="hglow-lg" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="8"  result="b1"/>
-            <feGaussianBlur stdDeviation="3"  result="b2"/>
-            <feMerge><feMergeNode in="b1"/><feMergeNode in="b2"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <filter id="hglow-md" x="-25%" y="-25%" width="150%" height="150%">
-            <feGaussianBlur stdDeviation="4" result="b"/>
-            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <filter id="hglow-sm" x="-15%" y="-15%" width="130%" height="130%">
-            <feGaussianBlur stdDeviation="2" result="b"/>
-            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          {/* ── Face fill gradients ── */}
+          {/* Normal bright (top-left area) */}
+          <linearGradient id="face-normal-bright" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stopColor="#1B4E8A" stopOpacity="0.9"/>
+            <stop offset="100%" stopColor="#0A2248" stopOpacity="0.95"/>
+          </linearGradient>
+          {/* Normal mid */}
+          <linearGradient id="face-normal-mid" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stopColor="#143866" stopOpacity="0.9"/>
+            <stop offset="100%" stopColor="#071830" stopOpacity="0.95"/>
+          </linearGradient>
+          {/* Normal deep (bottom-right) */}
+          <linearGradient id="face-normal-deep" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stopColor="#0E2A4E" stopOpacity="0.95"/>
+            <stop offset="100%" stopColor="#040E1E" stopOpacity="1"/>
+          </linearGradient>
+          {/* Pressed mid — slightly lighter centre for "inset" feel */}
+          <radialGradient id="face-pressed-mid" cx="50%" cy="50%" r="65%">
+            <stop offset="0%"   stopColor="#0A1E3A" stopOpacity="0.98"/>
+            <stop offset="100%" stopColor="#091828" stopOpacity="1"/>
+          </radialGradient>
+          {/* Pressed deep */}
+          <radialGradient id="face-pressed-deep" cx="50%" cy="50%" r="65%">
+            <stop offset="0%"   stopColor="#060F20" stopOpacity="1"/>
+            <stop offset="100%" stopColor="#030810" stopOpacity="1"/>
+          </radialGradient>
+
+          {/* ── Edge / bevel stroke gradients ── */}
+          {/* Top-light bevel (lighter top-left edge) */}
+          <linearGradient id="bevel-light" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stopColor="#5DB0E5" stopOpacity="0.7"/>
+            <stop offset="50%"  stopColor="#2A7AC0" stopOpacity="0.35"/>
+            <stop offset="100%" stopColor="#0D3060" stopOpacity="0.15"/>
+          </linearGradient>
+          {/* Pressed inner shadow (bottom-right edge) */}
+          <linearGradient id="bevel-shadow" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stopColor="#030810" stopOpacity="0.9"/>
+            <stop offset="100%" stopColor="#1A4070" stopOpacity="0.4"/>
+          </linearGradient>
+
+          {/* Soft edge glow filter */}
+          <filter id="edge-glow" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation="1.5" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
           </filter>
 
-          <linearGradient id="hface-a" x1="0.2" y1="0" x2="0.8" y2="1">
-            <stop offset="0%"   stopColor="#1E4080" stopOpacity="0.55"/>
-            <stop offset="100%" stopColor="#040C20" stopOpacity="0.85"/>
-          </linearGradient>
-          <linearGradient id="hface-b" x1="0.1" y1="0" x2="0.9" y2="1">
-            <stop offset="0%"   stopColor="#142E60" stopOpacity="0.5"/>
-            <stop offset="100%" stopColor="#030915" stopOpacity="0.88"/>
-          </linearGradient>
+          {/* Inner glow for pressed hexes */}
+          <filter id="inner-shadow" x="-5%" y="-5%" width="110%" height="110%">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feComposite in="blur" in2="SourceGraphic" operator="in" result="shadow"/>
+            <feMerge>
+              <feMergeNode in="shadow"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
 
-          <radialGradient id="hmask-fade" cx="72%" cy="22%" r="70%">
+          {/* Scene radial mask — fade out at left and corners */}
+          <radialGradient id="scene-fade" cx="80%" cy="45%" r="75%" gradientUnits="objectBoundingBox">
             <stop offset="0%"   stopColor="white" stopOpacity="1"/>
-            <stop offset="55%"  stopColor="white" stopOpacity="0.75"/>
+            <stop offset="50%"  stopColor="white" stopOpacity="0.9"/>
+            <stop offset="80%"  stopColor="white" stopOpacity="0.55"/>
             <stop offset="100%" stopColor="white" stopOpacity="0"/>
           </radialGradient>
-          <mask id="hscene-mask">
-            <rect width="100%" height="100%" fill="url(#hmask-fade)"/>
+          <mask id="scene-mask">
+            <rect width="100%" height="100%" fill="url(#scene-fade)"/>
           </mask>
         </defs>
 
-        <g mask="url(#hscene-mask)">
-          {hexes.map(({ cx, cy, r }, i) => {
-            const d   = depth(r);
-            const big = r >= 95;
-            const mid = r >= 65 && r < 95;
-            const flt = big ? "hglow-lg" : mid ? "hglow-md" : "hglow-sm";
-            const ec  = "#5DB0E5";
-            const eo  = 0.3 + d * 0.65;
-            const sw  = big ? 2.0 : mid ? 1.5 : 1.0;
+        <g mask="url(#scene-mask)">
+          {hexes.map(({ cx, cy, col, row }, i) => {
+            const pressed = isPressed(col, row);
+            const faceId  = getFaceId(col, row);
+            const rOuter  = R - 1.5;
+            const rInner  = R - 4.5;
 
             return (
-              <g key={i} opacity={d * 0.85 + 0.15}>
-                {/* Dark glass face */}
-                <polygon points={hexPts(cx, cy, r)}
-                  fill={i % 2 === 0 ? "url(#hface-a)" : "url(#hface-b)"}
-                  fillOpacity={0.6 + d * 0.2} stroke="none"/>
+              <g key={i}>
+                {/* Main face fill */}
+                <polygon
+                  points={hexPts(cx, cy, rOuter)}
+                  fill={`url(#${faceId})`}
+                  stroke="none"
+                />
 
-                {/* Glowing edge — wide soft */}
-                <polygon points={hexPts(cx, cy, r)} fill="none"
-                  stroke={ec} strokeWidth={sw * 4} strokeOpacity={eo * 0.18}
-                  filter={`url(#${flt})`}/>
-                {/* Glowing edge — tight bright */}
-                <polygon points={hexPts(cx, cy, r)} fill="none"
-                  stroke={ec} strokeWidth={sw} strokeOpacity={eo}
-                  filter={`url(#${flt})`}/>
-
-                {/* Top-left edge highlight (premium glass feel) */}
-                <polygon points={hexPts(cx, cy, r * 0.995)} fill="none"
-                  stroke="#A8DFFF" strokeWidth={sw * 0.6} strokeOpacity={eo * 0.5}
-                  strokeDasharray={`${r * 1.2} ${r * 4}`} strokeDashoffset={`${r * 0.3}`}/>
-
-                {/* Inner ring 1 */}
-                <polygon points={hexPts(cx, cy, r * 0.62)} fill="none"
-                  stroke={ec} strokeWidth={big ? 0.9 : 0.7} strokeOpacity={eo * 0.4}/>
-
-                {/* Inner ring 2 (large hexes only) */}
-                {big && (
-                  <polygon points={hexPts(cx, cy, r * 0.35)} fill="none"
-                    stroke={ec} strokeWidth={0.6} strokeOpacity={eo * 0.22}/>
+                {pressed ? (
+                  <>
+                    {/* Pressed: dark inner bevel shadow */}
+                    <polygon
+                      points={hexPts(cx, cy, rOuter)}
+                      fill="none"
+                      stroke="url(#bevel-shadow)"
+                      strokeWidth="3"
+                      filter="url(#inner-shadow)"
+                    />
+                    {/* Pressed: subtle inner highlight ring at bottom */}
+                    <polygon
+                      points={hexPts(cx, cy, rInner - 2)}
+                      fill="none"
+                      stroke="#5DB0E5"
+                      strokeWidth="0.6"
+                      strokeOpacity="0.18"
+                    />
+                  </>
+                ) : (
+                  <>
+                    {/* Normal: bright top-left bevel */}
+                    <polygon
+                      points={hexPts(cx, cy, rOuter)}
+                      fill="none"
+                      stroke="url(#bevel-light)"
+                      strokeWidth="1.5"
+                      filter="url(#edge-glow)"
+                    />
+                    {/* Normal: sharp bright top edge */}
+                    <polygon
+                      points={hexPts(cx, cy, rOuter)}
+                      fill="none"
+                      stroke="#5DB0E5"
+                      strokeWidth="0.5"
+                      strokeOpacity="0.4"
+                    />
+                  </>
                 )}
 
-                {/* Centre dot (foreground hexes) */}
-                {big && (
-                  <circle cx={cx} cy={cy} r={3} fill={ec} fillOpacity={0.5}
-                    filter="url(#hglow-md)"/>
-                )}
+                {/* Shared thin gap between hexes */}
+                <polygon
+                  points={hexPts(cx, cy, rOuter)}
+                  fill="none"
+                  stroke="#030810"
+                  strokeWidth="1.5"
+                  strokeOpacity="0.95"
+                />
               </g>
             );
           })}
-
-          {/* Ambient particles */}
-          {([
-            [740,400,2.5],[620,300,1.8],[850,500,2],[550,600,1.5],
-            [700,200,2],[800,700,1.8],[480,500,1.5],[680,640,2],
-            [730,550,1.5],[580,400,1.8],[820,380,2],[660,180,1.5],
-            [760,310,1],[450,360,1.2],[880,540,1.8],
-          ] as [number,number,number][]).map(([px,py,pr],i) => (
-            <circle key={`p${i}`} cx={px} cy={py} r={pr}
-              fill="#5DB0E5" fillOpacity={0.25 + (i%4)*0.08}
-              filter="url(#hglow-md)"/>
-          ))}
         </g>
       </svg>
     </div>
