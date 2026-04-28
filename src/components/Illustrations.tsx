@@ -1,22 +1,22 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 
 interface IllustrationProps {
   isHovered: boolean;
-  color?: "orange" | "green";
+  color?: "blue" | "cyan";
 }
 
-const getColors = (color: "orange" | "green") => {
-  return color === "orange"
-    ? { primary: "#FF5722", bg: "rgba(255, 87, 34, 0.15)", glow: "rgba(255, 87, 34, 0.4)" }
-    : { primary: "#00E676", bg: "rgba(0, 230, 118, 0.15)", glow: "rgba(0, 230, 118, 0.4)" };
+const getColors = (color: "blue" | "cyan") => {
+  return color === "blue"
+    ? { primary: "#00479A", bg: "rgba(0, 71, 154, 0.15)", glow: "rgba(0, 71, 154, 0.4)" }
+    : { primary: "#5DB0E5", bg: "rgba(93, 176, 229, 0.15)", glow: "rgba(93, 176, 229, 0.4)" };
 };
 
 // ==========================================
 // Трубный прокат (Pipes) - 3 Stacked Pipes
 // ==========================================
-export const PipeIllustration = ({ isHovered, color = "orange" }: IllustrationProps) => {
+export const PipeIllustration = ({ isHovered, color = "blue" }: IllustrationProps) => {
   const { primary, bg, glow } = getColors(color);
   
   return (
@@ -73,7 +73,7 @@ export const PipeIllustration = ({ isHovered, color = "orange" }: IllustrationPr
 // ==========================================
 // Сортовой прокат (Beam) - I-Beam
 // ==========================================
-export const BeamIllustration = ({ isHovered, color = "green" }: IllustrationProps) => {
+export const BeamIllustration = ({ isHovered, color = "cyan" }: IllustrationProps) => {
   const { primary, bg, glow } = getColors(color);
   
   return (
@@ -121,7 +121,7 @@ export const BeamIllustration = ({ isHovered, color = "green" }: IllustrationPro
 // ==========================================
 // Листовой прокат (Sheets) - Stacked metal sheets
 // ==========================================
-export const SheetIllustration = ({ isHovered, color = "orange" }: IllustrationProps) => {
+export const SheetIllustration = ({ isHovered, color = "blue" }: IllustrationProps) => {
   const { primary, bg, glow } = getColors(color);
   
   return (
@@ -169,7 +169,7 @@ export const SheetIllustration = ({ isHovered, color = "orange" }: IllustrationP
 // ==========================================
 // Фасонный прокат (Angles) - L-Profile
 // ==========================================
-export const AngleIllustration = ({ isHovered, color = "green" }: IllustrationProps) => {
+export const AngleIllustration = ({ isHovered, color = "cyan" }: IllustrationProps) => {
   const { primary, bg, glow } = getColors(color);
   
   return (
@@ -214,7 +214,7 @@ export const AngleIllustration = ({ isHovered, color = "green" }: IllustrationPr
 // ==========================================
 // Арматура (Rebar) - Ribbed cylindrical rod
 // ==========================================
-export const RebarIllustration = ({ isHovered, color = "orange" }: IllustrationProps) => {
+export const RebarIllustration = ({ isHovered, color = "blue" }: IllustrationProps) => {
   const { primary, bg, glow } = getColors(color);
   
   return (
@@ -286,27 +286,27 @@ export const HeroPipeIllustration = () => {
       {/* Background massive glowing aura */}
       <motion.div 
         className="absolute w-[600px] h-[600px] rounded-full blur-[100px] mix-blend-screen"
-        style={{ background: "radial-gradient(circle, rgba(255,87,34,0.1) 0%, rgba(0,230,118,0.05) 50%, transparent 80%)" }}
+        style={{ background: "radial-gradient(circle, rgba(0,71,154,0.1) 0%, rgba(93,176,229,0.05) 50%, transparent 80%)" }}
         animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
       />
       
       {/* 3D Massive Pipe Bundle */}
-      <svg width="100%" height="100%" viewBox="0 0 1000 800" fill="none" className="relative z-10 w-full max-w-[800px] h-auto drop-shadow-[0_0_50px_rgba(255,87,34,0.2)]">
+      <svg width="100%" height="100%" viewBox="0 0 1000 800" fill="none" className="relative z-10 w-full max-w-[800px] h-auto drop-shadow-[0_0_50px_rgba(0,71,154,0.2)]">
         
         {/* Animated Background Sparks */}
-        <motion.circle cx="400" cy="300" r="3" fill="#FF5722" animate={{ scale: [0, 2, 0], opacity: [0, 1, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
-        <motion.circle cx="650" cy="500" r="4" fill="#00E676" animate={{ scale: [0, 2, 0], opacity: [0, 1, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
+        <motion.circle cx="400" cy="300" r="3" fill="#00479A" animate={{ scale: [0, 2, 0], opacity: [0, 1, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
+        <motion.circle cx="650" cy="500" r="4" fill="#5DB0E5" animate={{ scale: [0, 2, 0], opacity: [0, 1, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
         <motion.circle cx="300" cy="600" r="2" fill="#FFFFFF" animate={{ scale: [0, 2, 0], opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }} />
 
         <g transform="translate(150, 100)">
-          {/* Back Pipe (Green accent) */}
+          {/* Back Pipe (cyan accent) */}
           <motion.g 
             animate={{ y: [0, -20, 0], rotate: [0, -1, 0] }} 
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           >
-            <path d="M400 600 L750 250 V330 L400 680 Z" fill="url(#heroPipeGreen)" stroke="#00E676" strokeWidth="2" opacity="0.8" />
-            <ellipse cx="400" cy="640" rx="30" ry="40" fill="#111" stroke="#00E676" strokeWidth="2" />
+            <path d="M400 600 L750 250 V330 L400 680 Z" fill="url(#heroPipecyan)" stroke="#5DB0E5" strokeWidth="2" opacity="0.8" />
+            <ellipse cx="400" cy="640" rx="30" ry="40" fill="#111" stroke="#5DB0E5" strokeWidth="2" />
             <ellipse cx="750" cy="290" rx="30" ry="40" fill="#222" />
           </motion.g>
 
@@ -321,16 +321,16 @@ export const HeroPipeIllustration = () => {
             <ellipse cx="650" cy="140" rx="35" ry="40" fill="#333" />
           </motion.g>
 
-          {/* Front Giant Orange Pipe (Main) */}
+          {/* Front Giant blue Pipe (Main) */}
           <motion.g 
-            animate={{ y: [0, -30, 0], x: [0, -15, 0], filter: ["drop-shadow(0 0 20px rgba(255,87,34,0.3))", "drop-shadow(0 0 40px rgba(255,87,34,0.6))", "drop-shadow(0 0 20px rgba(255,87,34,0.3))"] }} 
+            animate={{ y: [0, -30, 0], x: [0, -15, 0], filter: ["drop-shadow(0 0 20px rgba(0,71,154,0.3))", "drop-shadow(0 0 40px rgba(0,71,154,0.6))", "drop-shadow(0 0 20px rgba(0,71,154,0.3))"] }} 
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
           >
-            <path d="M100 650 L550 250 V350 L100 750 Z" fill="url(#heroPipeMain)" stroke="#FF5722" strokeWidth="4" />
+            <path d="M100 650 L550 250 V350 L100 750 Z" fill="url(#heroPipeMain)" stroke="#00479A" strokeWidth="4" />
             {/* Front glowing opening */}
-            <ellipse cx="100" cy="700" rx="45" ry="50" fill="#1A1A1A" stroke="#FF5722" strokeWidth="4" />
+            <ellipse cx="100" cy="700" rx="45" ry="50" fill="#1A1A1A" stroke="#00479A" strokeWidth="4" />
             {/* Deep inner core */}
-            <ellipse cx="100" cy="700" rx="30" ry="35" fill="#000" stroke="#FF5722" strokeOpacity="0.5" strokeWidth="2" />
+            <ellipse cx="100" cy="700" rx="30" ry="35" fill="#000" stroke="#00479A" strokeOpacity="0.5" strokeWidth="2" />
             
             {/* Animated Liquid/Energy flowing out of the pipe */}
             <motion.path 
@@ -348,7 +348,7 @@ export const HeroPipeIllustration = () => {
         <defs>
           <linearGradient id="heroPipeMain" x1="100" y1="650" x2="550" y2="350">
             <stop offset="0%" stopColor="#1A1A1A" />
-            <stop offset="30%" stopColor="#FF5722" stopOpacity="0.3" />
+            <stop offset="30%" stopColor="#00479A" stopOpacity="0.3" />
             <stop offset="60%" stopColor="#3A3D42" />
             <stop offset="100%" stopColor="#1A1A1A" />
           </linearGradient>
@@ -359,18 +359,21 @@ export const HeroPipeIllustration = () => {
             <stop offset="100%" stopColor="#1A1A1A" />
           </linearGradient>
 
-          <linearGradient id="heroPipeGreen" x1="400" y1="600" x2="750" y2="250">
+          <linearGradient id="heroPipecyan" x1="400" y1="600" x2="750" y2="250">
             <stop offset="0%" stopColor="#1A1A1A" />
-            <stop offset="40%" stopColor="#00E676" stopOpacity="0.2" />
+            <stop offset="40%" stopColor="#5DB0E5" stopOpacity="0.2" />
             <stop offset="100%" stopColor="#2C2F33" />
           </linearGradient>
 
           <linearGradient id="energyGlow" x1="100" y1="740" x2="300" y2="800">
-            <stop offset="0%" stopColor="#FF5722" />
-            <stop offset="100%" stopColor="#00E676" stopOpacity="0" />
+            <stop offset="0%" stopColor="#00479A" />
+            <stop offset="100%" stopColor="#5DB0E5" stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>
     </div>
   );
 };
+
+
+

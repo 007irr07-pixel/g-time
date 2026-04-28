@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -10,11 +10,11 @@ const CardLive3D = dynamic(() => import("./LiveIlls").then(mod => mod.CardLive3D
 
 interface CatalogItem {
   id: string;
-  illustration: React.FC<{ isHovered: boolean; color?: "orange" | "green" }>;
+  illustration: React.FC<{ isHovered: boolean; color?: "blue" | "cyan" }>;
   title: string;
   subtitle: string;
   items: string[];
-  accentColor: "orange" | "green";
+  accentColor: "blue" | "cyan";
   borderColor: string;
   glowColor: string;
 }
@@ -22,53 +22,53 @@ interface CatalogItem {
 const catalogItems: CatalogItem[] = [
   {
     id: "pipes",
-    illustration: (props: any) => <CardLive3D type="pipe" color={props.color || "orange"} />,
+    illustration: (props: any) => <CardLive3D type="pipe" color={props.color || "blue"} />,
     title: "Трубный прокат",
     subtitle: "Профильные и круглые трубы",
     items: ["Труба ВГП", "Труба э/с", "Труба профильная", "Труба бесшовная"],
-    accentColor: "orange",
-    borderColor: "hover:border-accent-orange/50",
-    glowColor: "group-hover:shadow-[0_0_40px_rgba(255,87,34,0.15)]",
+    accentColor: "blue",
+    borderColor: "hover:border-accent-blue/50",
+    glowColor: "group-hover:shadow-[0_0_40px_rgba(0,71,154,0.15)]",
   },
   {
     id: "beams",
-    illustration: (props: any) => <CardLive3D type="beam" color={props.color || "green"} />,
+    illustration: (props: any) => <CardLive3D type="beam" color={props.color || "cyan"} />,
     title: "Сортовой прокат",
     subtitle: "Швеллеры, балки, уголки",
     items: ["Швеллер", "Балка двутавровая", "Уголок", "Полоса"],
-    accentColor: "green",
-    borderColor: "hover:border-accent-green/50",
-    glowColor: "group-hover:shadow-[0_0_40px_rgba(0,230,118,0.15)]",
+    accentColor: "cyan",
+    borderColor: "hover:border-accent-cyan/50",
+    glowColor: "group-hover:shadow-[0_0_40px_rgba(93,176,229,0.15)]",
   },
   {
     id: "sheets",
-    illustration: (props: any) => <CardLive3D type="sheet" color={props.color || "orange"} />,
+    illustration: (props: any) => <CardLive3D type="sheet" color={props.color || "blue"} />,
     title: "Листовой прокат",
     subtitle: "Горячекатаный и оцинкованный",
     items: ["Лист г/к", "Лист х/к", "Лист оцинкованный", "Лист рифленый"],
-    accentColor: "orange",
-    borderColor: "hover:border-accent-orange/50",
-    glowColor: "group-hover:shadow-[0_0_40px_rgba(255,87,34,0.15)]",
+    accentColor: "blue",
+    borderColor: "hover:border-accent-blue/50",
+    glowColor: "group-hover:shadow-[0_0_40px_rgba(0,71,154,0.15)]",
   },
   {
     id: "angles",
-    illustration: (props: any) => <CardLive3D type="angle" color={props.color || "green"} />,
+    illustration: (props: any) => <CardLive3D type="angle" color={props.color || "cyan"} />,
     title: "Фасонный прокат",
     subtitle: "Специальные профили",
     items: ["Швеллер гнутый", "Профиль Z-образный", "Уголок неравнополочный", "Профлист"],
-    accentColor: "green",
-    borderColor: "hover:border-accent-green/50",
-    glowColor: "group-hover:shadow-[0_0_40px_rgba(0,230,118,0.15)]",
+    accentColor: "cyan",
+    borderColor: "hover:border-accent-cyan/50",
+    glowColor: "group-hover:shadow-[0_0_40px_rgba(93,176,229,0.15)]",
   },
   {
     id: "rebar",
-    illustration: (props: any) => <CardLive3D type="rebar" color={props.color || "orange"} />,
+    illustration: (props: any) => <CardLive3D type="rebar" color={props.color || "blue"} />,
     title: "Арматура",
     subtitle: "Строительная арматура и проволока",
     items: ["Арматура А500С", "Арматура А400", "Проволока ВР-1", "Катанка"],
-    accentColor: "orange",
-    borderColor: "hover:border-accent-orange/50",
-    glowColor: "group-hover:shadow-[0_0_40px_rgba(255,87,34,0.15)]",
+    accentColor: "blue",
+    borderColor: "hover:border-accent-blue/50",
+    glowColor: "group-hover:shadow-[0_0_40px_rgba(0,71,154,0.15)]",
   },
 ];
 
@@ -125,9 +125,9 @@ function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number
                   >
                     <span
                       className={`w-1.5 h-1.5 shrink-0 rounded-full ${
-                        item.accentColor === "orange"
-                          ? "bg-accent-orange shadow-[0_0_12px_#FF5722]"
-                          : "bg-accent-green shadow-[0_0_12px_#00E676]"
+                        item.accentColor === "blue"
+                          ? "bg-accent-blue shadow-[0_0_12px_#00479A]"
+                          : "bg-accent-cyan shadow-[0_0_12px_#5DB0E5]"
                       } transition-all duration-300 group-hover:scale-[2]`}
                     />
                     {prod}
@@ -145,9 +145,9 @@ function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number
         >
           <motion.div
             className={`flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-base text-white border transition-all duration-500 shadow-2xl ${
-              item.accentColor === "orange"
-                ? "bg-accent-orange hover:bg-orange-500 border-accent-orange/80 shadow-[0_0_30px_rgba(255,87,34,0.6)]"
-                : "bg-accent-green hover:bg-green-500 border-accent-green/80 shadow-[0_0_30px_rgba(0,230,118,0.6)]"
+              item.accentColor === "blue"
+                ? "bg-accent-blue hover:bg-blue-500 border-accent-blue/80 shadow-[0_0_30px_rgba(0,71,154,0.6)]"
+                : "bg-accent-cyan hover:bg-cyan-500 border-accent-cyan/80 shadow-[0_0_30px_rgba(93,176,229,0.6)]"
             } backdrop-blur-md`}
             initial={{ y: 20, opacity: 0, scale: 0.9 }}
             animate={isHovered ? { y: 0, opacity: 1 } : { y: 10, opacity: 0 }}
@@ -177,12 +177,12 @@ export default function CatalogSection() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center mb-24"
         >
-          <span className="inline-block py-1 px-3 rounded-full border border-accent-orange/30 bg-accent-orange/5 text-xs font-bold text-accent-orange uppercase tracking-[0.2em] mb-4">
+          <span className="inline-block py-1 px-3 rounded-full border border-accent-blue/30 bg-accent-blue/5 text-xs font-bold text-accent-blue uppercase tracking-[0.2em] mb-4">
             Каталог продукции
           </span>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 mt-2 mb-6 tracking-tight text-white">
             Металлопрокат строго по ГОСТ. <br className="hidden sm:block" />
-            <span className="gradient-text-orange">Без ожидания и перебоев.</span>
+            <span className="gradient-text-blue">Без ожидания и перебоев.</span>
           </h2>
           <p className="text-zinc-100 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
             50 000 тонн металла уже на складе. От труб до арматуры — скомплектуем заказ любой сложности за 1 час.
@@ -207,3 +207,6 @@ export default function CatalogSection() {
     </>
   );
 }
+
+
+

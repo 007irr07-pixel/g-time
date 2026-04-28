@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
@@ -63,10 +63,10 @@ export default function UploadSection() {
 
   const getFileIcon = (type: string) => {
     if (type.includes("spreadsheet") || type.includes("excel"))
-      return <FileSpreadsheet size={20} className="text-accent-green" />;
+      return <FileSpreadsheet size={20} className="text-accent-cyan" />;
     if (type.includes("pdf"))
-      return <FileText size={20} className="text-accent-orange" />;
-    return <ImageIcon size={20} className="text-accent-green" />;
+      return <FileText size={20} className="text-accent-blue" />;
+    return <ImageIcon size={20} className="text-accent-cyan" />;
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -166,11 +166,11 @@ export default function UploadSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-xs font-medium text-accent-orange uppercase tracking-[0.2em]">
+          <span className="text-xs font-medium text-accent-blue uppercase tracking-[0.2em]">
             Быстрый запрос
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-800 mt-4 mb-6">
-            Хватит тратить время <span className="gradient-text-orange">на поиск.</span>
+            Хватит тратить время <span className="gradient-text-blue">на поиск.</span>
           </h2>
           <p className="text-silver text-lg max-w-2xl mx-auto">
             Скиньте фото сметы — остальное мы берем на себя. Принимаем файлы в любом виде, даже рукописные списки. Рассчитаем стоимость за 30 минут.
@@ -198,7 +198,7 @@ export default function UploadSection() {
                 >
                   <CheckCircle
                     size={64}
-                    className="text-accent-green mx-auto mb-4"
+                    className="text-accent-cyan mx-auto mb-4"
                   />
                   <h3 className="text-2xl font-heading font-700 text-white mb-2">
                     Заявка отправлена!
@@ -239,8 +239,8 @@ export default function UploadSection() {
                     {...getRootProps()}
                     className={`relative border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-300 overflow-hidden ${
                       isDragActive
-                        ? "border-accent-green bg-accent-green/10 scale-[1.02] shadow-[0_0_30px_rgba(0,230,118,0.2)]"
-                        : "border-border hover:border-accent-orange/40 hover:bg-surface/50"
+                        ? "border-accent-cyan bg-accent-cyan/10 scale-[1.02] shadow-[0_0_30px_rgba(93,176,229,0.2)]"
+                        : "border-border hover:border-accent-blue/40 hover:bg-surface/50"
                     }`}
                   >
                     <input {...getInputProps()} />
@@ -256,10 +256,10 @@ export default function UploadSection() {
                       <Upload
                         size={40}
                         className={`mx-auto mb-4 transition-colors duration-300 ${
-                          isDragActive ? "text-accent-green drop-shadow-[0_0_15px_rgba(0,230,118,1)]" : "text-steel"
+                          isDragActive ? "text-accent-cyan drop-shadow-[0_0_15px_rgba(93,176,229,1)]" : "text-steel"
                         }`}
                       />
-                      <p className={`font-medium mb-1 transition-colors duration-300 ${isDragActive ? "text-accent-green" : "text-white"}`}>
+                      <p className={`font-medium mb-1 transition-colors duration-300 ${isDragActive ? "text-accent-cyan" : "text-white"}`}>
                         {isDragActive
                           ? "Отпустите файлы для загрузки"
                           : "Перетащите файл или нажмите для выбора"}
@@ -299,7 +299,7 @@ export default function UploadSection() {
                             </div>
                             <button
                               onClick={() => removeFile(i)}
-                              className="text-steel hover:text-accent-orange transition-colors p-1"
+                              className="text-steel hover:text-accent-blue transition-colors p-1"
                             >
                               <X size={16} />
                             </button>
@@ -320,7 +320,7 @@ export default function UploadSection() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Иван Петров"
-                        className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-orange/50 focus:outline-none focus:ring-1 focus:ring-accent-orange/30 transition-all"
+                        className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-blue/50 focus:outline-none focus:ring-1 focus:ring-accent-blue/30 transition-all"
                       />
                     </div>
                     <div>
@@ -332,7 +332,7 @@ export default function UploadSection() {
                         value={phone}
                         onChange={handlePhoneChange}
                         placeholder="+7 XXX XXX XX XX"
-                        className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-orange/50 focus:outline-none focus:ring-1 focus:ring-accent-orange/30 transition-all"
+                        className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-blue/50 focus:outline-none focus:ring-1 focus:ring-accent-blue/30 transition-all"
                       />
                     </div>
                   </div>
@@ -341,7 +341,7 @@ export default function UploadSection() {
                   <button
                     onClick={handleSubmit}
                     disabled={!name || !phone || isSubmitting}
-                    className="w-full mt-6 flex items-center justify-center gap-2 bg-accent-orange hover:bg-accent-orange-dark disabled:bg-steel disabled:cursor-not-allowed text-white font-semibold px-6 py-4 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full mt-6 flex items-center justify-center gap-2 bg-accent-blue hover:bg-accent-blue-dark disabled:bg-steel disabled:cursor-not-allowed text-white font-semibold px-6 py-4 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {isSubmitting ? (
                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -360,3 +360,5 @@ export default function UploadSection() {
     </section>
   );
 }
+
+

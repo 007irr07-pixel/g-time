@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 
@@ -52,22 +52,22 @@ export default function BlueprintBackground() {
         <line x1="65%" y1="50%" x2="35%" y2="80%" stroke="rgba(255,255,255,0.4)" strokeWidth="4" />
 
         {/* ИНЖЕНЕРНЫЕ ОТМЕТКИ (КРАСИВЫЕ ЧЕРТЕЖНЫЕ СНОСКИ) */}
-        <g stroke="#FF5722" strokeWidth="2" fill="none">
+        <g stroke="#00479A" strokeWidth="2" fill="none">
           {/* Сноска 1 (Перемещена вправо) */}
           <circle cx="85%" cy="20%" r="20" />
           <line x1="80%" y1="20%" x2="90%" y2="20%" />
           <line x1="85%" y1="15%" x2="85%" y2="25%" />
         </g>
         
-        <text x="73%" y="19%" fill="#FF5722" fontSize="24" fontFamily="monospace" fontWeight="bold" letterSpacing="2">A-1 КОЛОННА</text>
+        <text x="73%" y="19%" fill="#00479A" fontSize="24" fontFamily="monospace" fontWeight="bold" letterSpacing="2">A-1 КОЛОННА</text>
         
-        <g stroke="#00E676" strokeWidth="2" fill="none">
+        <g stroke="#5DB0E5" strokeWidth="2" fill="none">
           {/* Указатель высоты (Перемещен вправо) */}
           <line x1="80%" y1="80%" x2="85%" y2="80%" />
-          <polygon points="82.5%,78% 83.5%,80% 81.5%,80%" fill="#00E676" />
+          <polygon points="82.5%,78% 83.5%,80% 81.5%,80%" fill="#5DB0E5" />
         </g>
         
-        <text x="64%" y="79%" fill="#00E676" fontSize="20" fontFamily="monospace" fontWeight="bold">УРОВЕНЬ +14.5m</text>
+        <text x="64%" y="79%" fill="#5DB0E5" fontSize="20" fontFamily="monospace" fontWeight="bold">УРОВЕНЬ +14.5m</text>
       </svg>
 
       {/* Мягкая подсветка чертежа по центру */}
@@ -78,3 +78,4 @@ export default function BlueprintBackground() {
     </div>
   );
 }
+

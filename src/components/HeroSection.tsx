@@ -78,10 +78,12 @@ export default function HeroSection() {
 
       {/* Dynamic Parallax Hero Illustration (WebGL) */}
       <motion.div
-        style={{ y: yBg1 }}
+        style={{ y: yHero }}
         className="absolute top-0 right-0 bottom-0 w-[150vw] sm:inset-0 sm:w-full pointer-events-none origin-center pt-32 sm:pt-20 opacity-25 sm:opacity-100 translate-x-[25%] sm:translate-x-0"
       >
-        <HeroLive3D />
+        <motion.div style={{ opacity: opacityHero }} className="w-full h-full">
+          <HeroLive3D />
+        </motion.div>
       </motion.div>
 
       {/* Grid texture overlay is handled globally */}
@@ -100,9 +102,9 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="mb-6 inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-sm font-semibold tracking-widest text-silver uppercase"
+            className="mb-6 inline-block text-sm font-semibold tracking-widest text-zinc-300 uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
           >
-            Алматы и весь Казахстан <span className="text-accent-orange mx-2">•</span> Снабжение объектов 24/7
+            Алматы и весь Казахстан <span className="text-accent-blue mx-2">•</span> Снабжение объектов 24/7
           </motion.div>
 
           {/* Staggered Cinematic Headline */}
@@ -114,7 +116,7 @@ export default function HeroSection() {
           >
             {renderStaggeredText("Арматура и металлопрокат с отгрузкой за 24 часа.")}
             <br className="hidden sm:block" />
-            <motion.span variants={letterVariants} className="gradient-text-orange inline-block drop-shadow-[0_0_15px_rgba(255,87,34,0.4)] mt-2">
+            <motion.span variants={letterVariants} className="gradient-text-blue inline-block drop-shadow-[0_0_15px_rgba(0,71,154,0.4)] mt-2">
               Или оплатим простой вашей техники.
             </motion.span>
           </motion.h1>
@@ -138,7 +140,7 @@ export default function HeroSection() {
           >
             <a
               href="#calculator"
-              className="group relative inline-flex items-center justify-center gap-4 bg-accent-orange text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden shadow-[0_0_30px_rgba(255,87,34,0.3)] hover:shadow-[0_0_40px_rgba(255,87,34,0.5)]"
+              className="group relative inline-flex items-center justify-center gap-4 bg-accent-blue text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden shadow-[0_0_30px_rgba(0,71,154,0.3)] hover:shadow-[0_0_40px_rgba(0,71,154,0.5)]"
             >
               {/* Button inner glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
@@ -151,10 +153,10 @@ export default function HeroSection() {
 
             <button
               onClick={onOpenPriceModal}
-              className="group relative inline-flex items-center justify-center gap-4 bg-white/5 backdrop-blur-md border border-white/10 hover:border-accent-orange/40 hover:bg-surface text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              className="group relative inline-flex items-center justify-center gap-4 bg-graphite/80 backdrop-blur-xl border border-white/20 hover:border-accent-cyan/60 hover:bg-gunmetal/90 text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
             >
-              <Download size={20} className="text-silver group-hover:text-accent-orange transition-colors" />
-              <span>Получить прайс в WhatsApp</span>
+              <Download size={20} className="text-accent-cyan group-hover:text-white transition-colors drop-shadow-md" />
+              <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Получить прайс в WhatsApp</span>
             </button>
           </motion.div>
 
@@ -196,12 +198,12 @@ export default function HeroSection() {
         transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
       >
         <a href="#catalog" className="flex flex-col items-center gap-4 text-silver hover:text-white transition-colors group">
-          <span className="text-xs sm:text-sm uppercase tracking-[0.3em] font-bold text-white drop-shadow-md">
+          <span className="text-xs sm:text-sm uppercase tracking-[0.3em] font-bold text-white drop-shadow-[0_4px_8px_rgba(0,0,0,1)] bg-graphite/50 px-5 py-2.5 rounded-full backdrop-blur-md border border-white/10">
             Листайте вниз
           </span>
-          <div className="w-10 h-16 rounded-full border-2 border-white/20 flex justify-center p-2 group-hover:border-accent-orange/80 bg-graphite/50 backdrop-blur-sm transition-all shadow-[0_0_15px_rgba(255,87,34,0)] group-hover:shadow-[0_0_20px_rgba(255,87,34,0.3)]">
+          <div className="w-10 h-16 rounded-full border-2 border-white/20 flex justify-center p-2 group-hover:border-accent-blue/80 bg-graphite/50 backdrop-blur-sm transition-all shadow-[0_0_15px_rgba(0,71,154,0)] group-hover:shadow-[0_0_20px_rgba(0,71,154,0.3)]">
             <motion.div
-              className="w-2 h-4 bg-accent-orange rounded-full"
+              className="w-2 h-4 bg-accent-blue rounded-full"
               animate={{ y: [0, 24, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             />
@@ -210,7 +212,7 @@ export default function HeroSection() {
             animate={{ y: [0, 5, 0], opacity: [0.3, 1, 0.3] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
           >
-            <ChevronDown size={24} className="text-accent-orange -mt-2" />
+            <ChevronDown size={24} className="text-accent-blue -mt-2" />
           </motion.div>
         </a>
       </motion.div>
@@ -225,3 +227,5 @@ export default function HeroSection() {
     </section>
   );
 }
+
+

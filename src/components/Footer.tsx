@@ -38,7 +38,7 @@ export default function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="relative -mt-16 mb-16 bg-gradient-to-r from-accent-orange to-accent-orange-dark rounded-2xl p-8 sm:p-12 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl overflow-hidden"
+          className="relative -mt-16 mb-16 bg-gradient-to-r from-accent-blue to-accent-blue-dark rounded-2xl p-8 sm:p-12 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="relative z-10">
@@ -50,8 +50,8 @@ export default function Footer() {
             </p>
           </div>
           <a
-            href="tel:+77478393548"
-            className="relative z-10 flex items-center gap-2 bg-white text-accent-orange font-semibold px-8 py-4 rounded-xl hover:bg-white/90 transition-all hover:scale-105 active:scale-95 shrink-0"
+            href="tel:+77478390605"
+            className="relative z-10 flex items-center gap-2 bg-white text-accent-blue font-semibold px-8 py-4 rounded-xl hover:bg-white/90 transition-all hover:scale-105 active:scale-95 shrink-0"
           >
             <Phone size={18} />
             Позвонить
@@ -64,11 +64,11 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="mb-6">
               <Image 
-                src="https://i.ibb.co.com/5xWvRC9R/logo.png" 
+                src="/logo.png" 
                 alt="G-Time Logo" 
-                width={160}
-                height={56}
-                className="h-14 w-auto object-contain"
+                width={240}
+                height={72}
+                className="h-14 sm:h-16 w-auto object-contain"
               />
             </div>
             <p className="text-sm text-silver leading-relaxed mb-6 max-w-xs">
@@ -77,25 +77,25 @@ export default function Footer() {
             </p>
             <div className="space-y-3">
               <a
-                href="tel:+77478393548"
+                href="tel:+77478390605"
                 className="flex items-center gap-2 text-sm text-light-silver hover:text-white transition-colors"
               >
-                <Phone size={14} className="text-accent-orange" />
-                +7 747 839-35-48
+                <Phone size={14} className="text-accent-blue" />
+                +7 747 839-06-05
               </a>
               <a
                 href="mailto:info@g-time.kz"
                 className="flex items-center gap-2 text-sm text-light-silver hover:text-white transition-colors"
               >
-                <Mail size={14} className="text-accent-orange" />
+                <Mail size={14} className="text-accent-blue" />
                 info@g-time.kz
               </a>
               <div className="flex items-start gap-2 text-sm text-light-silver">
-                <MapPin size={14} className="text-accent-orange mt-0.5 shrink-0" />
+                <MapPin size={14} className="text-accent-blue mt-0.5 shrink-0" />
                 г. Алматы, пр. Райымбека 481
               </div>
               <div className="flex items-center gap-2 text-sm text-light-silver">
-                <Clock size={14} className="text-accent-orange" />
+                <Clock size={14} className="text-accent-blue" />
                 Пн-Сб: 08:00 — 18:00
               </div>
             </div>
@@ -111,7 +111,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-sm text-silver hover:text-accent-orange transition-colors"
+                    className="text-sm text-silver hover:text-accent-blue transition-colors"
                   >
                     {link.label}
                   </a>
@@ -130,7 +130,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-sm text-silver hover:text-accent-orange transition-colors"
+                    className="text-sm text-silver hover:text-accent-blue transition-colors"
                   >
                     {link.label}
                   </a>
@@ -149,7 +149,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="group flex items-center gap-1 text-sm text-silver hover:text-accent-orange transition-colors"
+                    className="group flex items-center gap-1 text-sm text-silver hover:text-accent-blue transition-colors"
                   >
                     {link.label}
                     <ArrowUpRight
@@ -181,3 +181,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+

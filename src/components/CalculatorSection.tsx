@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
@@ -145,12 +145,12 @@ export default function CalculatorSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-xs font-medium text-accent-green uppercase tracking-[0.2em]">
+          <span className="text-xs font-medium text-accent-cyan uppercase tracking-[0.2em]">
             Инструменты
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-800 mt-4 mb-6">
             Калькулятор{" "}
-            <span className="gradient-text-green">металлопроката</span>
+            <span className="gradient-text-cyan">металлопроката</span>
           </h2>
           <p className="text-silver text-lg max-w-2xl mx-auto">
             Мгновенный расчет веса. Введите параметры — результат обновляется на
@@ -168,7 +168,7 @@ export default function CalculatorSection() {
         >
           <div className="glass-card rounded-3xl p-6 sm:p-10 border border-border relative overflow-hidden">
             {/* Glow bg */}
-            <div className="absolute -top-20 -right-20 w-60 h-60 bg-accent-green/5 rounded-full blur-3xl" />
+            <div className="absolute -top-20 -right-20 w-60 h-60 bg-accent-cyan/5 rounded-full blur-3xl" />
 
             {/* Product selector */}
             <div className="mb-8">
@@ -182,7 +182,7 @@ export default function CalculatorSection() {
                     onClick={() => handleProductChange(p.id)}
                     className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                       selectedProduct.id === p.id
-                        ? "bg-accent-green text-graphite"
+                        ? "bg-accent-cyan text-graphite"
                         : "bg-surface text-silver hover:text-white hover:bg-surface-hover border border-border"
                     }`}
                   >
@@ -210,7 +210,7 @@ export default function CalculatorSection() {
                         [field.key]: e.target.value,
                       }))
                     }
-                    className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-green/50 focus:outline-none focus:ring-1 focus:ring-accent-green/30 transition-all text-lg font-mono"
+                    className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-cyan/50 focus:outline-none focus:ring-1 focus:ring-accent-cyan/30 transition-all text-lg font-mono"
                   />
                 </div>
               ))}
@@ -223,7 +223,7 @@ export default function CalculatorSection() {
                   placeholder="1"
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
-                  className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-green/50 focus:outline-none focus:ring-1 focus:ring-accent-green/30 transition-all text-lg font-mono"
+                  className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-cyan/50 focus:outline-none focus:ring-1 focus:ring-accent-cyan/30 transition-all text-lg font-mono"
                 />
               </div>
             </div>
@@ -231,7 +231,7 @@ export default function CalculatorSection() {
             {/* Result */}
             <div className="bg-graphite rounded-2xl p-6 border border-border">
               <div className="flex items-center gap-2 mb-4 text-sm text-silver">
-                <Calculator size={16} className="text-accent-green" />
+                <Calculator size={16} className="text-accent-cyan" />
                 Результат расчета
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -239,7 +239,7 @@ export default function CalculatorSection() {
                   <div className="text-sm text-silver mb-1">Вес 1 единицы</div>
                   <motion.div
                     key={weightPerPiece.toFixed(2)}
-                    initial={{ scale: 1.1, color: "#00E676" }}
+                    initial={{ scale: 1.1, color: "#5DB0E5" }}
                     animate={{ scale: 1, color: "#FFFFFF" }}
                     className="text-2xl sm:text-3xl font-heading font-800"
                   >
@@ -256,7 +256,7 @@ export default function CalculatorSection() {
                   <div className="text-sm text-silver mb-1">Общий вес</div>
                   <motion.div
                     key={totalWeight.toFixed(2)}
-                    initial={{ scale: 1.1, color: "#00E676" }}
+                    initial={{ scale: 1.1, color: "#5DB0E5" }}
                     animate={{ scale: 1, color: "#FFFFFF" }}
                     className="text-2xl sm:text-3xl font-heading font-800"
                   >
@@ -284,3 +284,5 @@ export default function CalculatorSection() {
     </section>
   );
 }
+
+

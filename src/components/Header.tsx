@@ -38,30 +38,28 @@ export default function Header() {
 
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
           ? "bg-graphite/95 backdrop-blur-xl border-b border-border shadow-2xl"
           : "bg-transparent"
-      }`}
+        }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          className={`flex items-center justify-between transition-all duration-500 ${
-            scrolled ? "h-16" : "h-20"
-          }`}
+          className={`flex items-center justify-between transition-all duration-500 ${scrolled ? "h-16" : "h-20"
+            }`}
         >
           {/* Logo */}
           <a href="#" className="flex items-center gap-3 group">
-              <Image 
-              src="https://i.ibb.co.com/5xWvRC9R/logo.png" 
-              alt="G-Time Logo" 
-              width={160}
-              height={48}
+            <Image
+              src="/logo.png"
+              alt="G-Time Logo"
+              width={240}
+              height={72}
               priority
-              className="h-12 w-auto object-contain group-hover:scale-105 transition-transform"
+              className="h-12 sm:h-14 w-auto object-contain group-hover:scale-105 transition-transform"
             />
           </a>
 
@@ -74,7 +72,7 @@ export default function Header() {
                 className="text-sm font-medium text-light-silver hover:text-white transition-colors relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-orange transition-all duration-300 group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent-blue transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
           </nav>
@@ -87,7 +85,7 @@ export default function Header() {
                 onClick={() => setCityOpen(!cityOpen)}
                 className="flex items-center gap-1.5 text-sm text-silver hover:text-white transition-colors"
               >
-                <MapPin size={14} className="text-accent-orange" />
+                <MapPin size={14} className="text-accent-blue" />
                 {city}
                 <ChevronDown
                   size={12}
@@ -109,9 +107,8 @@ export default function Header() {
                           setCity(c);
                           setCityOpen(false);
                         }}
-                        className={`w-full px-4 py-2 text-sm text-left hover:bg-surface-hover transition-colors ${
-                          c === city ? "text-accent-orange" : "text-light-silver"
-                        }`}
+                        className={`w-full px-4 py-2 text-sm text-left hover:bg-surface-hover transition-colors ${c === city ? "text-accent-blue" : "text-light-silver"
+                          }`}
                       >
                         {c}
                       </button>
@@ -124,7 +121,7 @@ export default function Header() {
             {/* Phone */}
             <a
               href="tel:+77478393548"
-              className="flex items-center gap-2 text-sm font-semibold text-white hover:text-accent-orange transition-colors"
+              className="flex items-center gap-2 text-sm font-semibold text-white hover:text-accent-blue transition-colors"
             >
               <Phone size={14} />
               +7 747 839-35-48
@@ -133,7 +130,7 @@ export default function Header() {
             {/* CTA */}
             <button
               onClick={onOpenPriceModal}
-              className="flex items-center gap-2 bg-accent-orange hover:bg-accent-orange-dark text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all hover:scale-105 active:scale-95 pulse-glow"
+              className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue-dark text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all hover:scale-105 active:scale-95 pulse-glow"
             >
               <Download size={14} />
               Скачать прайс
@@ -175,7 +172,7 @@ export default function Header() {
                   href="tel:+77478393548"
                   className="flex items-center gap-2 text-sm font-semibold text-white"
                 >
-                  <Phone size={14} className="text-accent-orange" />
+                  <Phone size={14} className="text-accent-blue" />
                   +7 747 839-35-48
                 </a>
                 <button
@@ -183,7 +180,7 @@ export default function Header() {
                     setMobileOpen(false);
                     onOpenPriceModal();
                   }}
-                  className="w-full flex items-center justify-center gap-2 bg-accent-orange hover:bg-accent-orange-dark text-white text-sm font-semibold px-5 py-3 rounded-xl transition-all"
+                  className="w-full flex items-center justify-center gap-2 bg-accent-blue hover:bg-accent-blue-dark text-white text-sm font-semibold px-5 py-3 rounded-xl transition-all"
                 >
                   <Download size={14} />
                   Скачать прайс
@@ -196,3 +193,4 @@ export default function Header() {
     </motion.header>
   );
 }
+

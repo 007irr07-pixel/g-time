@@ -1,4 +1,4 @@
-import dynamic from "next/dynamic";
+﻿import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
@@ -25,7 +25,7 @@ export default function Home() {
           {/* Seamless steel-mesh grid is globally applied to main */}
           <BlueprintBackground />
           
-          <Suspense fallback={<div className="min-h-[500px] flex items-center justify-center"><div className="w-12 h-12 border-4 border-accent-orange border-t-transparent rounded-full animate-spin"></div></div>}>
+          <Suspense fallback={<div className="min-h-[500px] flex items-center justify-center"><div className="w-12 h-12 border-4 border-accent-blue border-t-transparent rounded-full animate-spin"></div></div>}>
             <CatalogSection />
           </Suspense>
           <RulesSection />
@@ -33,7 +33,7 @@ export default function Home() {
         <CalculatorSection />
         <PartnersMarquee />
         <UploadSection />
-        <Suspense fallback={<div className="min-h-[500px] flex items-center justify-center"><div className="w-12 h-12 border-4 border-accent-orange border-t-transparent rounded-full animate-spin"></div></div>}>
+        <Suspense fallback={<div className="min-h-[500px] flex items-center justify-center"><div className="w-12 h-12 border-4 border-accent-blue border-t-transparent rounded-full animate-spin"></div></div>}>
           <B2BSection />
         </Suspense>
         <CertificatesSection />
@@ -43,3 +43,4 @@ export default function Home() {
     </>
   );
 }
+

@@ -27,22 +27,22 @@ function ProductTable({ sub, searchQuery }: { sub: SubCategory; searchQuery: str
   if (sub.note) {
     return (
       <div className="bg-graphite/30 border border-border/50 rounded-3xl p-10 flex flex-col items-center justify-center min-h-[300px] text-center backdrop-blur-md">
-        <div className="p-4 bg-accent-orange/10 rounded-full mb-6">
-          <AlertTriangle size={48} className="text-accent-orange" />
+        <div className="p-4 bg-accent-blue/10 rounded-full mb-6">
+          <AlertTriangle size={48} className="text-accent-blue" />
         </div>
         <h4 className="text-xl font-heading font-700 text-white mb-3">Информация уточняется</h4>
         <p className="text-silver text-base max-w-lg leading-relaxed">{sub.note}</p>
         <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
           <a
             href="tel:+77081692017"
-            className="flex items-center gap-2 bg-accent-orange hover:bg-accent-orange-dark text-white text-sm font-bold px-8 py-4 rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_10px_20px_rgba(255,87,34,0.2)]"
+            className="flex items-center gap-2 bg-accent-blue hover:bg-accent-blue-dark text-white text-sm font-bold px-8 py-4 rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_10px_20px_rgba(0,71,154,0.2)]"
           >
             <Phone size={16} />
             Позвонить
           </a>
           <button
             onClick={() => window.open("https://wa.me/77081692017", "_blank")}
-            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-bold px-8 py-4 rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_10px_20px_rgba(22,163,74,0.2)]"
+            className="flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-bold px-8 py-4 rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_10px_20px_rgba(8,145,178,0.2)]"
           >
             WhatsApp
           </button>
@@ -71,7 +71,7 @@ function ProductTable({ sub, searchQuery }: { sub: SubCategory; searchQuery: str
               {sub.columns.map((col) => (
                 <th
                   key={col}
-                  className="px-4 py-3 sm:px-6 sm:py-4 text-xs font-bold text-accent-orange uppercase tracking-wider whitespace-nowrap"
+                  className="px-4 py-3 sm:px-6 sm:py-4 text-xs font-bold text-accent-blue uppercase tracking-wider whitespace-nowrap"
                 >
                   {col}
                 </th>
@@ -84,7 +84,7 @@ function ProductTable({ sub, searchQuery }: { sub: SubCategory; searchQuery: str
                 key={`${row.size}-${i}`}
                 className="border-b border-border/30 hover:bg-white/[0.03] transition-colors group"
               >
-                <td className="px-4 py-3 sm:px-6 sm:py-4 text-white font-bold whitespace-nowrap group-hover:text-accent-orange transition-colors">
+                <td className="px-4 py-3 sm:px-6 sm:py-4 text-white font-bold whitespace-nowrap group-hover:text-accent-blue transition-colors">
                   {row.size}
                 </td>
                 <td className="px-4 py-3 sm:px-6 sm:py-4 text-silver/90 whitespace-nowrap">
@@ -168,11 +168,11 @@ export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsM
             <div className="flex items-center justify-between gap-4 p-5 sm:px-8 border-b border-border shrink-0 bg-graphite/40">
               <div className="flex items-center gap-5">
                 <Image
-                  src="https://i.ibb.co.com/5xWvRC9R/logo.png"
+                  src="/logo.png"
                   alt="G-Time Logo"
-                  width={140}
-                  height={42}
-                  className="h-10 w-auto object-contain"
+                  width={200}
+                  height={60}
+                  className="h-10 sm:h-12 w-auto object-contain"
                 />
                 <div className="hidden md:block w-px h-10 bg-border/50" />
                 <div className="hidden md:block">
@@ -206,7 +206,7 @@ export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsM
                         }}
                         className={`px-5 py-2.5 rounded-2xl text-sm font-bold whitespace-nowrap transition-all ${
                           activeTab === i
-                            ? "bg-accent-orange text-white shadow-[0_8px_20px_rgba(255,87,34,0.3)]"
+                            ? "bg-accent-blue text-white shadow-[0_8px_20px_rgba(0,71,154,0.3)]"
                             : "text-zinc-400 hover:text-white hover:bg-white/5"
                         }`}
                       >
@@ -224,7 +224,7 @@ export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsM
                         placeholder="Поиск по размеру..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-graphite/40 border border-border/50 rounded-2xl pl-11 pr-4 py-2.5 text-sm text-white placeholder:text-steel focus:outline-none focus:border-accent-orange/50 focus:ring-1 focus:ring-accent-orange/20 transition-all font-medium"
+                        className="w-full bg-graphite/40 border border-border/50 rounded-2xl pl-11 pr-4 py-2.5 text-sm text-white placeholder:text-steel focus:outline-none focus:border-accent-blue/50 focus:ring-1 focus:ring-accent-blue/20 transition-all font-medium"
                       />
                     </div>
                   )}
@@ -233,7 +233,7 @@ export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsM
 
             {/* Scrollable Section Header (Mobile only) */}
             <div className="md:hidden px-8 pt-4">
-               <h3 className="text-lg font-heading font-700 text-accent-orange uppercase">{category.title}</h3>
+               <h3 className="text-lg font-heading font-700 text-accent-blue uppercase">{category.title}</h3>
             </div>
 
             {/* Table content */}
@@ -263,22 +263,22 @@ export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsM
                 <a
                   href="/g-time-price.pdf"
                   download="G-Time-Прайс-лист.pdf"
-                  className="flex items-center gap-2 bg-accent-orange/10 hover:bg-accent-orange/20 text-accent-orange text-xs font-bold px-4 py-2 rounded-xl transition-all border border-accent-orange/30 hover:scale-105 active:scale-95"
+                  className="flex items-center gap-2 bg-accent-blue/10 hover:bg-accent-blue/20 text-accent-blue text-xs font-bold px-4 py-2 rounded-xl transition-all border border-accent-blue/30 hover:scale-105 active:scale-95"
                 >
                   <Download size={14} />
                   Скачать прайс-лист PDF
                 </a>
                 <a
                   href="tel:+77070500964"
-                  className="flex items-center gap-2 text-sm font-bold text-white hover:text-accent-orange transition-colors"
+                  className="flex items-center gap-2 text-sm font-bold text-white hover:text-accent-blue transition-colors"
                 >
-                  <Phone size={14} className="text-accent-orange" />
+                  <Phone size={14} className="text-accent-blue" />
                   +7 (707) 050 09 64
                 </a>
                 <a
                   href="https://wa.me/77081692017"
                   target="_blank"
-                  className="hidden sm:flex items-center gap-2 bg-green-600/10 hover:bg-green-600/20 text-green-500 text-xs font-bold px-4 py-2 rounded-xl transition-all border border-green-600/20"
+                  className="hidden sm:flex items-center gap-2 bg-cyan-600/10 hover:bg-cyan-600/20 text-cyan-500 text-xs font-bold px-4 py-2 rounded-xl transition-all border border-cyan-600/20"
                 >
                   Отправить в WhatsApp
                 </a>
@@ -290,3 +290,5 @@ export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsM
     </AnimatePresence>
   );
 }
+
+

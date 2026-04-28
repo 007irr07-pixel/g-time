@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -118,7 +118,7 @@ export default function PriceModal() {
                 >
                   <CheckCircle
                     size={56}
-                    className="text-accent-green mx-auto mb-4"
+                    className="text-accent-cyan mx-auto mb-4"
                   />
                   <h3 className="text-xl font-heading font-700 text-white mb-2">
                     Готово!
@@ -167,7 +167,7 @@ export default function PriceModal() {
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                       <label className="text-sm text-silver mb-1.5 block">
-                        Имя <span className="text-accent-orange">*</span>
+                        Имя <span className="text-accent-blue">*</span>
                       </label>
                       <input
                         type="text"
@@ -175,12 +175,12 @@ export default function PriceModal() {
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Ваше имя"
                         required
-                        className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-orange/50 focus:outline-none focus:ring-1 focus:ring-accent-orange/30 transition-all"
+                        className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-blue/50 focus:outline-none focus:ring-1 focus:ring-accent-blue/30 transition-all"
                       />
                     </div>
                     <div>
                       <label className="text-sm text-silver mb-1.5 block">
-                        Номер WhatsApp <span className="text-accent-orange">*</span>
+                        Номер WhatsApp <span className="text-accent-blue">*</span>
                       </label>
                       <input
                         type="tel"
@@ -189,13 +189,13 @@ export default function PriceModal() {
                         placeholder="+7 700 000 00 00"
                         required
                         maxLength={16}
-                        className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-orange/50 focus:outline-none focus:ring-1 focus:ring-accent-orange/30 transition-all"
+                        className="w-full bg-graphite border border-border rounded-xl px-4 py-3 text-white placeholder:text-steel focus:border-accent-blue/50 focus:outline-none focus:ring-1 focus:ring-accent-blue/30 transition-all"
                       />
                     </div>
                     <button
                       type="submit"
                       disabled={loading || !name || !phone}
-                      className="w-full flex items-center justify-center gap-2 bg-accent-orange hover:bg-accent-orange-dark disabled:bg-steel disabled:cursor-not-allowed text-white font-semibold px-6 py-4 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
+                      className="w-full flex items-center justify-center gap-2 bg-accent-blue hover:bg-accent-blue-dark disabled:bg-steel disabled:cursor-not-allowed text-white font-semibold px-6 py-4 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
                     >
                       {loading ? (
                         <Loader2 size={18} className="animate-spin" />
@@ -216,3 +216,4 @@ export default function PriceModal() {
     </AnimatePresence>
   );
 }
+

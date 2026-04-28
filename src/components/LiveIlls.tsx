@@ -2,7 +2,7 @@
 
 import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment, Float, Preload } from "@react-three/drei";
+import { Environment, Float, Preload, Edges } from "@react-three/drei";
 import * as THREE from "three";
 import { useInView } from "framer-motion";
 
@@ -37,7 +37,7 @@ function LazyCanvas({ children, camera, gl }: any) {
 function LoadingSkeleton() {
   return (
     <div className="absolute inset-0 flex items-center justify-center">
-      <div className="w-16 h-16 border-2 border-accent-orange/30 border-t-accent-orange rounded-full animate-spin" />
+      <div className="w-16 h-16 border-2 border-accent-blue/30 border-t-accent-blue rounded-full animate-spin" />
     </div>
   );
 }
@@ -154,9 +154,9 @@ function usePremiumMaterials() {
         clearcoatRoughness: 0.2,
         ...baseMaterialProps,
       }),
-      // Flawless orange powder coat
-      orangeMetal: new THREE.MeshPhysicalMaterial({
-        color: "#FF6D00",
+      // Flawless blue powder coat
+      blueMetal: new THREE.MeshPhysicalMaterial({
+        color: "#00479A",
         metalness: 0.5,
         roughness: 0.1,
         clearcoat: 1.0,
@@ -164,9 +164,9 @@ function usePremiumMaterials() {
         ...baseMaterialProps,
         normalScale: globalNormalMap ? new THREE.Vector2(0.05, 0.05) : undefined,
       }),
-      // Flawless green powder coat
-      greenMetal: new THREE.MeshPhysicalMaterial({
-        color: "#00E676",
+      // Flawless cyan powder coat
+      cyanMetal: new THREE.MeshPhysicalMaterial({
+        color: "#5DB0E5",
         metalness: 0.5,
         roughness: 0.1,
         clearcoat: 1.0,
@@ -374,12 +374,12 @@ function HeroRealisticPipes() {
             position={[-5, 4, 2]}
           />
 
-          {/* 3. Short Round Pipe (Orange Accent) */}
+          {/* 3. Short Round Pipe (blue Accent) */}
           <RealisticPipe
             outerRadius={1.5}
             innerRadius={1.2}
             length={16}
-            material={materials.orangeMetal}
+            material={materials.blueMetal}
             position={[4, 5, 5]}
           />
 
@@ -413,8 +413,8 @@ function Spark() {
   const sparkColor = useMemo(() => {
     const roll = Math.random();
     if (roll > 0.7) return "#FFFFFF"; // Pure white core
-    if (roll > 0.4) return "#FFCC00"; // Bright yellow
-    return "#FF6D00"; // Bright orange
+    if (roll > 0.4) return "#5DB0E5"; // Bright yellow
+    return "#00479A"; // Bright blue
   }, []);
 
   useFrame((state) => {
@@ -438,6 +438,114 @@ function Spark() {
   );
 }
 
+export function GlassHexagon({ position, scale = 1, floatOffset = 0, color = "#5DB0E5" }: any) {
+  const ref = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (!ref.current) return;
+    const t = state.clock.elapsedTime * 0.4 + floatOffset;
+    // Individual realistic floating and slight tilting
+    ref.current.position.y = position[1] + Math.sin(t) * 0.4;
+    ref.current.position.z = position[2] + Math.cos(t * 0.8) * 0.2;
+    ref.current.rotation.x = Math.PI / 2 + Math.sin(t * 0.6) * 0.05;
+    ref.current.rotation.y = Math.sin(t * 0.5) * 0.05;
+  });
+
+  return (
+    <mesh ref={ref} position={position} scale={scale} rotation={[Math.PI / 2, 0, 0]}>
+      <cylinderGeometry args={[1, 1, 0.25, 6]} />
+      {/* Hyper-realistic glass material without artificial glowing edges */}
+      <meshPhysicalMaterial 
+        color={color}
+        transmission={1.0}
+        opacity={1}
+        transparent
+        roughness={0.02}
+        thickness={2.5}
+        ior={1.5}
+        chromaticAberration={0.06}
+        clearcoat={1}
+        clearcoatRoughness={0.05}
+        envMapIntensity={3.0}
+      />
+    </mesh>
+  );
+}
+
+const HEX_RADIUS = 1.0;
+const HEX_DX = 1.5 * HEX_RADIUS;
+const HEX_DY = 1.73205 * HEX_RADIUS;
+
+// Generate procedural dense cluster outside component (runs once)
+const CLUSTER_HEXES = (() => {
+  const items = [];
+  const brandColors = ["#00479A", "#5DB0E5", "#8BE9FD", "#ffffff"];
+  
+  // Smaller, more elegant cluster occupying the right side
+  for (let row = -6; row <= 10; row++) {
+    for (let col = -2; col <= 12; col++) {
+      // Shape it so it hugs the Top-Right and crawls down/left
+      const distFromTopRight = Math.sqrt(Math.pow(row - 10, 2) + Math.pow(col - 12, 2));
+      
+      // Significantly reduced quantity
+      if (distFromTopRight > 14) continue;
+      
+      // Randomly scatter outer edges
+      if (Math.random() > 0.5 && distFromTopRight > 8) continue;
+      if (Math.random() > 0.8) continue; // Random holes
+      
+      const x = col * HEX_DX;
+      const y = row * HEX_DY + (Math.abs(col) % 2 === 1 ? HEX_DY / 2 : 0);
+      
+      // Vary Z slightly for realism
+      const z = (Math.random() - 0.5) * 3.0; 
+      
+      // Pick a random brand color (mostly lighter ones, with some deep blue accents)
+      const colorIndex = Math.random() > 0.8 ? 0 : Math.floor(Math.random() * 3) + 1;
+      
+      items.push({
+        position: [x, y, z],
+        // Scale down at the edges
+        scale: Math.max(0.3, 1.0 - (distFromTopRight / 18)),
+        floatOffset: Math.random() * 10,
+        color: brandColors[colorIndex],
+      });
+    }
+  }
+  return items;
+})();
+
+const CLUSTER_SPARKS = Array.from({ length: 40 }).map(() => ({
+  position: [(Math.random() - 0.5) * 20, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 10],
+  color: Math.random() > 0.5 ? "#FFFFFF" : "#8BE9FD",
+  scale: 0.5 + Math.random() * 1.5
+}));
+
+function FloatingHexagons() {
+  const groupRef = useRef<THREE.Group>(null!);
+
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.1) * 0.05;
+    }
+  });
+
+  return (
+    // Positioned slightly off-center to fit the right side, angled so it recedes into the top right
+    <group ref={groupRef} position={[-2, -6, -14]} rotation={[-0.1, -0.3, -0.05]} scale={1.2}>
+      {CLUSTER_HEXES.map((hex, i) => (
+        <GlassHexagon key={`hex-${i}`} position={hex.position} scale={hex.scale} floatOffset={hex.floatOffset} color={hex.color} />
+      ))}
+      {CLUSTER_SPARKS.map((spark, i) => (
+        <mesh key={`spark-${i}`} position={spark.position as [number, number, number]} scale={spark.scale}>
+           <sphereGeometry args={[0.05, 8, 8]} />
+           <meshBasicMaterial color={spark.color} toneMapped={false} transparent opacity={0.8} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
 export function HeroLive3D() {
   const [loaded, setLoaded] = useState(false);
 
@@ -453,7 +561,7 @@ export function HeroLive3D() {
       <ambientLight intensity={0.5} />
       {/* Dramatic Studio Lighting for metal reflections */}
       <directionalLight position={[10, 10, 5]} intensity={3} color="#ffffff" />
-      <directionalLight position={[-10, -10, -5]} intensity={1.5} color="#FF5722" />
+      <directionalLight position={[-10, -10, -5]} intensity={1.5} color="#5DB0E5" />
       {/* Rim light from behind for edge highlights */}
       <directionalLight position={[-5, 0, -15]} intensity={2} color="#ffffff" />
       {/* Fill light to prevent pure-black shadows */}
@@ -463,6 +571,7 @@ export function HeroLive3D() {
       <Environment preset="city" />
 
       <HeroRealisticPipes />
+      <FloatingHexagons />
 
       <Preload all />
     </LazyCanvas>
@@ -480,11 +589,11 @@ function Logistics3D() {
     <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
       <group rotation={[Math.PI / 8, -Math.PI / 4, 0]} scale={1.1}>
         {/* Truck Cabin */}
-        <mesh material={materials.orangeMetal} position={[-2, -0.2, 0]}>
+        <mesh material={materials.blueMetal} position={[-2, -0.2, 0]}>
           <boxGeometry args={[1, 1.4, 1.4]} />
         </mesh>
         {/* Truck Hood */}
-        <mesh material={materials.orangeMetal} position={[-2.8, -0.5, 0]}>
+        <mesh material={materials.blueMetal} position={[-2.8, -0.5, 0]}>
           <boxGeometry args={[0.8, 0.8, 1.4]} />
         </mesh>
 
@@ -581,7 +690,7 @@ function Certificate3D() {
         </mesh>
 
         {/* Seal embossed center */}
-        <mesh material={materials.orangeMetal} position={[-0.8, -1.5, 0.12]} rotation={[Math.PI / 2, 0, 0]}>
+        <mesh material={materials.blueMetal} position={[-0.8, -1.5, 0.12]} rotation={[Math.PI / 2, 0, 0]}>
           <cylinderGeometry args={[0.18, 0.18, 0.03, 5]} />
         </mesh>
       </group>
@@ -607,14 +716,14 @@ function Finance3D() {
         <Paper material={materials.darkMetal} position={[-0.05, -0.7, 0.05]} rotation={[0, -0.03, 0.01]} />
         <Paper material={materials.scuffedMetal} position={[0.08, -0.6, -0.03]} rotation={[0, 0.02, -0.01]} />
 
-        {/* Middle sheets (orange accent) */}
-        <Paper material={materials.orangeMetal} position={[-0.1, -0.5, 0.02]} rotation={[0, -0.04, 0.02]} />
+        {/* Middle sheets (blue accent) */}
+        <Paper material={materials.blueMetal} position={[-0.1, -0.5, 0.02]} rotation={[0, -0.04, 0.02]} />
         <Paper material={materials.scuffedMetal} position={[0.05, -0.4, -0.01]} rotation={[0, 0.06, 0]} />
         <Paper material={materials.darkMetal} position={[-0.02, -0.3, 0.04]} rotation={[0, -0.02, -0.01]} />
 
         {/* Top sheets */}
         <Paper material={materials.scuffedMetal} position={[0.06, -0.2, -0.02]} rotation={[0, 0.03, 0.01]} />
-        <Paper material={materials.orangeMetal} position={[-0.04, -0.1, 0.01]} rotation={[0, -0.05, 0]} />
+        <Paper material={materials.blueMetal} position={[-0.04, -0.1, 0.01]} rotation={[0, -0.05, 0]} />
         <Paper material={materials.scuffedMetal} position={[0, 0, 0]} rotation={[0, 0.01, 0]} />
 
         {/* Slightly open top document, tilted */}
@@ -628,7 +737,7 @@ function Finance3D() {
 function Folder3D() {
   const materials = usePremiumMaterials();
   const groupRef = useRef<THREE.Group>(null!);
-  
+
   useFrame((state) => {
     if (groupRef.current) {
       groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.3;
@@ -639,11 +748,11 @@ function Folder3D() {
   return (
     <group ref={groupRef} rotation={[Math.PI / 8, -Math.PI / 6, 0]} scale={1.6}>
       {/* Folder back wall */}
-      <mesh material={materials.orangeMetal} position={[0, 0.2, -0.1]}>
+      <mesh material={materials.blueMetal} position={[0, 0.2, -0.1]}>
         <boxGeometry args={[2.2, 1.6, 0.05]} />
       </mesh>
       {/* Folder tab */}
-      <mesh material={materials.orangeMetal} position={[-0.55, 1.1, -0.1]}>
+      <mesh material={materials.blueMetal} position={[-0.55, 1.1, -0.1]}>
         <boxGeometry args={[0.8, 0.3, 0.05]} />
       </mesh>
       {/* Folder front (slightly open) */}
@@ -658,7 +767,7 @@ function Folder3D() {
         <boxGeometry args={[1.8, 1.2, 0.02]} />
       </mesh>
       {/* GOST stamp accent */}
-      <mesh material={materials.greenMetal} position={[0.5, 0.1, 0.08]}>
+      <mesh material={materials.cyanMetal} position={[0.5, 0.1, 0.08]}>
         <boxGeometry args={[0.6, 0.4, 0.015]} />
       </mesh>
     </group>
@@ -666,20 +775,20 @@ function Folder3D() {
 }
 
 export function B2BLive3D({ type }: { type: 'logistics' | 'certificate' | 'finance' | 'folder' }) {
-  const color = type === 'certificate' || type === 'folder' ? (type === 'folder' ? 'orange' : 'green') : 'orange';
-  const envColor = color === "orange" ? "#FF5722" : "#00E676";
+  const color = type === 'certificate' || type === 'folder' ? (type === 'folder' ? 'blue' : 'cyan') : 'blue';
+  const envColor = color === "blue" ? "#00479A" : "#5DB0E5";
 
   return (
     <div className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-80 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden rounded-2xl">
       <div
         className="absolute right-0 top-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full blur-[60px] mix-blend-screen transition-all duration-500 opacity-30 group-hover:opacity-60"
-        style={{ background: color === "orange" ? "radial-gradient(circle, rgba(255,87,34,0.3) 0%, transparent 70%)" : "radial-gradient(circle, rgba(0,230,118,0.3) 0%, transparent 70%)" }}
+        style={{ background: color === "blue" ? "radial-gradient(circle, rgba(0,71,154,0.3) 0%, transparent 70%)" : "radial-gradient(circle, rgba(93,176,229,0.3) 0%, transparent 70%)" }}
       />
       <LazyCanvas camera={{ position: [0, 0, 10], fov: 40 }} gl={{ alpha: true, antialias: true, dpr: [1, 1.5] }}>
         <ambientLight intensity={1.5} />
         <directionalLight position={[5, 10, 5]} intensity={4} color="#ffffff" />
         <Environment preset="city" />
-        <directionalLight position={[-5, -5, -5]} intensity={2.5} color={color === "orange" ? "#FF5722" : "#00E676"} />
+        <directionalLight position={[-5, -5, -5]} intensity={2.5} color={color === "blue" ? "#00479A" : "#5DB0E5"} />
         <directionalLight position={[0, 0, -10]} intensity={3} color="#ffffff" />
         <pointLight position={[0, 0, 6]} intensity={3} color="#ffffff" distance={20} />
 
@@ -698,9 +807,9 @@ export function B2BLive3D({ type }: { type: 'logistics' | 'certificate' | 'finan
 // CATALOG SCENES — REALISTIC ROLLED METAL PROFILES
 // ==============================================
 
-function ProfilePipes({ color = "orange" }) {
+function ProfilePipes({ color = "blue" }) {
   const materials = usePremiumMaterials();
-  const mat = color === "orange" ? materials.orangeMetal : materials.greenMetal;
+  const mat = color === "blue" ? materials.blueMetal : materials.cyanMetal;
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
       <group rotation={[Math.PI / 6, -Math.PI / 6, Math.PI / 4]} scale={1.1}>
@@ -711,7 +820,7 @@ function ProfilePipes({ color = "orange" }) {
   );
 }
 
-function ProfileBeam({ color = "green" }) {
+function ProfileBeam({ color = "cyan" }) {
   const materials = usePremiumMaterials();
 
   // 1. I-Beam (двутавр)
@@ -758,8 +867,8 @@ function ProfileBeam({ color = "green" }) {
           <extrudeGeometry args={[iBeamShape, { depth: 4, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.02, bevelThickness: 0.02 }]} />
         </mesh>
 
-        {/* 2. Channel — orange */}
-        <mesh material={materials.orangeMetal} position={[1.6, 0.4, -1.5]} rotation={[0, 0, Math.PI / 2]}>
+        {/* 2. Channel — blue */}
+        <mesh material={materials.blueMetal} position={[1.6, 0.4, -1.5]} rotation={[0, 0, Math.PI / 2]}>
           <extrudeGeometry args={[channelShape, { depth: 3.5, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.02, bevelThickness: 0.02 }]} />
         </mesh>
 
@@ -772,9 +881,9 @@ function ProfileBeam({ color = "green" }) {
   );
 }
 
-function ProfileSheets({ color = "orange" }) {
+function ProfileSheets({ color = "blue" }) {
   const materials = usePremiumMaterials();
-  const mat = color === "orange" ? materials.orangeMetal : materials.scuffedMetal;
+  const mat = color === "blue" ? materials.blueMetal : materials.scuffedMetal;
   return (
     <Float speed={2} rotationIntensity={0.2} floatIntensity={0.4}>
       <group rotation={[Math.PI / 6, -Math.PI / 6, 0]} scale={1.23} position={[0, 0.5, 0]}>
@@ -814,8 +923,8 @@ function ProfileAngle() {
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
       <group rotation={[0.3, -0.6, 0.15]} scale={1.5} position={[1.8, 0.4, 2]}>
-        {/* 1. Orange L-angle */}
-        <mesh material={materials.orangeMetal} position={[-1.6, 1.2, 0]}>
+        {/* 1. blue L-angle */}
+        <mesh material={materials.blueMetal} position={[-1.6, 1.2, 0]}>
           <extrudeGeometry args={[lShape, ext]} />
         </mesh>
 
@@ -833,9 +942,9 @@ function ProfileAngle() {
   );
 }
 
-function ProfileRebar({ color = "orange" }) {
+function ProfileRebar({ color = "blue" }) {
   const materials = usePremiumMaterials();
-  const mat = color === "orange" ? materials.orangeMetal : materials.darkMetal;
+  const mat = color === "blue" ? materials.blueMetal : materials.darkMetal;
 
   const SingleRebar = ({ length, material, position }: any) => {
     const ribCount = Math.floor(length / 0.15);
@@ -865,8 +974,8 @@ function ProfileRebar({ color = "orange" }) {
   );
 }
 
-export function CardLive3D({ type, color }: { type: string, color: "orange" | "green" }) {
-  const envColor = color === "orange" ? "#FF5722" : "#00E676";
+export function CardLive3D({ type, color }: { type: string, color: "blue" | "cyan" }) {
+  const envColor = color === "blue" ? "#00479A" : "#5DB0E5";
 
   return (
     <div className="absolute inset-0 z-0 pointer-events-none mix-blend-screen opacity-90 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden rounded-3xl">
@@ -886,6 +995,35 @@ export function CardLive3D({ type, color }: { type: string, color: "orange" | "g
         </group>
       </LazyCanvas>
     </div>
+  );
+}
+
+// ==============================================
+// REUSABLE HEXAGON CLUSTER FOR OTHER BLOCKS
+// ==============================================
+export function ReusableHexagonCluster({ count = 5, spread = 2, baseScale = 1 }: { count?: number, spread?: number, baseScale?: number }) {
+  const brandColors = ["#00479A", "#5DB0E5", "#8BE9FD", "#ffffff"];
+  const hexes = useMemo(() => {
+    return Array.from({ length: count }).map((_, i) => ({
+      position: [(Math.random() - 0.5) * spread, (Math.random() - 0.5) * spread, (Math.random() - 0.5) * spread],
+      scale: baseScale * (0.6 + Math.random() * 0.8),
+      floatOffset: Math.random() * 10,
+      color: brandColors[Math.floor(Math.random() * brandColors.length)],
+    }));
+  }, [count, spread, baseScale]);
+
+  return (
+    <group>
+      {hexes.map((hex, i) => (
+        <GlassHexagon key={i} position={hex.position} scale={hex.scale} floatOffset={hex.floatOffset} color={hex.color} />
+      ))}
+      {Array.from({ length: Math.floor(count / 2) }).map((_, i) => (
+        <mesh key={`spark-${i}`} position={[(Math.random() - 0.5) * spread * 1.5, (Math.random() - 0.5) * spread * 1.5, (Math.random() - 0.5) * spread * 1.5]} scale={0.5 + Math.random()}>
+           <sphereGeometry args={[0.05, 8, 8]} />
+           <meshBasicMaterial color={brandColors[Math.floor(Math.random() * brandColors.length)]} toneMapped={false} transparent opacity={0.8} />
+        </mesh>
+      ))}
+    </group>
   );
 }
 
@@ -912,9 +1050,9 @@ function RulesScaleBeam() {
         {/* Neon Display */}
         <mesh position={[1.5, -0.9, 1.5]}>
           <boxGeometry args={[0.8, 0.3, 0.4]} />
-          <meshBasicMaterial color="#00E676" />
+          <meshBasicMaterial color="#5DB0E5" />
         </mesh>
-        
+
         {/* I-Beam */}
         <mesh material={materials.scuffedMetal} position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
           <extrudeGeometry args={[iBeamShape, { depth: 2, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.05, bevelThickness: 0.05 }]} />
@@ -943,7 +1081,7 @@ function RulesFloatingCombo() {
 
 function RulesHologramDoc() {
   const materials = usePremiumMaterials();
-  const holoMat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#FF5722", transparent: true, opacity: 0.6, wireframe: true }), []);
+  const holoMat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#00479A", transparent: true, opacity: 0.6, wireframe: true }), []);
   return (
     <Float speed={1.5} rotationIntensity={0.4} floatIntensity={0.8}>
       <group rotation={[Math.PI / 6, -Math.PI / 5, 0]} scale={1.2}>
@@ -954,7 +1092,7 @@ function RulesHologramDoc() {
         {/* Glow center */}
         <mesh position={[0, 1, 0]}>
           <sphereGeometry args={[0.4, 16, 16]} />
-          <meshBasicMaterial color="#FF5722" transparent opacity={0.3} />
+          <meshBasicMaterial color="#00479A" transparent opacity={0.3} />
         </mesh>
       </group>
     </Float>
@@ -968,8 +1106,8 @@ export function RulesLive3D({ type }: { type: 'weight' | 'search' | 'transparenc
         <ambientLight intensity={1.5} />
         <directionalLight position={[5, 10, 5]} intensity={4} color="#ffffff" />
         <Environment preset="city" />
-        <directionalLight position={[-5, -5, -5]} intensity={2.5} color={type === 'weight' ? "#00E676" : "#FF5722"} />
-        
+        <directionalLight position={[-5, -5, -5]} intensity={2.5} color={type === 'weight' ? "#5DB0E5" : "#00479A"} />
+
         <group position={[0, 0, 0]}>
           {type === 'weight' && <RulesScaleBeam />}
           {type === 'search' && <RulesFloatingCombo />}
@@ -985,7 +1123,7 @@ export function RulesLive3D({ type }: { type: 'weight' | 'search' | 'transparenc
 // ==============================================
 
 export function ScannerLive3D() {
-  const holoMat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#00E676", transparent: true, opacity: 0.8, wireframe: true }), []);
+  const holoMat = useMemo(() => new THREE.MeshBasicMaterial({ color: "#5DB0E5", transparent: true, opacity: 0.8, wireframe: true }), []);
   return (
     <div className="absolute inset-0 pointer-events-none z-0 mix-blend-screen opacity-50">
       <LazyCanvas camera={{ position: [0, 0, 5], fov: 40 }} gl={{ alpha: true }}>
@@ -995,10 +1133,11 @@ export function ScannerLive3D() {
           </mesh>
           <mesh position={[0, 0, 0.1]} rotation={[-Math.PI / 4, 0, 0]}>
             <planeGeometry args={[1.8, 2.3]} />
-            <meshBasicMaterial color="#00E676" transparent opacity={0.1} />
+            <meshBasicMaterial color="#5DB0E5" transparent opacity={0.1} />
           </mesh>
         </Float>
       </LazyCanvas>
     </div>
   );
 }
+
