@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
 import dynamic from "next/dynamic";
 
+const HeroLive3D = dynamic(() => import("./LiveIlls").then(mod => mod.HeroLive3D), { ssr: false });
 const HeroHexBg = dynamic(() => import("./BlueprintBackground"), { ssr: false });
 
 import { useModal } from "./ModalContext";
@@ -76,14 +77,20 @@ export default function HeroSection() {
     >
       {/* Deep dark background is now handled globally */}
 
-      {/* Static 3D hex pattern — top-right */}
+      {/* Static 3D hex pattern — top-right, behind tubes */}
       <div className="absolute top-0 right-0 bottom-0 w-full h-full pointer-events-none z-[1] opacity-60">
         <HeroHexBg />
       </div>
 
-
-
-      {/* Grid texture overlay is handled globally */}
+      {/* 3D Tubes — on top of hex pattern */}
+      <motion.div
+        style={{ y: yHero }}
+        className="absolute top-0 right-0 bottom-0 w-[150vw] sm:inset-0 sm:w-full pointer-events-none origin-center pt-32 sm:pt-20 opacity-25 sm:opacity-100 translate-x-[25%] sm:translate-x-0 z-[2]"
+      >
+        <motion.div style={{ opacity: opacityHero }} className="w-full h-full">
+          <HeroLive3D />
+        </motion.div>
+      </motion.div>
 
 
 
