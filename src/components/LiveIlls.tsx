@@ -463,7 +463,6 @@ export function GlassHexagon({ position, scale = 1, floatOffset = 0, color = "#5
         roughness={0.02}
         thickness={2.5}
         ior={1.5}
-        chromaticAberration={0.06}
         clearcoat={1}
         clearcoatRoughness={0.05}
         envMapIntensity={3.0}
