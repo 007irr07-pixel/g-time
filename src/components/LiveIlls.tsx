@@ -11,8 +11,8 @@ import { useInView } from "framer-motion";
 function LazyCanvas({ children, camera, gl }: any) {
   const ref = useRef<HTMLDivElement>(null);
 
-  // 1. isMounted keeps the Canvas alive 1500px off-screen (prevents visual reloading on scroll)
-  const isMounted = useInView(ref, { margin: "1500px" });
+  // isMounted keeps the Canvas alive 200px off-screen, then destroys it to free WebGL context
+  const isMounted = useInView(ref, { margin: "200px" });
 
   // 2. isVisible stops the 3D rendering loop EXACTLY when it leaves the screen (saves battery)
   const isVisible = useInView(ref, { margin: "0px" });
