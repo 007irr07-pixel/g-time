@@ -153,7 +153,7 @@ function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number
             animate={isHovered ? { y: 0, opacity: 1 } : { y: 10, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-            Открыть
+            Подробнее
             <span className="text-lg">→</span>
           </motion.div>
         </div>
@@ -180,12 +180,12 @@ export default function CatalogSection() {
           <span className="inline-block py-1 px-3 rounded-full border border-accent-blue/30 bg-accent-blue/5 text-xs font-bold text-accent-blue uppercase tracking-[0.2em] mb-4">
             Каталог продукции
           </span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 mt-2 mb-6 tracking-tight text-white">
-            Металлопрокат строго по ГОСТ. <br className="hidden sm:block" />
-            <span className="gradient-text-blue">Без ожидания и перебоев.</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-900 mt-2 mb-6 tracking-tight text-white">
+            Металлопрокат строго по ГОСТ <br className="hidden sm:block" />
+            <span className="gradient-text-blue">Без ожидания и перебоев</span>
           </h2>
           <p className="text-zinc-100 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
-            50 000 тонн металла уже на складе. От труб до арматуры — скомплектуем заказ любой сложности за 1 час.
+            50 000 тонн металла уже на складе. От труб до арматуры — скомплектуем заказ любой сложности за 1 час
           </p>
         </motion.div>
 

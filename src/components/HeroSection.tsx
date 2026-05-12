@@ -112,11 +112,8 @@ export default function HeroSection() {
             animate="visible"
             className="text-[2rem] sm:text-[3rem] md:text-[4rem] lg:text-[4.5rem] font-heading font-900 leading-[1.1] tracking-tight mb-8 px-2 drop-shadow-[0_4px_30px_rgba(0,0,0,0.8)]"
           >
-            {renderStaggeredText("Арматура и металлопрокат с отгрузкой за 24 часа.")}
+            {renderStaggeredText("Арматура и металлопрокат с отгрузкой за 24 часа")}
             <br className="hidden sm:block" />
-            <motion.span variants={letterVariants} className="gradient-text-blue inline-block drop-shadow-[0_0_15px_rgba(0,71,154,0.4)] mt-2">
-              Или оплатим простой вашей техники.
-            </motion.span>
           </motion.h1>
 
           {/* Subtitle with fade up */}
@@ -126,7 +123,7 @@ export default function HeroSection() {
             transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
             className="text-xl sm:text-2xl text-white max-w-3xl mb-12 leading-[1.6] font-light drop-shadow-[0_4px_30px_rgba(0,0,0,1)]"
           >
-            <strong className="text-white font-semibold">50 000 тонн металла</strong> на складах. Фиксируем цену в день счета, даем отсрочку платежа и гарантируем честный вес по ГОСТу.
+            <strong className="text-white font-semibold">50 000 тонн металла</strong> на складах. Фиксируем цену в день счета, даем отсрочку платежа и гарантируем честный вес по ГОСТу
           </motion.p>
 
           {/* Premium CTAs */}
@@ -143,10 +140,6 @@ export default function HeroSection() {
               {/* Button inner glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
               <span className="relative z-10">Рассчитать смету за 15 минут</span>
-              <ArrowRight
-                size={20}
-                className="relative z-10 group-hover:translate-x-1.5 transition-transform"
-              />
             </a>
 
             <a
@@ -156,7 +149,7 @@ export default function HeroSection() {
               className="group relative inline-flex items-center justify-center gap-4 bg-graphite/80 backdrop-blur-xl border border-white/20 hover:border-[#25D366]/60 hover:bg-gunmetal/90 text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
             >
               <MessageCircle size={20} className="text-[#25D366] group-hover:text-white transition-colors drop-shadow-md" />
-              <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Перейти на WhatsApp</span>
+              <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Написать на WhatsApp</span>
             </a>
           </motion.div>
 
@@ -169,7 +162,7 @@ export default function HeroSection() {
           >
             {[
               { value: "12+", label: "лет доверия" },
-              { value: "50К", label: "тонн металла" },
+              { value: "50 000", label: "тонн металла" },
               { value: "5000+", label: "отгрузок/год" },
             ].map((stat, i) => (
               <motion.div
@@ -193,7 +186,7 @@ export default function HeroSection() {
 
       {/* Floating scroll indicator */}
       <motion.div
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 cursor-pointer z-20"
+        className="hidden absolute bottom-12 left-1/2 -translate-x-1/2 cursor-pointer z-20"
         animate={{ y: [0, 15, 0] }}
         transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
       >

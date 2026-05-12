@@ -10,8 +10,8 @@ const RulesLive3D = dynamic(() => import("./LiveIlls").then(mod => mod.RulesLive
 const rules = [
   {
     type: "weight" as const,
-    title: "1. Вес в грамм",
-    desc: "Если при приемке вес не сойдется — вернем разницу в двойном размере.",
+    title: "1. Гарантия точного веса",
+    desc: "Если при приемке вес не сойдется — вернем разницу в размере.",
     color: "cyan"
   },
   {
@@ -22,8 +22,8 @@ const rules = [
   },
   {
     type: "transparency" as const,
-    title: "3. Прозрачность",
-    desc: "ЭСФ день в день и только свежий металл без коррозии.",
+    title: "3. Высокое качество",
+    desc: "Качественный металл без коррозии и дефектов.",
     color: "blue"
   }
 ];
@@ -70,7 +70,7 @@ export default function RulesSection() {
     <section id="rules" ref={containerRef} className="relative py-24 sm:py-32 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-left mb-16 border-l-4 border-accent-blue pl-6">
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 tracking-tight text-white leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-900 tracking-tight text-white leading-tight">
             3 железных правила G-Time
           </h2>
         </motion.div>

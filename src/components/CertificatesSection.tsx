@@ -87,7 +87,7 @@ export default function CertificatesSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-16 sm:mb-24">
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 mt-2 mb-6 tracking-tight text-white uppercase">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-900 mt-2 mb-6 tracking-tight text-white uppercase">
             Рекомендательные письма от <span className="gradient-text-blue">наших заказчиков</span>
           </h2>
           <p className="text-zinc-100 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">Мы гордимся прозрачностью нашей работы. Наш профессионализм подтвержден официальными письмами крупнейших застройщиков Казахстана</p>

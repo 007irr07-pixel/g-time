@@ -16,7 +16,6 @@ const cities = ["Алматы", "Астана", "Шымкент", "Карага�
 
 const navLinks = [
   { label: "Каталог", href: "#catalog" },
-  { label: "Калькулятор", href: "#calculator" },
   { label: "О компании", href: "#b2b" },
   { label: "Контакты", href: "#contacts" },
 ];
@@ -80,7 +79,7 @@ export default function Header() {
           {/* Right side */}
           <div className="hidden lg:flex items-center gap-5">
             {/* City selector */}
-            <div className="relative">
+            <div className="relative hidden">
               <button
                 onClick={() => setCityOpen(!cityOpen)}
                 className="flex items-center gap-1.5 text-sm text-silver hover:text-white transition-colors"

@@ -19,7 +19,6 @@ const footerLinks = {
     { label: "Вакансии", href: "#" },
   ],
   services: [
-    { label: "Калькулятор веса", href: "#calculator" },
     { label: "Загрузить смету", href: "#" },
     { label: "Скачать прайс", href: "#" },
     { label: "Условия оплаты", href: "#b2b" },

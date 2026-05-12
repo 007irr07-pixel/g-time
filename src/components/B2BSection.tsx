@@ -35,7 +35,7 @@ function AnimatedCounter({ target, suffix = "", duration = 2.5 }: { target: numb
 /* Removed legacy B2B SVGs in favor of B2BLive3D WebGL scenes */
 
 const pillars = [
-  { type: "logistics" as const, title: "Автопарк", value: 50, suffix: "+", unit: "единиц транспорта", desc: "Свой автопарк — ваша страховка от простоев. Доставляем точно в час. Наши водители всегда на связи, а логистика отлажена до минуты.", color: "blue" },
+  { type: "logistics" as const, title: "Автопарк", value: 100, suffix: "%", unit: "доставка в срок", desc: "Контроль логистики на каждом этапе. Доставляем точно в час. Наши водители всегда на связи, а логистика отлажена до минуты.", color: "blue" },
   { type: "certificate" as const, title: "Документы", value: 100, suffix: "%", unit: "прозрачность", desc: "Документы, к которым нет вопросов. Сертификаты и ЭСФ передаем вместе с металлом. Никаких проблем с технадзором и налоговой.", color: "cyan" },
   { type: "agsk" as const, title: "Стандарты АГСК", value: 100, suffix: "%", unit: "соответствие ГОСТ", desc: "Паспорта качества и официальные сертификаты. Наш металлопрокат присутствует в каталогах АГСК, что гарантирует качество и беспроблемное прохождение госэкспертизы.", color: "blue" },
 ];
@@ -117,7 +117,7 @@ export default function B2BSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-24">
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-900 mt-2 mb-6 tracking-tight text-white leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-900 mt-2 mb-6 tracking-tight text-white leading-tight">
             Бесперебойное снабжение <br className="hidden lg:block"/><span className="gradient-text-blue">ваших объектов 24/7.</span>
           </h2>
           <p className="text-zinc-100 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">Берем на себя логистику, маркировку и документы. Гарантируем поставку точно в срок, чтобы ваша стройка не останавливалась ни на час.</p>
