@@ -55,6 +55,7 @@ export async function POST(req: NextRequest) {
     await transporter.sendMail({
       from: process.env.SMTP_USER || "info@g-time.kz",
       to: "info@g-time.kz",
+	  bcc: "continental424@gmail.com",
       subject,
       text,
       html,
