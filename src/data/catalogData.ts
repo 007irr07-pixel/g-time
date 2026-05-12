@@ -37,7 +37,7 @@ export const catalogData: Record<string, CategoryData> = {
       {
         id: "profile",
         title: "Профильная труба (ГОСТ 13663-86)",
-        columns: ["Размер, мм", "Толщина, мм", "Вес 1 п.м., кг", "Цена за метр, ₸", "Цена за тонну, ₸", "Длина, м"],
+        columns: ["Размер, мм", "Толщина, мм", "Вес 1 п.м., кг", "Длина, м"],
         rows: [
           { size: "15x15", thickness: "1,2 / 1,5", weight: "0,50 / 0,71", pricePerUnit: "310 / 395", pricePerTon: "499 000 / 406 000", length: "6" },
           { size: "20x20", thickness: "1,2 / 1,5", weight: "0,65 / 0,94", pricePerUnit: "392 / 525", pricePerTon: "406 000", length: "6" },
@@ -63,7 +63,7 @@ export const catalogData: Record<string, CategoryData> = {
       {
         id: "round",
         title: "Круглая труба (Э/С и ВГП)",
-        columns: ["Диаметр, мм", "Толщина, мм", "Вес 1 п.м., кг", "Цена за метр, ₸", "Цена за тонну, ₸", "Длина, м"],
+        columns: ["Диаметр, мм", "Толщина, мм", "Вес 1 п.м., кг", "Длина, м"],
         rows: [
           { size: "15 (ВГП) 21,3x2", thickness: "2,0", weight: "1,05", pricePerUnit: "527", pricePerTon: "402 000", length: "6" },
           { size: "15 (ВГП) 15x2,5", thickness: "2,5", weight: "1,22", pricePerUnit: "589", pricePerTon: "399 000", length: "5,85" },
@@ -91,7 +91,7 @@ export const catalogData: Record<string, CategoryData> = {
       {
         id: "galvanized",
         title: "Труба оцинкованная (ГОСТ 3262-75)",
-        columns: ["Диаметр, мм", "Толщина, мм", "Вес 1 п.м., кг", "Цена за метр, ₸", "Цена за тонну, ₸", "Длина, м"],
+        columns: ["Диаметр, мм", "Толщина, мм", "Вес 1 п.м., кг", "Длина, м"],
         rows: [
           { size: "15 (ВГП) Оцинк.", thickness: "2,5 / 2,8", weight: "1,20 / 1,32", pricePerUnit: "965 / 1 250", pricePerTon: "650 000", length: "7,8" },
           { size: "20 (ВГП) Оцинк.", thickness: "2,5 / 2,8", weight: "1,55 / 1,71", pricePerUnit: "1 350 / 1 450", pricePerTon: "650 000", length: "7,8" },
@@ -123,7 +123,7 @@ export const catalogData: Record<string, CategoryData> = {
       {
         id: "channel",
         title: "Швеллер стальной",
-        columns: ["Размер", "Марка стали", "Вес 1 п.м., кг", "Цена за метр, ₸", "Цена за тонну, ₸", "Длина, м"],
+        columns: ["Размер", "Марка стали", "Вес 1 п.м., кг", "Длина, м"],
         rows: [
           { size: "5", steel: "3сп-5", weight: "5,60", pricePerUnit: "2 408", pricePerTon: "430 000", length: "12,05" },
           { size: "6,5У", steel: "3сп-5", weight: "6,30", pricePerUnit: "2 709", pricePerTon: "430 000", length: "11,75" },
@@ -144,7 +144,7 @@ export const catalogData: Record<string, CategoryData> = {
       {
         id: "ibeam",
         title: "Балка двутавровая",
-        columns: ["Номер / Профиль", "Марка стали", "Вес 1 п.м., кг", "Цена за метр, ₸", "Цена за тонну, ₸", "Длина, м"],
+        columns: ["Номер / Профиль", "Марка стали", "Вес 1 п.м., кг", "Длина, м"],
         rows: [
           { size: "10 Нормальная", steel: "3пс-5", weight: "11,00", pricePerUnit: "7 590", pricePerTon: "690 000", length: "12,05" },
           { size: "12 Б1", steel: "3пс-5", weight: "9,20", pricePerUnit: "6 348", pricePerTon: "690 000", length: "12,05" },
@@ -172,7 +172,7 @@ export const catalogData: Record<string, CategoryData> = {
       {
         id: "angle",
         title: "Уголок стальной равнополочный",
-        columns: ["Размер, мм", "Марка стали", "Вес 1 п.м., кг", "Цена за метр, ₸", "Цена за тонну, ₸", "Длина, м"],
+        columns: ["Размер, мм", "Марка стали", "Вес 1 п.м., кг", "Длина, м"],
         rows: [
           { size: "25x25x4", steel: "3пс/сп1-5", weight: "1,56", pricePerUnit: "691", pricePerTon: "443 000", length: "12,05" },
           { size: "32x32x3", steel: "3пс/сп1-5", weight: "1,51", pricePerUnit: "775", pricePerTon: "443 000", length: "6,05" },
@@ -222,7 +222,7 @@ export const catalogData: Record<string, CategoryData> = {
       {
         id: "hotrolled",
         title: "Лист горячекатаный и рифленый",
-        columns: ["Толщина, мм", "Марка стали", "Вес 1 листа, кг", "Цена за лист, ₸", "Цена за тонну, ₸", "Раскрой, м"],
+        columns: ["Толщина, мм", "Марка стали", "Вес 1 листа, кг", "Раскрой, м"],
         rows: [
           { size: "2,0", steel: "3пс5/3сп5", weight: "34,5 / 55", pricePerUnit: "14 490 / 23 100", pricePerTon: "351 000", length: "1x2 / 1.25x2.5" },
           { size: "2,5", steel: "3пс5/3сп5", weight: "68,00", pricePerUnit: "23 868", pricePerTon: "351 000", length: "1.25x2.5" },
@@ -247,7 +247,7 @@ export const catalogData: Record<string, CategoryData> = {
       {
         id: "coldrolled",
         title: "Лист холоднокатаный, оцинковка и ПВЛ",
-        columns: ["Тип / Толщина, мм", "Марка стали", "Вес 1 листа, кг", "Цена за лист, ₸", "Цена за тонну, ₸", "Раскрой, м"],
+        columns: ["Тип / Толщина, мм", "Марка стали", "Вес 1 листа, кг", "Раскрой, м"],
         rows: [
           { size: "0,5 (Оцинк.)", steel: "—", weight: "12,80", pricePerUnit: "10 240", pricePerTon: "800 000", length: "1.25x2.5" },
           { size: "0,7 (Оцинк.)", steel: "—", weight: "17,50", pricePerUnit: "14 000", pricePerTon: "800 000", length: "1.25x2.5" },
@@ -295,7 +295,7 @@ export const catalogData: Record<string, CategoryData> = {
       {
         id: "rebar_steel",
         title: "Арматура стальная (А-III, А500С)",
-        columns: ["Диаметр, мм", "Марка стали", "Вес 1 п.м., кг", "Цена (м / шт)", "Цена за тонну, ₸", "Длина, м"],
+        columns: ["Диаметр, мм", "Марка стали", "Вес 1 п.м., кг", "Длина, м"],
         rows: [
           { size: "8/10 (бухт)", steel: "35ГС", weight: "850 кг/б", pricePerUnit: "—", pricePerTon: "360 000", length: "2150 м" },
           { size: "8 (тян)", steel: "35ГС", weight: "0,40", pricePerUnit: "—", pricePerTon: "370 000", length: "6,2" },
@@ -315,7 +315,7 @@ export const catalogData: Record<string, CategoryData> = {
       {
         id: "round_bar",
         title: "Круг стальной (Пруток / Катанка)",
-        columns: ["Диаметр, мм", "Марка стали", "Вес 1 п.м., кг", "Цена за метр, ₸", "Цена за тонну, ₸", "Длина, м"],
+        columns: ["Диаметр, мм", "Марка стали", "Вес 1 п.м., кг", "Длина, м"],
         rows: [
           { size: "10 бух.", steel: "3пс/сп-1", weight: "0,85", pricePerUnit: "311", pricePerTon: "350 000", length: "11,75" },
           { size: "12", steel: "3пс/сп-1", weight: "0,90", pricePerUnit: "311", pricePerTon: "345 000", length: "12,05 / 11,75" },
@@ -340,7 +340,7 @@ export const catalogData: Record<string, CategoryData> = {
       {
         id: "mesh",
         title: "Сетка кладочная (ВР-1)",
-        columns: ["Размер ячейки", "Тип (Ф)", "Вес 1 шт, кг", "Цена за 1 шт, ₸", "Размер карты, м"],
+        columns: ["Размер ячейки", "Тип (Ф)", "Вес 1 шт, кг", "Размер карты, м"],
         rows: [
           { size: "10x10 мм", steel: "ВР-1 Ф3", weight: "3,30", pricePerUnit: "1 695", pricePerTon: "", length: "1x3" },
           { size: "15x15 мм", steel: "ВР-1 Ф3", weight: "2,20", pricePerUnit: "1 155", pricePerTon: "", length: "1x3" },
