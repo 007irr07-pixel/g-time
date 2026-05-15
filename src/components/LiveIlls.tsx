@@ -12,7 +12,7 @@ function LazyCanvas({ children, camera, gl }: any) {
   const ref = useRef<HTMLDivElement>(null);
 
   // Unmount canvas when off-screen to prevent hitting the browser's max WebGL context limit (usually 8-16)
-  const isVisible = useInView(ref, { margin: "500px" });
+  const isVisible = useInView(ref, { margin: "-100px" });
 
   return (
     <div ref={ref} className="absolute inset-0 w-full h-full pointer-events-none">
