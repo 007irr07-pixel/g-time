@@ -1,28 +1,38 @@
 "use client";
 
 import React, { useRef, useMemo, useState, useEffect } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
-import { View, Environment, Float, Preload, Edges, PerspectiveCamera } from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Environment, Float, Preload, Edges } from "@react-three/drei";
 import * as THREE from "three";
+import { useInView } from "framer-motion";
 
-// --- SINGLE-CONTEXT VIEW: renders into GlobalCanvas instead of creating a new WebGL context ---
-function LazyCanvas({ children, camera }: any) {
-  const ref = useRef<HTMLElement>(null!);
+// --- LAZY CANVAS: mounts WebGL only when element is in viewport ---
+function LazyCanvas({ children, camera, gl }: any) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isVisible = useInView(ref, { margin: "0px" });
 
   return (
-    <div ref={ref as React.RefObject<HTMLDivElement>} className="absolute inset-0 w-full h-full pointer-events-none">
-      <View
-        track={ref}
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-      >
-        {/* Per-view camera */}
-        <PerspectiveCamera
-          makeDefault
-          position={camera?.position ?? [0, 0, 10]}
-          fov={camera?.fov ?? 45}
-        />
-        {children}
-      </View>
+    <div ref={ref} className="absolute inset-0 w-full h-full pointer-events-none">
+      {isVisible && (
+        <Canvas
+          camera={camera}
+          gl={{
+            ...gl,
+            alpha: true,
+            powerPreference: "high-performance",
+            failIfMajorPerformanceCaveat: false,
+          }}
+          dpr={[1, 1.2]}
+          frameloop="always"
+          onCreated={({ gl: renderer }) => {
+            renderer.domElement.addEventListener("webglcontextlost", (e) => {
+              e.preventDefault();
+            });
+          }}
+        >
+          {children}
+        </Canvas>
+      )}
     </div>
   );
 }
