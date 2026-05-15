@@ -1,46 +1,31 @@
 "use client";
 
 import { useRef, useMemo, useState, useEffect } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment, Float, Preload, Edges } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import { View, Environment, Float, Preload, Edges, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
-import { useInView } from "framer-motion";
 
-
-// --- DYNAMIC CANVAS: Mounts only when near screen to prevent WebGL context limits ---
-function LazyCanvas({ children, camera, gl }: any) {
+// --- SINGLE-CONTEXT VIEW: renders into GlobalCanvas instead of creating a new WebGL context ---
+function LazyCanvas({ children, camera }: any) {
   const ref = useRef<HTMLDivElement>(null);
-
-  // Unmount canvas when off-screen to prevent hitting the browser's max WebGL context limit (usually 8-16)
-  const isVisible = useInView(ref, { margin: "-100px" });
 
   return (
     <div ref={ref} className="absolute inset-0 w-full h-full pointer-events-none">
-      {isVisible && (
-        <Canvas
-          camera={camera}
-          gl={{
-            ...gl,
-            // Recover automatically from context loss
-            powerPreference: "high-performance",
-            failIfMajorPerformanceCaveat: false,
-          }}
-          dpr={[1, 1.2]}
-          frameloop="always"
-          onCreated={({ gl: renderer }) => {
-            // Handle context lost — tell browser we want to restore it
-            const canvas = renderer.domElement;
-            canvas.addEventListener("webglcontextlost", (e) => {
-              e.preventDefault(); // Prevents browser from permanently losing context
-            });
-          }}
-        >
-          {children}
-        </Canvas>
-      )}
+      <View
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+      >
+        {/* Per-view camera */}
+        <PerspectiveCamera
+          makeDefault
+          position={camera?.position ?? [0, 0, 10]}
+          fov={camera?.fov ?? 45}
+        />
+        {children}
+      </View>
     </div>
   );
 }
+
 
 // --- LOADING SKELETON FOR 3D ---
 function LoadingSkeleton() {
