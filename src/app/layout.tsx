@@ -30,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru" className={`scroll-smooth ${inter.variable} ${manrope.variable}`}>
-      <body className="bg-graphite text-white antialiased">
+      <body className="relative bg-graphite text-white antialiased">
         <Script id="gtm" strategy="afterInteractive">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

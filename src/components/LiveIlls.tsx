@@ -7,36 +7,37 @@ import * as THREE from "three";
 import { useInView } from "framer-motion";
 
 
-// --- PERSISTENT CANVAS: loads once, stays in GPU memory forever ---
+// --- DYNAMIC CANVAS: Mounts only when near screen to prevent WebGL context limits ---
 function LazyCanvas({ children, camera, gl }: any) {
   const ref = useRef<HTMLDivElement>(null);
 
-  // Canvas is ALWAYS mounted — never destroyed, stays in GPU memory
-  // Only the render loop pauses when off-screen to save battery
-  const isVisible = useInView(ref, { margin: "0px" });
+  // Unmount canvas when off-screen to prevent hitting the browser's max WebGL context limit (usually 8-16)
+  const isVisible = useInView(ref, { margin: "500px" });
 
   return (
     <div ref={ref} className="absolute inset-0 w-full h-full pointer-events-none">
-      <Canvas
-        camera={camera}
-        gl={{
-          ...gl,
-          // Recover automatically from context loss
-          powerPreference: "high-performance",
-          failIfMajorPerformanceCaveat: false,
-        }}
-        dpr={[1, 1.2]}
-        frameloop={isVisible ? "always" : "demand"}
-        onCreated={({ gl: renderer }) => {
-          // Handle context lost — tell browser we want to restore it
-          const canvas = renderer.domElement;
-          canvas.addEventListener("webglcontextlost", (e) => {
-            e.preventDefault(); // Prevents browser from permanently losing context
-          });
-        }}
-      >
-        {children}
-      </Canvas>
+      {isVisible && (
+        <Canvas
+          camera={camera}
+          gl={{
+            ...gl,
+            // Recover automatically from context loss
+            powerPreference: "high-performance",
+            failIfMajorPerformanceCaveat: false,
+          }}
+          dpr={[1, 1.2]}
+          frameloop="always"
+          onCreated={({ gl: renderer }) => {
+            // Handle context lost — tell browser we want to restore it
+            const canvas = renderer.domElement;
+            canvas.addEventListener("webglcontextlost", (e) => {
+              e.preventDefault(); // Prevents browser from permanently losing context
+            });
+          }}
+        >
+          {children}
+        </Canvas>
+      )}
     </div>
   );
 }
@@ -1018,15 +1019,23 @@ export function ReusableHexagonCluster({ count = 5, spread = 2, baseScale = 1 }:
     }));
   }, [count, spread, baseScale]);
 
+  const sparks = useMemo(() => {
+    return Array.from({ length: Math.floor(count / 2) }).map(() => ({
+      position: [(Math.random() - 0.5) * spread * 1.5, (Math.random() - 0.5) * spread * 1.5, (Math.random() - 0.5) * spread * 1.5] as [number, number, number],
+      scale: 0.5 + Math.random(),
+      color: brandColors[Math.floor(Math.random() * brandColors.length)],
+    }));
+  }, [count, spread]);
+
   return (
     <group>
       {hexes.map((hex, i) => (
         <GlassHexagon key={i} position={hex.position} scale={hex.scale} floatOffset={hex.floatOffset} color={hex.color} />
       ))}
-      {Array.from({ length: Math.floor(count / 2) }).map((_, i) => (
-        <mesh key={`spark-${i}`} position={[(Math.random() - 0.5) * spread * 1.5, (Math.random() - 0.5) * spread * 1.5, (Math.random() - 0.5) * spread * 1.5]} scale={0.5 + Math.random()}>
+      {sparks.map((spark, i) => (
+        <mesh key={`spark-${i}`} position={spark.position} scale={spark.scale}>
            <sphereGeometry args={[0.05, 8, 8]} />
-           <meshBasicMaterial color={brandColors[Math.floor(Math.random() * brandColors.length)]} toneMapped={false} transparent opacity={0.8} />
+           <meshBasicMaterial color={spark.color} toneMapped={false} transparent opacity={0.8} />
         </mesh>
       ))}
     </group>

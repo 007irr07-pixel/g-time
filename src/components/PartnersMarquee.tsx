@@ -10,7 +10,7 @@ const partnerLogos = Array.from({ length: 8 }, (_, i) => `/partners/${i + 1}.png
 export default function PartnersMarquee() {
   return (
     <section className="py-12 bg-graphite border-y border-white/5 overflow-hidden flex flex-col relative w-full">
-		<h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-800 mt-4 mb-6">
+		<h2 className="text-center text-3xl sm:text-4xl lg:text-5xl font-heading font-800 mt-4 mb-6">
             Наши{" "}
             <span className="gradient-text-cyan">партнеры</span>
           </h2>
@@ -35,7 +35,7 @@ export default function PartnersMarquee() {
             {partnerLogos.map((src, idx) => (
               <div 
                 key={`${src}-${idx}`} 
-                className="relative w-40 h-20 sm:w-56 sm:h-24 flex items-center justify-center opacity-40 hover:opacity-100 transition-all duration-500 select-none grayscale hover:grayscale-0"
+                className="relative w-40 h-20 sm:w-56 sm:h-24 flex items-center justify-center opacity-50 hover:opacity-100 transition-all duration-500 select-none grayscale hover:grayscale-0"
               >
                 <Image 
                   src={src}

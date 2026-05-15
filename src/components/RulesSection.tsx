@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -42,21 +42,21 @@ function RuleCard({ rule, index }: { rule: typeof rules[0], index: number }) {
       <TiltCard
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
-        className={`relative group bg-graphite/40 backdrop-blur-2xl rounded-3xl p-10 border border-white/10 hover:border-${rule.color === 'blue' ? 'accent-blue/40' : 'accent-cyan/40'} flex flex-col justify-end overflow-hidden cursor-pointer h-full min-h-[450px]`}
+        className={`relative group bg-graphite/40 backdrop-blur-2xl rounded-3xl p-10 border border-white/10 hover:border-${rule.color === 'blue' ? 'accent-blue/40' : 'accent-cyan/40'} flex flex-col justify-center items-center text-center overflow-hidden cursor-pointer h-full min-h-[450px]`}
       >
         {/* Giant Background 3D WebGL scene */}
         <RulesLive3D type={rule.type} />
         
         {/* Readability dark vignette for text */}
-        <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-graphite/95 via-graphite/60 to-transparent pointer-events-none mix-blend-multiply" />
+        <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-graphite/95 via-graphite/60 to-transparent pointer-events-none" />
   
         {/* Background glow radial */}
         <div className={`absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${rule.color === 'blue' ? 'bg-accent-blue/20' : 'bg-accent-cyan/20'}`} />
   
         {/* Foreground Content with 3D Float */}
-        <div style={{ transform: "translateZ(60px)" }} className="relative z-10 pointer-events-none drop-shadow-2xl">
-          <h3 className="text-3xl font-heading font-800 text-white mb-4 tracking-tight drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]">{rule.title}</h3>
-          <p className="text-lg text-zinc-100 leading-relaxed font-medium drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">{rule.desc}</p>
+        <div style={{ transform: "translateZ(60px)" }} className="relative z-10 pointer-events-none">
+          <h3 style={{ textShadow: "0 4px 15px rgba(0,0,0,0.8)" }} className="text-3xl font-heading font-800 text-white mb-4 tracking-tight">{rule.title}</h3>
+          <p style={{ textShadow: "0 2px 10px rgba(0,0,0,0.8)" }} className="text-lg text-zinc-100 leading-relaxed font-medium">{rule.desc}</p>
         </div>
       </TiltCard>
     </motion.div>
@@ -69,7 +69,7 @@ export default function RulesSection() {
   return (
     <section id="rules" ref={containerRef} className="relative py-24 sm:py-32 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-left mb-16 border-l-4 border-accent-blue pl-6">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-900 tracking-tight text-white leading-tight">
             3 железных правила G-Time
           </h2>
