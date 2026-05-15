@@ -1,17 +1,18 @@
 "use client";
 
-import { useRef, useMemo, useState, useEffect } from "react";
+import React, { useRef, useMemo, useState, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { View, Environment, Float, Preload, Edges, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 
 // --- SINGLE-CONTEXT VIEW: renders into GlobalCanvas instead of creating a new WebGL context ---
 function LazyCanvas({ children, camera }: any) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLElement>(null!);
 
   return (
-    <div ref={ref} className="absolute inset-0 w-full h-full pointer-events-none">
+    <div ref={ref as React.RefObject<HTMLDivElement>} className="absolute inset-0 w-full h-full pointer-events-none">
       <View
+        track={ref}
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
       >
         {/* Per-view camera */}
