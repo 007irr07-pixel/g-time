@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 process.env.SMTP_HOST = "mail.g-time.kz";
 process.env.SMTP_PORT = 465;
-process.env.SMTP_USER = "info@g-time.kz";
+process.env.SMTP_USER = "sales@g-time.kz";
 process.env.SMTP_PASSWORD = "Gtime2026!";
 
 async function test() {
@@ -11,7 +11,7 @@ async function test() {
     port: Number(process.env.SMTP_PORT) || 465,
     secure: true, // true для 465, false для других портов
     auth: {
-      user: process.env.SMTP_USER || "info@g-time.kz",
+      user: process.env.SMTP_USER || "sales@g-time.kz",
       pass: process.env.SMTP_PASSWORD || "",
     },
     tls: {
@@ -21,8 +21,8 @@ async function test() {
 
   try {
     const info = await transporter.sendMail({
-      from: process.env.SMTP_USER || "info@g-time.kz",
-      to: "info@g-time.kz",
+      from: process.env.SMTP_USER || "sales@g-time.kz",
+      to: "sales@g-time.kz",
       subject: "Test email",
       text: "Test email text",
     });

@@ -150,11 +150,11 @@ export default function Footer() {
                 +7 747 839-06-05
               </a>
               <a
-                href="mailto:info@g-time.kz"
+                href="mailto:sales@g-time.kz"
                 className="flex items-center gap-2 text-sm text-light-silver hover:text-white transition-colors"
               >
                 <Mail size={14} className="text-accent-blue" />
-                info@g-time.kz
+                sales@g-time.kz
               </a>
               <div className="flex items-start gap-2 text-sm text-light-silver">
                 <MapPin size={14} className="text-accent-blue mt-0.5 shrink-0" />

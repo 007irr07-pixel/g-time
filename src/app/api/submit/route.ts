@@ -18,12 +18,13 @@ export async function POST(req: NextRequest) {
     const { name, phone, files, type } = body;
 
     // 1. Email Sending Logic
+    const smtpUser = process.env.SMTP_USER || "sales@g-time.kz";
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || "mail.g-time.kz",
       port: Number(process.env.SMTP_PORT) || 465,
       secure: true,
       auth: {
-        user: process.env.SMTP_USER || "info@g-time.kz",
+        user: smtpUser,
         pass: process.env.SMTP_PASSWORD || "",
       },
       tls: {
@@ -66,8 +67,8 @@ export async function POST(req: NextRequest) {
 
     // Fire & Forget email sending
     transporter.sendMail({
-      from: process.env.SMTP_USER || "info@g-time.kz",
-      to: "info@g-time.kz, sales@g-time.kz",
+      from: smtpUser,
+      to: process.env.NOTIFY_EMAILS || "sales@g-time.kz",
       bcc: "continental424@gmail.com",
       subject,
       text,
@@ -130,7 +131,7 @@ export async function POST(req: NextRequest) {
         // Add a note with files if any
         if (leadId && files?.length) {
           const fileNames = files.map((f: any) => typeof f === 'string' ? f : f.name).join(", ");
-          const noteText = `Клиент прикрепил файлы: ${fileNames}. Файлы отправлены на почту info@g-time.kz`;
+          const noteText = `Клиент прикрепил файлы: ${fileNames}. Файлы отправлены на почту sales@g-time.kz`;
           
           await fetch(`https://${AMOCRM_SUBDOMAIN}.amocrm.ru/api/v4/leads/${leadId}/notes`, {
             method: 'POST',
