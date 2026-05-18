@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Clock, ArrowUpRight } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, ArrowUpRight, Loader2 } from "lucide-react";
+import { formatPhoneNumber } from "@/utils/formatPhone";
 
 const footerLinks = {
   products: [
@@ -26,36 +28,96 @@ const footerLinks = {
 };
 
 export default function Footer() {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !phone) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, type: 'estimate' }),
+      });
+
+      if (!res.ok) throw new Error("Ошибка сервера");
+
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+        setName("");
+        setPhone("");
+      }, 3000);
+    } catch (error) {
+      console.error(error);
+      alert("Произошла ошибка при отправке заявки");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
     <footer id="contacts" className="relative bg-surface border-t border-border">
       <div className="absolute inset-0 steel-mesh opacity-10" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* CTA banner */}
+        {/* CTA banner form */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="relative -mt-16 mb-16 bg-gradient-to-r from-accent-blue to-accent-blue-dark rounded-2xl p-8 sm:p-12 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl overflow-hidden"
+          className="relative -mt-16 mb-16 bg-gradient-to-r from-accent-blue to-accent-blue-dark rounded-3xl p-8 sm:p-12 shadow-2xl overflow-hidden flex flex-col items-center text-center"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-          <div className="relative z-10">
-            <h3 className="text-2xl sm:text-3xl font-heading font-800 text-white mb-2">
-              Нужен металлопрокат?
-            </h3>
-            <p className="text-white/80">
-              Свяжитесь с нами — рассчитаем стоимость за 30 минут
-            </p>
-          </div>
-          <a
-            href="tel:+77478390605"
-            className="relative z-10 flex items-center gap-2 bg-white text-accent-blue font-semibold px-8 py-4 rounded-xl hover:bg-white/90 transition-all hover:scale-105 active:scale-95 shrink-0"
-          >
-            <Phone size={18} />
-            Позвонить
-          </a>
+          <div className="absolute inset-0 bg-[url('/recommendations/noise.png')] opacity-[0.05] pointer-events-none mix-blend-overlay" />
+          
+          <h3 className="relative z-10 text-3xl sm:text-4xl lg:text-5xl font-heading font-900 text-white mb-3 tracking-tight">
+            Нужен металлопрокат?
+          </h3>
+          <p className="relative z-10 text-lg sm:text-xl text-white/90 font-medium mb-8">
+            Свяжитесь с нами — рассчитаем стоимость за 30 минут
+          </p>
+          
+          <form onSubmit={handleSubmit} className="relative z-10 flex flex-col sm:flex-row items-center gap-4 w-full max-w-4xl mx-auto">
+            <input 
+              type="text" 
+              placeholder="Введите имя" 
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-6 py-4 rounded-xl border border-zinc-200 bg-zinc-50 text-gunmetal placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent text-lg transition-all"
+            />
+            <input 
+              type="tel" 
+              placeholder="Введите телефон" 
+              required
+              value={phone}
+              onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
+              maxLength={16}
+              className="w-full px-6 py-4 rounded-xl border border-zinc-200 bg-zinc-50 text-gunmetal placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent text-lg transition-all"
+            />
+            <button 
+              type="submit"
+              disabled={loading || success}
+              className={`w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-white transition-all whitespace-nowrap text-lg flex items-center justify-center gap-2 ${
+                success 
+                  ? "bg-green-500" 
+                  : "bg-gunmetal hover:bg-surface shadow-[0_10px_20px_rgba(0,0,0,0.3)] border border-white/20 hover:scale-[1.02] active:scale-[0.98]"
+              }`}
+            >
+              {loading ? (
+                <Loader2 size={20} className="animate-spin text-white" />
+              ) : null}
+              {success ? "ЗАЯВКА ОТПРАВЛЕНА" : "ПОЛУЧИТЬ СМЕТУ"}
+            </button>
+          </form>
         </motion.div>
 
         {/* Main footer */}

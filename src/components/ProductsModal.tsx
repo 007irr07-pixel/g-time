@@ -3,8 +3,9 @@
 import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Phone, AlertTriangle, Search, Info, Download } from "lucide-react";
+import { X, Phone, AlertTriangle, Search, Info, Download, ArrowRight } from "lucide-react";
 import { catalogData, type SubCategory, type ProductRow } from "@/data/catalogData";
+import { useModal } from "./ModalContext";
 
 interface ProductsModalProps {
   isOpen: boolean;
@@ -91,12 +92,6 @@ function ProductTable({ sub, searchQuery }: { sub: SubCategory; searchQuery: str
                   {row.steel || row.thickness || "—"}
                 </td>
                 <td className="px-4 py-3 sm:px-6 sm:py-4 text-silver/90 whitespace-nowrap">{row.weight}</td>
-                <td className="px-4 py-3 sm:px-6 sm:py-4 text-white font-bold whitespace-nowrap bg-white/[0.02]">
-                  {row.pricePerUnit}
-                </td>
-                {!isMesh && (
-                  <td className="px-4 py-3 sm:px-6 sm:py-4 text-silver/90 whitespace-nowrap">{row.pricePerTon}</td>
-                )}
                 <td className="px-4 py-3 sm:px-6 sm:py-4 text-silver/90 whitespace-nowrap">{row.length}</td>
               </tr>
             ))}
@@ -110,6 +105,7 @@ function ProductTable({ sub, searchQuery }: { sub: SubCategory; searchQuery: str
 export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsModalProps) {
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const { openVentmarketModal } = useModal();
   
   useEffect(() => {
     if (isOpen) {
@@ -260,14 +256,16 @@ export default function ProductsModal({ isOpen, onClose, categoryId }: ProductsM
                 <span>Цены указаны в тенге (₸) с учетом НДС и могут меняться.</span>
               </div>
               <div className="flex items-center gap-3 flex-wrap">
-                <a
-                  href="/g-time-price.pdf"
-                  download="G-Time-Прайс-лист.pdf"
+                <button
+                  onClick={() => {
+                    onClose();
+                    openVentmarketModal();
+                  }}
                   className="flex items-center gap-2 bg-accent-blue/10 hover:bg-accent-blue/20 text-accent-blue text-xs font-bold px-4 py-2 rounded-xl transition-all border border-accent-blue/30 hover:scale-105 active:scale-95"
                 >
-                  <Download size={14} />
-                  Скачать прайс-лист PDF
-                </a>
+                  <ArrowRight size={14} />
+                  Оставить заявку
+                </button>
                 <a
                   href="tel:+77478390605"
                   className="flex items-center gap-2 text-sm font-bold text-white hover:text-accent-blue transition-colors"

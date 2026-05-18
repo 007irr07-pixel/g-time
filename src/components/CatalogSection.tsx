@@ -100,10 +100,9 @@ function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number
   return (
     <motion.div variants={itemVariants} className={index >= 3 ? "lg:col-span-3" : "lg:col-span-2"}>
       <TiltCard
-        className={`group relative h-full w-full min-h-[420px] bg-gradient-to-br from-silver/10 to-graphite/25 backdrop-blur-xl rounded-3xl p-8 sm:p-10 cursor-pointer overflow-hidden transition-all duration-500 border border-silver/20 ${item.borderColor}`}
+        className={`group relative h-full w-full min-h-[440px] bg-gradient-to-br from-silver/10 to-graphite/25 backdrop-blur-xl rounded-3xl p-8 sm:p-10 cursor-default overflow-hidden transition-all duration-500 border border-silver/20 ${item.borderColor}`}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
-        onClick={onOpen}
       >
         <div className="relative z-0 h-full flex flex-col transition-all duration-700 ease-out">
           {/* Massive Background Custom SVG Illustration */}
@@ -113,7 +112,7 @@ function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number
 
           {/* Floating 3D Foreground Content */}
           <div style={{ transform: "translateZ(60px)" }} className="relative z-10 h-full flex flex-col pointer-events-none drop-shadow-2xl">
-            <div className="mt-auto pt-32 pb-[140px]">
+            <div className="mt-auto pt-32 pb-[190px]">
               {/* Title */}
               <h3 className="text-3xl sm:text-4xl font-heading font-900 text-white mb-2 tracking-tight drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]">
                 {item.title}
@@ -145,27 +144,38 @@ function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number
         {/* Buttons - Static */}
         <div 
           style={{ transform: "translateZ(40px)" }}
-          className="absolute bottom-6 right-6 left-6 z-20 grid grid-cols-2 gap-3"
+          className="absolute bottom-6 right-6 left-6 z-20 flex flex-col gap-3"
         >
           <button
             onClick={(e) => {
               e.stopPropagation();
-              openVentmarketModal();
+              onOpen();
             }}
-            className="flex items-center justify-center py-3 rounded-xl font-bold text-xs sm:text-sm text-white transition-all duration-300 bg-[#1e88e5] hover:bg-[#1565c0] shadow-lg hover:shadow-xl hover:-translate-y-0.5 border-none cursor-pointer"
+            className="w-full flex items-center justify-center py-3 rounded-xl font-bold text-xs sm:text-sm text-white transition-all duration-300 bg-white/10 hover:bg-white/20 border border-white/20 shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer backdrop-blur-md"
           >
-            Узнать стоимость
+            Подробнее
           </button>
-          <a
-            href="https://wa.me/77478390605"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-xs sm:text-sm text-white transition-all duration-300 bg-[#25D366] hover:bg-[#20bd5a] shadow-lg hover:shadow-xl hover:-translate-y-0.5 border-none cursor-pointer"
-          >
-            <MessageCircle size={16} />
-            WhatsApp
-          </a>
+          <div className="grid grid-cols-2 gap-3 w-full">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                openVentmarketModal();
+              }}
+              className="flex items-center justify-center py-3 rounded-xl font-bold text-xs sm:text-sm text-white transition-all duration-300 bg-[#1e88e5] hover:bg-[#1565c0] shadow-lg hover:shadow-xl hover:-translate-y-0.5 border-none cursor-pointer"
+            >
+              Узнать стоимость
+            </button>
+            <a
+              href="https://wa.me/77478390605"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-xs sm:text-sm text-white transition-all duration-300 bg-[#25D366] hover:bg-[#20bd5a] shadow-lg hover:shadow-xl hover:-translate-y-0.5 border-none cursor-pointer"
+            >
+              <MessageCircle size={16} />
+              WhatsApp
+            </a>
+          </div>
         </div>
       </TiltCard>
     </motion.div>
