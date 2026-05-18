@@ -35,7 +35,7 @@ export default function PartnersMarquee() {
             {partnerLogos.map((src, idx) => (
               <div 
                 key={`${src}-${idx}`} 
-                className="relative w-40 h-20 sm:w-56 sm:h-24 flex items-center justify-center opacity-50 hover:opacity-100 transition-all duration-500 select-none grayscale hover:grayscale-0"
+                className="relative w-40 h-20 sm:w-56 sm:h-24 flex items-center justify-center opacity-70 hover:opacity-100 transition-all duration-500 select-none brightness-0 invert hover:brightness-100 hover:invert-0"
               >
                 <Image 
                   src={src}

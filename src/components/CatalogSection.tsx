@@ -1,10 +1,13 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import TiltCard from "./TiltCard";
 import dynamic from "next/dynamic";
 import ProductsModal from "./ProductsModal";
+import { useModal } from "./ModalContext";
+import { MessageCircle, Loader2 } from "lucide-react";
+import { formatPhoneNumber } from "@/utils/formatPhone";
 
 const CardLive3D = dynamic(() => import("./LiveIlls").then(mod => mod.CardLive3D), { ssr: false });
 
@@ -91,6 +94,7 @@ const itemVariants: import("framer-motion").Variants = {
 
 function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number; onOpen: () => void }) {
   const [isHovered, setIsHovered] = useState(false);
+  const { openVentmarketModal } = useModal();
   const Illustration = item.illustration;
 
   return (
@@ -101,7 +105,7 @@ function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number
         onHoverEnd={() => setIsHovered(false)}
         onClick={onOpen}
       >
-        <div className={`relative z-0 h-full flex flex-col transition-all duration-700 ease-out ${isHovered ? 'blur-md opacity-40 scale-[0.97]' : 'blur-0 opacity-100 scale-100'}`}>
+        <div className="relative z-0 h-full flex flex-col transition-all duration-700 ease-out">
           {/* Massive Background Custom SVG Illustration */}
           <Illustration isHovered={isHovered} color={item.accentColor} />
           {/* Dark gradient overlay to ensure text is ALWAYS readable regardless of 3D animation behind it */}
@@ -109,7 +113,7 @@ function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number
 
           {/* Floating 3D Foreground Content */}
           <div style={{ transform: "translateZ(60px)" }} className="relative z-10 h-full flex flex-col pointer-events-none drop-shadow-2xl">
-            <div className="mt-auto pt-32">
+            <div className="mt-auto pt-32 pb-[140px]">
               {/* Title */}
               <h3 className="text-3xl sm:text-4xl font-heading font-900 text-white mb-2 tracking-tight drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]">
                 {item.title}
@@ -138,24 +142,30 @@ function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number
           </div>
         </div>
 
-        {/* Open button */}
+        {/* Buttons - Static */}
         <div 
           style={{ transform: "translateZ(40px)" }}
-          className="absolute bottom-6 right-6 left-6 z-20 pointer-events-none"
+          className="absolute bottom-6 right-6 left-6 z-20 grid grid-cols-2 gap-3"
         >
-          <motion.div
-            className={`flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-base text-white border transition-all duration-500 shadow-2xl ${
-              item.accentColor === "blue"
-                ? "bg-accent-blue hover:bg-blue-500 border-accent-blue/80 shadow-[0_0_30px_rgba(0,71,154,0.6)]"
-                : "bg-accent-cyan hover:bg-cyan-500 border-accent-cyan/80 shadow-[0_0_30px_rgba(93,176,229,0.6)]"
-            } backdrop-blur-md`}
-            initial={{ y: 20, opacity: 0, scale: 0.9 }}
-            animate={isHovered ? { y: 0, opacity: 1 } : { y: 10, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              openVentmarketModal();
+            }}
+            className="flex items-center justify-center py-3 rounded-xl font-bold text-xs sm:text-sm text-white transition-all duration-300 bg-[#1e88e5] hover:bg-[#1565c0] shadow-lg hover:shadow-xl hover:-translate-y-0.5 border-none cursor-pointer"
           >
-            Подробнее
-            <span className="text-lg">→</span>
-          </motion.div>
+            Узнать стоимость
+          </button>
+          <a
+            href="https://wa.me/77478390605"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-xs sm:text-sm text-white transition-all duration-300 bg-[#25D366] hover:bg-[#20bd5a] shadow-lg hover:shadow-xl hover:-translate-y-0.5 border-none cursor-pointer"
+          >
+            <MessageCircle size={16} />
+            WhatsApp
+          </a>
         </div>
       </TiltCard>
     </motion.div>
@@ -164,10 +174,42 @@ function CatalogCard({ item, index, onOpen }: { item: CatalogItem; index: number
 
 export default function CatalogSection() {
   const [openCategoryId, setOpenCategoryId] = useState<string | null>(null);
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !phone) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, type: 'price' }),
+      });
+
+      if (!res.ok) throw new Error("Ошибка сервера");
+
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+        setName("");
+        setPhone("");
+      }, 3000);
+    } catch (error) {
+      console.error(error);
+      alert("Произошла ошибка при отправке заявки");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
-      <section id="catalog" className="relative py-24 sm:py-40 perspective-[2000px]">
+      <section id="catalog" className="relative py-16 sm:py-24 perspective-[2000px]">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <motion.div
@@ -200,6 +242,56 @@ export default function CatalogSection() {
           {catalogItems.map((item, i) => (
             <CatalogCard key={item.id} item={item} index={i} onOpen={() => setOpenCategoryId(item.id)} />
           ))}
+        </motion.div>
+
+        {/* Lead Form - Horizontal */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8 }}
+          className="mt-20 bg-gradient-to-br from-graphite/80 to-gunmetal/90 backdrop-blur-xl border border-white/10 rounded-3xl p-8 sm:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-[url('/recommendations/noise.png')] opacity-5 pointer-events-none mix-blend-overlay"></div>
+          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+            <h3 className="text-3xl sm:text-4xl font-heading font-800 text-white text-center lg:text-left leading-tight lg:max-w-md drop-shadow-md">
+              Оставьте заявку и мы отправим вам <span className="text-accent-blue">прайс-лист</span>
+            </h3>
+            
+            <form className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto flex-1 justify-end" onSubmit={handleSubmit}>
+              <input 
+                type="text" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Введите имя" 
+                required
+                className="w-full sm:w-64 px-6 py-4 rounded-xl border border-white/20 bg-white/5 text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent text-lg backdrop-blur-sm transition-all"
+              />
+              <input 
+                type="tel" 
+                value={phone}
+                onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
+                placeholder="+7 700 000 00 00" 
+                required
+                maxLength={16}
+                className="w-full sm:w-64 px-6 py-4 rounded-xl border border-white/20 bg-white/5 text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent text-lg backdrop-blur-sm transition-all"
+              />
+              <button 
+                type="submit"
+                disabled={loading || success}
+                className={`w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-white transition-all whitespace-nowrap text-lg flex items-center justify-center gap-2 ${
+                  success 
+                    ? "bg-green-500 hover:bg-green-600 shadow-[0_0_20px_rgba(34,197,94,0.4)]" 
+                    : "bg-accent-blue hover:bg-accent-blue-dark shadow-[0_0_20px_rgba(0,71,154,0.4)] hover:shadow-[0_0_30px_rgba(0,71,154,0.6)] hover:scale-[1.02] active:scale-[0.98]"
+                }`}
+              >
+                {loading ? (
+                  <Loader2 size={20} className="animate-spin" />
+                ) : null}
+                {success ? "ЗАЯВКА ОТПРАВЛЕНА" : loading ? "ОТПРАВКА..." : "ПОЛУЧИТЬ ПРАЙС"}
+              </button>
+            </form>
+          </div>
         </motion.div>
       </div>
     </section>

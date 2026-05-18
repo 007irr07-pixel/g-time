@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
@@ -13,6 +13,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import dynamic from "next/dynamic";
+import { formatPhoneNumber } from "@/utils/formatPhone";
 
 const ScannerLive3D = dynamic(() => import("./LiveIlls").then(mod => mod.ScannerLive3D), { ssr: false });
 
@@ -70,19 +71,7 @@ export default function UploadSection() {
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value.replace(/\D/g, "");
-    if (!raw) { setPhone(""); return; }
-    
-    let digits = raw;
-    if (digits.startsWith("7") || digits.startsWith("8")) digits = digits.slice(1);
-    digits = digits.slice(0, 10);
-    
-    let res = "+7";
-    if (digits.length > 0) res += " " + digits.substring(0, 3);
-    if (digits.length > 3) res += " " + digits.substring(3, 6);
-    if (digits.length > 6) res += " " + digits.substring(6, 8);
-    if (digits.length > 8) res += " " + digits.substring(8, 10);
-    setPhone(res);
+    setPhone(formatPhoneNumber(e.target.value));
   };
 
   const handleSubmit = async () => {
@@ -125,7 +114,7 @@ export default function UploadSection() {
   };
 
   return (
-    <section className="relative py-24 sm:py-32 overflow-hidden">
+    <section className="relative py-16 sm:py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-graphite via-surface/20 to-graphite" />
       <div className="absolute inset-0 steel-mesh opacity-15" />
 

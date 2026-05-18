@@ -2,10 +2,9 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
+import { ArrowRight, ChevronDown, MessageCircle, Check } from "lucide-react";
 import dynamic from "next/dynamic";
 
-const HeroLive3D = dynamic(() => import("./LiveIlls").then(mod => mod.HeroLive3D), { ssr: false });
 const HeroHexBg = dynamic(() => import("./BlueprintBackground"), { ssr: false });
 
 import { useModal } from "./ModalContext";
@@ -33,13 +32,11 @@ const letterVariants: any = {
 };
 
 export default function HeroSection() {
-  const { openPriceModal: onOpenPriceModal } = useModal();
+  const { openPriceModal: onOpenPriceModal, openEstimateModal: onOpenEstimateModal } = useModal();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Parallax scroll effects
+  // Parallax scroll effects (Removed as requested by user)
   const { scrollY } = useScroll();
-  const yHero = useTransform(scrollY, [0, 1000], [0, 300]);
-  const opacityHero = useTransform(scrollY, [0, 600], [1, 0]);
 
 
 
@@ -73,24 +70,28 @@ export default function HeroSection() {
     >
       {/* Deep dark background is now handled globally */}
 
-      {/* Static 3D hex pattern — top-right, behind tubes */}
+      {/* Static 3D hex pattern — top-right, behind tubes 
       <div className="absolute top-0 right-0 bottom-0 w-full h-full pointer-events-none z-[1] opacity-70">
         <HeroHexBg />
       </div>
+      */}
 
-      {/* 3D Tubes */}
+      {/* Hero Image Container */}
       <motion.div
-        style={{ y: useTransform(scrollY, [0, 1000], [0, 300]) }}
-        className="absolute top-0 right-0 bottom-0 w-[150vw] sm:inset-0 sm:w-full pointer-events-none origin-center pt-32 sm:pt-20 opacity-25 sm:opacity-100 translate-x-[25%] sm:translate-x-0 z-[2]"
+        className="absolute inset-0 w-full h-full pointer-events-none z-[0]"
       >
-        <motion.div style={{ opacity: useTransform(scrollY, [0, 600], [1, 0]) }} className="w-full h-full">
-          <HeroLive3D />
-        </motion.div>
+        <img 
+          src="/hero-photo.png" 
+          alt="Фото для баннера" 
+          className="w-full h-full object-cover object-[75%_center] sm:object-right opacity-40 sm:opacity-80"
+        />
+        {/* Smooth gradient overlays to ensure text readability on mobile and desktop */}
+        <div className="absolute inset-0 bg-gradient-to-r from-graphite via-graphite/80 to-transparent sm:via-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-graphite via-graphite/80 to-transparent sm:hidden" />
       </motion.div>
 
       {/* Main Content Area */}
       <motion.div
-        style={{ y: yHero, opacity: opacityHero }}
         className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20"
       >
         <div className="max-w-5xl">
@@ -116,15 +117,29 @@ export default function HeroSection() {
             <br className="hidden sm:block" />
           </motion.h1>
 
-          {/* Subtitle with fade up */}
-          <motion.p
-            initial={{ opacity: 0, y: 40 }}
+          {/* Benefits List */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
-            className="text-xl sm:text-2xl text-white max-w-3xl mb-12 leading-[1.6] font-light drop-shadow-[0_4px_30px_rgba(0,0,0,1)]"
+            transition={{ duration: 0.8, delay: 0.9, ease: "easeOut" }}
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mb-12"
           >
-            <strong className="text-white font-semibold">50 000 тонн металла</strong> на складах. Фиксируем цену в день счета, даем отсрочку платежа и гарантируем честный вес по ГОСТу
-          </motion.p>
+            {[
+              "50 000 тонн металла на складах",
+              "Соответствие ГОСТу",
+              "Фиксируем цену в день счета",
+              "Даем отсрочку платежа",
+              "Доставка по всему Казахстану",
+              "Поставка точно в срок"
+            ].map((benefit, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-accent-blue/20 flex items-center justify-center border border-accent-blue/50">
+                  <Check size={14} className="text-accent-blue" />
+                </div>
+                <span className="text-zinc-200 font-medium drop-shadow-md text-sm sm:text-base">{benefit}</span>
+              </div>
+            ))}
+          </motion.div>
 
           {/* Premium CTAs */}
           <motion.div
@@ -133,23 +148,24 @@ export default function HeroSection() {
             transition={{ duration: 1, delay: 1.0, ease: "easeOut" }}
             className="flex flex-col sm:flex-row gap-5"
           >
-            <a
-              href="#calculator"
-              className="group relative inline-flex items-center justify-center gap-4 bg-accent-blue text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden shadow-[0_0_30px_rgba(0,71,154,0.3)] hover:shadow-[0_0_40px_rgba(0,71,154,0.5)]"
+            <button
+              onClick={onOpenEstimateModal}
+              className="group relative inline-flex items-center justify-center gap-4 bg-accent-blue text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden shadow-[0_0_30px_rgba(0,71,154,0.3)] hover:shadow-[0_0_40px_rgba(0,71,154,0.5)] border-none cursor-pointer"
             >
               {/* Button inner glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
-              <span className="relative z-10">Рассчитать смету за 15 минут</span>
-            </a>
+              <span className="relative z-10">Получить смету</span>
+            </button>
 
             <a
               href="https://wa.me/77478390605"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative inline-flex items-center justify-center gap-4 bg-graphite/80 backdrop-blur-xl border border-white/20 hover:border-[#25D366]/60 hover:bg-gunmetal/90 text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+              className="group relative inline-flex items-center justify-center gap-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-[0_10px_30px_rgba(37,211,102,0.3)] hover:shadow-[0_15px_40px_rgba(37,211,102,0.5)] border-none"
             >
-              <MessageCircle size={20} className="text-[#25D366] group-hover:text-white transition-colors drop-shadow-md" />
-              <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Написать на WhatsApp</span>
+              {/* Note: In a real app we might use official WhatsApp SVG icon, but MessageCircle is fine here if it works. Let's make it look authentic. */}
+              <MessageCircle size={24} className="text-white drop-shadow-md" />
+              <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)]">Написать на WhatsApp</span>
             </a>
           </motion.div>
 
@@ -158,7 +174,7 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5, delay: 1.8 }}
-            className="flex flex-wrap gap-10 sm:gap-16 mt-12 pt-10 border-t border-white/5"
+            className="grid grid-cols-3 sm:flex sm:flex-wrap gap-2 sm:gap-16 mt-12 pt-8 sm:pt-10 border-t border-white/5"
           >
             {[
               { value: "12+", label: "лет доверия" },
@@ -170,12 +186,12 @@ export default function HeroSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 2 + (i * 0.1) }}
-                className="relative"
+                className="relative flex flex-col"
               >
-                <div className="text-3xl sm:text-4xl font-heading font-900 text-white tracking-tight mb-1">
+                <div className="text-2xl sm:text-4xl font-heading font-900 text-white tracking-tight mb-1">
                   {stat.value}
                 </div>
-                <div className="text-sm font-medium text-silver uppercase tracking-widest">
+                <div className="text-[10px] sm:text-sm font-medium text-silver uppercase tracking-wider sm:tracking-widest leading-snug">
                   {stat.label}
                 </div>
               </motion.div>

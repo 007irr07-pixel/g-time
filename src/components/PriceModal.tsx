@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Download, CheckCircle, Loader2 } from "lucide-react";
+import { CheckCircle, Download, Loader2, X } from "lucide-react";
+import { formatPhoneNumber } from "@/utils/formatPhone";
 import { useModal } from "./ModalContext";
 
 export default function PriceModal() {
@@ -13,18 +14,6 @@ export default function PriceModal() {
   const [success, setSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const formatPhone = (value: string) => {
-    // Strip everything except digits
-    const digits = value.replace(/\D/g, "");
-    // Always start with 7
-    const local = digits.startsWith("7") ? digits.slice(1) : digits;
-    let result = "+7";
-    if (local.length > 0) result += " " + local.slice(0, 3);
-    if (local.length > 3) result += " " + local.slice(3, 6);
-    if (local.length > 6) result += " " + local.slice(6, 8);
-    if (local.length > 8) result += " " + local.slice(8, 10);
-    return result;
-  };
 
   useEffect(() => {
     if (isOpen) {
@@ -185,7 +174,7 @@ export default function PriceModal() {
                       <input
                         type="tel"
                         value={phone}
-                        onChange={(e) => setPhone(formatPhone(e.target.value))}
+                        onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
                         placeholder="+7 700 000 00 00"
                         required
                         maxLength={16}

@@ -1,9 +1,11 @@
-﻿"use client";
+"use client";
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { X, ZoomIn, FileText, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { formatPhoneNumber } from "@/utils/formatPhone";
+import { Loader2 } from "lucide-react";
 
 const recommendationImages = [
   "/recommendations/letter1_big.jpg",
@@ -23,6 +25,10 @@ export default function CertificatesSection() {
   const x1 = useTransform(scrollYProgress, [0, 1], [0, -500]);
   const x2 = useTransform(scrollYProgress, [0, 1], [-500, 0]);
 
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -30,6 +36,34 @@ export default function CertificatesSection() {
     if (scrollRef.current) {
       const scrollAmount = window.innerWidth > 768 ? 600 : 300;
       scrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !phone) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, type: 'consultation' }),
+      });
+
+      if (!res.ok) throw new Error("Ошибка сервера");
+
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+        setName("");
+        setPhone("");
+      }, 3000);
+    } catch (error) {
+      console.error(error);
+      alert("Произошла ошибка при отправке заявки");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,7 +101,7 @@ export default function CertificatesSection() {
   }, [lightboxImage, lightboxIndex, recommendationImages]);
 
   return (
-    <section id="certificates" ref={containerRef} className="relative py-32 sm:py-48 overflow-hidden bg-graphite">
+    <section id="certificates" ref={containerRef} className="relative py-20 sm:py-28 overflow-hidden bg-graphite">
       {/* Heavy mesh background */}
       <div className="absolute inset-0 steel-mesh opacity-20" />
       <div className="absolute inset-0 noise-bg mix-blend-overlay" />
@@ -86,6 +120,59 @@ export default function CertificatesSection() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Lead Form - Horizontal */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8 }}
+          className="mb-24 bg-gradient-to-br from-graphite/80 to-gunmetal/90 backdrop-blur-xl border border-white/10 rounded-3xl p-10 sm:p-14 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-[url('/recommendations/noise.png')] opacity-5 pointer-events-none mix-blend-overlay"></div>
+          <div className="relative z-10 flex flex-col items-center gap-8">
+            <h3 className="text-3xl sm:text-4xl font-heading font-800 text-white text-center leading-tight drop-shadow-md">
+              Купить металлопрокат от <span className="text-accent-blue">ТОО G-TIME CONSTRUCTION</span> легко
+            </h3>
+            <p className="text-zinc-300 text-center text-lg max-w-2xl">
+              Просто оставьте заявку и наши менеджеры подробно проконсультируют вас по ассортименту, условиям заказа и доставке
+            </p>
+            
+            <form className="flex flex-col sm:flex-row gap-4 w-full justify-center mt-4" onSubmit={handleSubmit}>
+              <input 
+                type="text" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Имя" 
+                required
+                className="w-full sm:w-80 px-6 py-4 rounded-xl border border-white/20 bg-white/5 text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent text-lg backdrop-blur-sm transition-all"
+              />
+              <input 
+                type="tel" 
+                value={phone}
+                onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
+                placeholder="+7 700 111 11 11" 
+                required
+                maxLength={16}
+                className="w-full sm:w-80 px-6 py-4 rounded-xl border border-white/20 bg-white/5 text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent text-lg backdrop-blur-sm transition-all"
+              />
+              <button 
+                type="submit"
+                disabled={loading || success}
+                className={`w-full sm:w-auto px-10 py-4 rounded-xl font-bold text-white transition-all whitespace-nowrap text-lg flex items-center justify-center gap-2 ${
+                  success 
+                    ? "bg-green-500 hover:bg-green-600 shadow-[0_0_20px_rgba(34,197,94,0.4)]" 
+                    : "bg-accent-blue hover:bg-accent-blue-dark shadow-[0_0_20px_rgba(0,71,154,0.4)] hover:shadow-[0_0_30px_rgba(0,71,154,0.6)] hover:scale-[1.02] active:scale-[0.98]"
+                }`}
+              >
+                {loading ? (
+                  <Loader2 size={20} className="animate-spin" />
+                ) : null}
+                {success ? "Заявка отправлена" : loading ? "Отправка..." : "Получить консультацию"}
+              </button>
+            </form>
+          </div>
+        </motion.div>
+
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="text-center mb-16 sm:mb-24">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-900 mt-2 mb-6 tracking-tight text-white uppercase">
             Рекомендательные письма от <span className="gradient-text-blue">наших заказчиков</span>

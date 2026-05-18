@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
@@ -91,7 +91,7 @@ export default function B2BSection() {
   const containerRef = useRef(null);
 
   return (
-    <section id="b2b" ref={containerRef} className="relative py-32 sm:py-48 overflow-hidden bg-graphite">
+    <section id="b2b" ref={containerRef} className="relative py-20 sm:py-28 overflow-hidden bg-graphite">
       {/* Heavy mesh background */}
       <div className="absolute inset-0 steel-mesh opacity-20" />
       <div className="absolute inset-0 noise-bg mix-blend-overlay" />

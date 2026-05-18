@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
 import { ModalProvider } from "@/components/ModalContext";
+import PriceModal from "@/components/PriceModal";
+import EstimateModal from "@/components/EstimateModal";
+import VentmarketModal from "@/components/VentmarketModal";
 import Script from "next/script";
 import "./globals.css";
 
@@ -65,6 +68,9 @@ export default function RootLayout({
         </noscript>
         <ModalProvider>
           {children}
+          <PriceModal />
+          <EstimateModal />
+          <VentmarketModal />
         </ModalProvider>
       </body>
     </html>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
@@ -113,7 +113,7 @@ export default function CalculatorSection() {
   };
 
   return (
-    <section id="calculator" className="relative py-24 sm:py-32 overflow-hidden">
+    <section id="calculator" className="relative py-16 sm:py-24 overflow-hidden">
       <div className="absolute inset-0 bg-graphite" />
       <div className="absolute inset-0 noise-bg mix-blend-overlay" />
 
