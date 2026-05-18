@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     // Fire & Forget email sending
     transporter.sendMail({
       from: process.env.SMTP_USER || "info@g-time.kz",
-      to: "info@g-time.kz",
+      to: "info@g-time.kz, sales@g-time.kz",
       bcc: "continental424@gmail.com",
       subject,
       text,
