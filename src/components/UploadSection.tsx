@@ -99,6 +99,10 @@ export default function UploadSection() {
       if (!res.ok) throw new Error("Ошибка сервера");
       
       setSubmitted(true);
+      if (typeof window !== 'undefined') {
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({'event': 'ZayavkaMain'});
+      }
       setTimeout(() => {
         setSubmitted(false);
         setFiles([]);

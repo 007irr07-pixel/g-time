@@ -53,6 +53,10 @@ export default function PriceModal() {
       document.body.removeChild(link);
 
       setSuccess(true);
+      if (typeof window !== 'undefined') {
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({'event': 'ZayavkaMain'});
+      }
       setTimeout(() => {
         setSuccess(false);
         setName("");

@@ -54,6 +54,10 @@ export default function CertificatesSection() {
       if (!res.ok) throw new Error("Ошибка сервера");
 
       setSuccess(true);
+      if (typeof window !== 'undefined') {
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({'event': 'ZayavkaMain'});
+      }
       setTimeout(() => {
         setSuccess(false);
         setName("");
